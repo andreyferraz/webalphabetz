@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="pt-BR"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+	  th:fragment="layout(title, content)">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Escola Alphabetz, Educação Infantil em Vitória/ES." />
+    <title th:text="${title}">Alphabetz | Educação Infantil em Vitória/ES</title>
+    <link rel="icon" th:href="@{/assets/favicon.svg}" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+        integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+</head>
+
+<body data-page="index.html">
+    <a class="skip-link" href="#conteudo">Ir para o conteúdo</a>
+    <header class="site-header" data-header>
+        <div class="container">
+            <nav class="navbar" aria-label="Navegação principal">
+                <a class="brand" th:href="@{/}" aria-label="Alphabetz - página inicial">
+                    <img th:src="@{/assets/alphabetz-logo.png}" alt="Alphabetz" />
+                </a>
+                <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-menu" data-nav-toggle>
+                    <span aria-hidden="true"></span>
+                    <span class="sr-only">Abrir menu</span>
+                </button>
+                <div class="nav-menu" id="nav-menu" data-nav-menu>
+                    <a class="nav-link" th:href="@{/}">Início</a>
+                    <div class="nav-item-dropdown">
+                        <a class="nav-link nav-link-parent" th:href="@{/escola}" aria-haspopup="true">A Escola <i
+                                class="fa-solid fa-chevron-down" aria-hidden="true"></i></a>
+                        <div class="sub-menu" aria-label="Submenu A Escola">
+                            <a class="nav-link sub-link" th:href="@{/abordagem}">Abordagem</a>
+                            <a class="nav-link sub-link" th:href="@{/turmas}">Turmas</a>
+                        </div>
+                    </div>
+                    <a class="nav-link" th:href="@{/blog}">Blog</a>
+                    <a class="nav-link" th:href="@{/trabalhe-conosco}">Trabalhe conosco</a>
+                    <a class="nav-link" th:href="@{/contato}">Contato</a>
+                </div>
+                <div class="nav-actions">
+                    <a class="btn btn-primary btn-small" th:href="@{/contato#agendar}">Agendar visita</a>
+                    <div class="nav-social" aria-label="Redes sociais">
+                        <a href="https://www.facebook.com" target="_blank" rel="noopener" aria-label="Facebook"><i
+                                class="fa-brands fa-facebook-f" aria-hidden="true"></i></a>
+                        <a href="https://wa.me/552730291110" target="_blank" rel="noopener" aria-label="WhatsApp"><i
+                                class="fa-brands fa-whatsapp" aria-hidden="true"></i></a>
+                        <a href="https://www.pinterest.com" target="_blank" rel="noopener" aria-label="Pinterest"><i
+                                class="fa-brands fa-pinterest-p" aria-hidden="true"></i></a>
+                        <a href="https://www.instagram.com" target="_blank" rel="noopener" aria-label="Instagram"><i
+                                class="fa-brands fa-instagram" aria-hidden="true"></i></a>
+                        <a href="https://www.youtube.com" target="_blank" rel="noopener" aria-label="YouTube"><i
+                                class="fa-brands fa-youtube" aria-hidden="true"></i></a>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main id="main-content conteudo" th:replace="${content}">
+        Conteúdo da página
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <img th:src="@{/assets/alphabetz-logo.png}" alt="Alphabetz" />
+                    <p>Educação Infantil com cuidado, brincadeira, interação e desenvolvimento em cada detalhe da rotina
+                        escolar.</p>
+                </div>
+                <div>
+                    <div class="footer-title">Navegação</div>
+                    <ul class="footer-list">
+                        <li><a th:href="@{/escola}">A Escola</a></li>
+                        <li><a th:href="@{/abordagem}">Abordagem Alphabetz</a></li>
+                        <li><a th:href="@{/turmas}">Turmas APZ</a></li>
+                        <li><a th:href="@{/blog}">Blog</a></li>
+                        <li><a th:href="@{/trabalhe-conosco}">Trabalhe conosco</a></li>
+                        <li><a th:href="@{/contato}">Contato</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <div class="footer-title">Canais</div>
+                    <ul class="footer-list">
+                        <li><a href="https://wa.me/552730291110" target="_blank" rel="noopener">WhatsApp: (27)
+                                3029-1110</a></li>
+                        <li><a href="mailto:recepcao@alphabetz.com.br">recepcao@alphabetz.com.br</a></li>
+                        <li><a
+                                href="mailto:curriculo.alphabetz@alphabetz.com.br">curriculo.alphabetz@alphabetz.com.br</a>
+                        </li>
+                        <li><a href="https://blog.alphabetz.com.br/" target="_blank" rel="noopener">Blog oficial</a>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <div class="footer-title">Unidade</div>
+                    <p>Rua Florentina Faller, 45<br />Enseada do Suá - Vitória/ES</p>
+                    <p style="margin-top: 12px;">Funcionamento: segunda a sexta, das 7:20h às 18:45h.</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <span>© 2026 Alphabetz. Todos os direitos reservados.</span>
+                <span class="dev-credit">Desenvolvido por <a href="https://www.andreyferraz.com.br" target="_blank"
+                        rel="noopener">Andrêy Ferraz</a></span>
+            </div>
+        </div>
+    </footer>
+
+    <div class="lightbox" data-lightbox hidden aria-hidden="true">
+        <div class="lightbox-backdrop" data-lightbox-close></div>
+        <div class="lightbox-dialog" aria-label="Foto ampliada do slide">
+            <button class="lightbox-close" type="button" data-lightbox-close
+                aria-label="Fechar foto ampliada">×</button>
+            <img class="lightbox-image" th:src="@{/assets/lightbox-image.png}" alt="Foto ampliada da Alphabetz" data-lightbox-image />
+        </div>
+    </div>
+
+    <script th:src="@{/js/main.js}"></script>
+</body>
+
+</html>

@@ -1,0 +1,24 @@
+<svg width="920" height="760" viewBox="0 0 920 760" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Ilustração colorida de crianças, blocos e aprendizagem">
+  <rect width="920" height="760" rx="52" fill="#EB593E"/>
+  <path d="M94 593C118 471 226 383 362 399C498 415 527 288 641 237C755 186 840 252 866 342C907 486 829 661 624 690C419 719 60 766 94 593Z" fill="#7AC6BA"/>
+  <circle cx="179" cy="155" r="84" fill="#FFDD00"/>
+  <circle cx="774" cy="152" r="45" fill="#FFA700"/>
+  <circle cx="146" cy="635" r="34" fill="#E95032"/>
+  <path d="M666 102C703 133 707 191 675 228C644 266 586 270 548 238C511 206 507 148 539 111C570 74 629 70 666 102Z" fill="#64A0EE"/>
+  <path d="M270 251C323 203 411 213 452 273C492 333 472 415 414 449C356 483 278 461 244 401C214 347 223 294 270 251Z" fill="white" fill-opacity="0.92"/>
+  <path d="M541 392C600 337 696 350 740 417C783 483 760 575 697 611C634 648 549 624 512 558C479 499 490 445 541 392Z" fill="white" fill-opacity="0.92"/>
+  <rect x="262" y="310" width="74" height="74" rx="20" fill="#215FC4"/>
+  <rect x="344" y="310" width="74" height="74" rx="20" fill="#FFA700"/>
+  <rect x="426" y="310" width="74" height="74" rx="20" fill="#E95032"/>
+  <rect x="592" y="467" width="84" height="84" rx="22" fill="#215FC4"/>
+  <rect x="681" y="467" width="84" height="84" rx="22" fill="#FFDD00"/>
+  <path d="M631 250L661 304L722 316L680 362L688 424L631 398L574 424L582 362L540 316L601 304L631 250Z" fill="#01273E"/>
+  <path d="M189 361C177 372 160 372 149 360C138 349 138 331 150 320C162 309 180 310 191 322C202 334 201 350 189 361Z" fill="#004E4A"/>
+  <path d="M215 470C244 459 277 471 291 498C306 525 294 559 265 572C236 586 201 574 187 545C174 517 186 482 215 470Z" fill="#64A0EE"/>
+  <path d="M366 566C381 542 415 537 437 554C459 571 463 604 445 626C427 648 394 650 373 632C351 614 350 590 366 566Z" fill="#FFDD00"/>
+  <path d="M167 225C208 218 234 251 220 289C205 327 158 337 130 306C101 274 126 232 167 225Z" fill="#E95032"/>
+  <path d="M300 520C361 493 433 520 463 578" stroke="#004E4A" stroke-width="22" stroke-linecap="round"/>
+  <path d="M594 176C649 148 715 167 750 215" stroke="#215FC4" stroke-width="20" stroke-linecap="round"/>
+  <path d="M130 112C124 95 132 75 150 68" stroke="#004E4A" stroke-width="14" stroke-linecap="round"/>
+  <path d="M792 602C777 614 753 612 742 596" stroke="#E95032" stroke-width="16" stroke-linecap="round"/>
+</svg>
