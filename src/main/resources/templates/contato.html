@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pt-BR"
+    th:replace="~{layout :: layout('Contato | Alphabetz', ~{::content})}">
+<header>
+    <title th:text="${title}"></title>
+</header>
+<div th:fragment="content">
+
+    <section class="page-hero">
+        <div class="container page-hero-grid">
+            <div class="reveal">
+                <span class="kicker">Contato</span>
+                <h1>Agende uma visita e conheça a Alphabetz de perto.</h1>
+                <p>O formulário foi criado para transformar o interesse dos responsáveis em uma mensagem objetiva para o
+                    WhatsApp da escola.</p>
+            </div>
+            <div class="page-hero-visual reveal" aria-hidden="true">
+                <div class="stack-card"><strong>WhatsApp</strong><span>(27) 3029-1110</span></div>
+                <div class="stack-card"><strong>Endereço</strong><span>Rua Florentina Faller, 45</span></div>
+                <div class="stack-card"><strong>Horário</strong><span>7:20h às 18:45h</span></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" id="agendar">
+        <div class="container contact-grid">
+            <aside class="contact-card reveal">
+                <span class="kicker">Fale com a escola</span>
+                <h2 style="margin-top:16px;">Canais oficiais</h2>
+                <p style="margin-top:18px;">Use os contatos abaixo para matrícula, visita, informações gerais ou envio
+                    de currículo.</p>
+                <div class="contact-list">
+                    <div class="contact-item"><span class="contact-icon">📍</span>
+                        <div><strong>Unidade</strong><span>Rua Florentina Faller, 45<br />Enseada do Suá -
+                                Vitória/ES</span></div>
+                    </div>
+                    <div class="contact-item"><span class="contact-icon">📱</span>
+                        <div><strong>WhatsApp</strong><a href="https://wa.me/552730291110" target="_blank"
+                                rel="noopener">(27) 3029-1110</a></div>
+                    </div>
+                    <div class="contact-item"><span class="contact-icon">✉️</span>
+                        <div><strong>Recepção</strong><a
+                                href="mailto:recepcao@alphabetz.com.br">recepcao@alphabetz.com.br</a></div>
+                    </div>
+                    <div class="contact-item"><span class="contact-icon">💼</span>
+                        <div><strong>Trabalhe conosco</strong><a
+                                href="mailto:curriculo.alphabetz@alphabetz.com.br">curriculo.alphabetz@alphabetz.com.br</a>
+                        </div>
+                    </div>
+                    <div class="contact-item"><span class="contact-icon">⏰</span>
+                        <div><strong>Funcionamento</strong><span>Segunda a sexta, das 7:20h às 18:45h</span></div>
+                    </div>
+                </div>
+                <div class="map-card">
+                    <iframe title="Mapa da Escola Alphabetz" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+                        src="https://www.google.com/maps?q=Rua%20Florentina%20Faller%2C%2045%20Enseada%20do%20Su%C3%A1%20Vit%C3%B3ria%20ES&output=embed"></iframe>
+                </div>
+            </aside>
+            <div class="form-card reveal">
+                <span class="kicker">Agendamento</span>
+                <h2 style="margin:16px 0 24px;">Enviar interesse</h2>
+                <form class="form-grid" data-contact-form>
+                    <div class="field"><label for="nome">Nome do responsável</label><input id="nome" name="nome"
+                            type="text" placeholder="Ex.: Maria Silva" required /></div>
+                    <div class="field"><label for="telefone">Telefone/WhatsApp</label><input id="telefone"
+                            name="telefone" type="tel" placeholder="(27) 99999-9999" required /></div>
+                    <div class="field"><label for="idade">Idade da criança</label><select id="idade" name="idade"
+                            required>
+                            <option value="">Selecione</option>
+                            <option>6 meses a 1 ano e 11 meses</option>
+                            <option>2 anos</option>
+                            <option>3 anos</option>
+                            <option>4 anos</option>
+                            <option>5 anos</option>
+                        </select></div>
+                    <div class="field"><label for="mensagem">Mensagem</label><textarea id="mensagem" name="mensagem"
+                            placeholder="Conte qual informação você gostaria de receber."></textarea></div>
+                    <p class="form-status" data-form-status aria-live="polite"></p>
+                    <button class="btn btn-primary" type="submit">Enviar pelo WhatsApp</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+</div>
+
+</html>

@@ -36,4 +36,9 @@ public class PublicPagesController {
         return "trabalhe-conosco";
     }
 
+    @GetMapping("/contato")
+    public String contato() {
+        return "contato";
+    }
+
 }
