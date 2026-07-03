@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pt-BR"
+    th:replace="~{layout :: layout('Abordagem | Alphabetz', ~{::content})}">
+<header>
+    <title th:text="${title}"></title>
+</header>
+<div th:fragment="content">
+
+    <section class="page-hero">
+        <div class="container page-hero-grid">
+            <div class="reveal">
+                <span class="kicker">Abordagem pedagógica</span>
+                <h1>Aprender é explorar, sentir e se relacionar.</h1>
+                <p>Inspirada em Reggio Emilia, a abordagem da Alphabetz coloca a criança no centro do processo de
+                    aprendizagem, reconhecendo sua singularidade e sua capacidade de expressão.</p>
+            </div>
+            <div class="approach-visual reveal" aria-hidden="true">
+                <div class="orbit"></div>
+                <div class="orbit two"></div>
+                <div class="apz-center"><img th:src="@{/assets/apz-mark.png}" alt="" /></div>
+                <div class="bubble">Cuida</div>
+                <div class="bubble">Brinca</div>
+                <div class="bubble">Interage</div>
+                <div class="bubble">Desenvolve</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container tab-shell">
+            <div class="tab-buttons reveal" role="tablist" aria-label="Pilares Alphabetz">
+                <button class="tab-button is-active" type="button" role="tab" aria-selected="true"
+                    aria-controls="tab-cuida" data-tab-target="tab-cuida"><strong>Cuida</strong><span>Afeto, segurança e
+                        vínculo</span></button>
+                <button class="tab-button" type="button" role="tab" aria-selected="false" aria-controls="tab-brinca"
+                    data-tab-target="tab-brinca"><strong>Brinca</strong><span>Imaginação e descoberta</span></button>
+                <button class="tab-button" type="button" role="tab" aria-selected="false" aria-controls="tab-interage"
+                    data-tab-target="tab-interage"><strong>Interage</strong><span>Trocas e pertencimento</span></button>
+                <button class="tab-button" type="button" role="tab" aria-selected="false" aria-controls="tab-desenvolve"
+                    data-tab-target="tab-desenvolve"><strong>Desenvolve</strong><span>Potencial em cada
+                        etapa</span></button>
+            </div>
+            <div class="reveal">
+                <article class="tab-panel is-active" id="tab-cuida" role="tabpanel">
+                    <span class="kicker">Pilar 01</span>
+                    <h2>Cuida</h2>
+                    <p>Cuidar é olhar nos olhos, ouvir com atenção e compreender cada necessidade única. O afeto e a
+                        segurança constroem a base para que a criança descubra o mundo com confiança.</p>
+                    <p>Na experiência digital, esse pilar aparece em textos diretos, microinterações suaves e uma paleta
+                        que equilibra acolhimento com autoridade institucional.</p>
+                    <div class="mini-feature-grid">
+                        <div class="mini-feature">Rotina segura</div>
+                        <div class="mini-feature">Acolhimento</div>
+                        <div class="mini-feature">Atenção individual</div>
+                    </div>
+                </article>
+                <article class="tab-panel" id="tab-brinca" role="tabpanel">
+                    <span class="kicker">Pilar 02</span>
+                    <h2>Brinca</h2>
+                    <p>Brincar é a linguagem mais potente da infância. Por meio de jogos, histórias e atividades
+                        lúdicas, os pequenos desenvolvem imaginação, curiosidade e habilidades sociais.</p>
+                    <p>O visual trabalha formas orgânicas, contraste alto e blocos coloridos para expressar movimento,
+                        alegria e descoberta.</p>
+                    <div class="mini-feature-grid">
+                        <div class="mini-feature">Imaginação</div>
+                        <div class="mini-feature">Exploração</div>
+                        <div class="mini-feature">Aprendizagem ativa</div>
+                    </div>
+                </article>
+                <article class="tab-panel" id="tab-interage" role="tabpanel">
+                    <span class="kicker">Pilar 03</span>
+                    <h2>Interage</h2>
+                    <p>A interação fortalece a comunicação, a escuta, a empatia e o respeito às diferenças. A criança
+                        aprende em relação com colegas, educadores, famílias e ambiente.</p>
+                    <p>No layout, o pilar aparece em chamadas para comunidade, cards de conexão e CTAs que aproximam a
+                        família da escola.</p>
+                    <div class="mini-feature-grid">
+                        <div class="mini-feature">Comunidade</div>
+                        <div class="mini-feature">Cooperação</div>
+                        <div class="mini-feature">Família presente</div>
+                    </div>
+                </article>
+                <article class="tab-panel" id="tab-desenvolve" role="tabpanel">
+                    <span class="kicker">Pilar 04</span>
+                    <h2>Desenvolve</h2>
+                    <p>Desenvolver é acompanhar com atenção, respeito e estratégia. Cada conquista é celebrada, do
+                        primeiro rabisco à fala confiante, sem pressa e com significado.</p>
+                    <p>A jornada APZ foi transformada em uma linha clara por faixa etária para demonstrar progressão
+                        pedagógica e confiança.</p>
+                    <div class="mini-feature-grid">
+                        <div class="mini-feature">Autonomia</div>
+                        <div class="mini-feature">Criatividade</div>
+                        <div class="mini-feature">Confiança</div>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section class="section approach-band">
+        <div class="container split-grid">
+            <div class="reveal">
+                <span class="kicker">Ambiente como educador</span>
+                <h2>Espaços pensados para provocar curiosidade.</h2>
+                <p style="margin-top:20px;">Materiais diversos, organização flexível e áreas temáticas convidam a
+                    criança a escolher o que explorar, como explorar e com quem compartilhar descobertas.</p>
+            </div>
+            <div class="card reveal" style="background: #fff;">
+                <div class="card-icon">✨</div>
+                <h3>Proposta visual</h3>
+                <p>O site passa a traduzir a pedagogia com visual impactante, sem depender apenas de longos blocos de
+                    texto: narrativa, movimento, hierarquia e pontos de conversão.</p>
+            </div>
+        </div>
+    </section>
+
+</div>
+
+</html>

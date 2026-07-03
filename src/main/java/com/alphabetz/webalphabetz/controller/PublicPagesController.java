@@ -16,4 +16,14 @@ public class PublicPagesController {
         return "escola";
     }
 
+    @GetMapping("/abordagem")
+    public String abordagem() {
+        return "abordagem";
+    }
+
+    @GetMapping("/turmas")
+    public String turmas() {
+        return "turmas";
+    }
+
 }
