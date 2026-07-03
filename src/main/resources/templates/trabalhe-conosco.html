@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pt-BR"
+    th:replace="~{layout :: layout('Trabalhe Conosco | Alphabetz', ~{::content})}">
+<header>
+    <title th:text="${title}"></title>
+</header>
+<div th:fragment="content">
+
+        <section class="page-hero page-hero-career">
+      <div class="container page-hero-grid">
+        <div class="reveal">
+          <span class="kicker">Trabalhe conosco</span>
+          <h1>Faça parte de uma escola que cuida, brinca, interage e desenvolve.</h1>
+          <p>Um espaço para profissionais de educação, cuidado, apoio pedagógico e áreas administrativas enviarem seus dados e currículo.</p>
+          <div class="hero-cta">
+            <a class="btn btn-primary" href="#form-curriculo">Enviar currículo</a>
+            <a class="btn btn-outline" href="mailto:curriculo.alphabetz@alphabetz.com.br">curriculo.alphabetz@alphabetz.com.br</a>
+          </div>
+        </div>
+        <div class="career-visual reveal" aria-hidden="true">
+          <div class="career-badge">APZ</div>
+          <div class="career-note note-one">Escuta ativa</div>
+          <div class="career-note note-two">Afeto e rotina</div>
+          <div class="career-note note-three">Educação infantil</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="form-curriculo">
+      <div class="container career-grid">
+        <aside class="career-info-card reveal">
+          <span class="kicker">Perfil Alphabetz</span>
+          <h2>Procuramos pessoas que enxergam infância com respeito.</h2>
+          <p>O formulário abaixo organiza informações essenciais para triagem: dados pessoais, área de interesse, experiência, disponibilidade e anexo do currículo.</p>
+          <div class="career-values">
+            <span>Afeto</span>
+            <span>Responsabilidade</span>
+            <span>Criatividade</span>
+            <span>Colaboração</span>
+          </div>
+        </aside>
+        <section class="form-card career-form-card reveal" aria-labelledby="titulo-form-curriculo">
+          <h2 id="titulo-form-curriculo">Envie seu currículo</h2>
+          <p>Preencha os dados abaixo e anexe seu currículo em PDF, DOC ou DOCX.</p>
+          <form class="form-grid" data-career-form enctype="multipart/form-data" novalidate>
+            <div class="form-row">
+              <div class="field">
+                <label for="candidato-nome">Nome completo *</label>
+                <input id="candidato-nome" name="nome" type="text" autocomplete="name" required placeholder="Seu nome" />
+              </div>
+              <div class="field">
+                <label for="candidato-email">E-mail *</label>
+                <input id="candidato-email" name="email" type="email" autocomplete="email" required placeholder="seuemail@exemplo.com" />
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="field">
+                <label for="candidato-telefone">Telefone/WhatsApp *</label>
+                <input id="candidato-telefone" class="phone-mask" name="telefone" type="tel" autocomplete="tel" required placeholder="(27) 99999-9999" />
+              </div>
+              <div class="field">
+                <label for="area-interesse">Área de interesse *</label>
+                <select id="area-interesse" name="area" required>
+                  <option value="">Selecione</option>
+                  <option>Docência / Educação Infantil</option>
+                  <option>Auxiliar de turma</option>
+                  <option>Berçário</option>
+                  <option>Coordenação pedagógica</option>
+                  <option>Atendimento / Recepção</option>
+                  <option>Administrativo</option>
+                  <option>Serviços gerais</option>
+                  <option>Outra área</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="field">
+                <label for="formacao">Formação</label>
+                <input id="formacao" name="formacao" type="text" placeholder="Ex.: Pedagogia, Psicologia, Magistério..." />
+              </div>
+              <div class="field">
+                <label for="disponibilidade">Disponibilidade</label>
+                <select id="disponibilidade" name="disponibilidade">
+                  <option value="">Selecione</option>
+                  <option>Manhã</option>
+                  <option>Tarde</option>
+                  <option>Integral</option>
+                  <option>A combinar</option>
+                </select>
+              </div>
+            </div>
+            <div class="field">
+              <label for="experiencia">Resumo da experiência</label>
+              <textarea id="experiencia" name="experiencia" placeholder="Conte brevemente sua experiência com educação infantil, cuidado, atendimento ou gestão escolar."></textarea>
+            </div>
+            <div class="field">
+              <label for="linkedin">LinkedIn ou portfólio</label>
+              <input id="linkedin" name="linkedin" type="url" placeholder="https://..." />
+            </div>
+            <div class="field file-field">
+              <label for="curriculo">Anexar currículo *</label>
+              <input id="curriculo" name="curriculo" type="file" accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document" required />
+              <small>Formatos aceitos: PDF, DOC ou DOCX. Tamanho sugerido: até 5 MB.</small>
+            </div>
+            <label class="consent-check">
+              <input type="checkbox" name="consentimento" required />
+              <span>Autorizo o uso dos meus dados para participação em processos seletivos da Escola Alphabetz.</span>
+            </label>
+            <button class="btn btn-primary" type="submit">Enviar candidatura</button>
+            <p class="form-status" data-career-status role="status" aria-live="polite"></p>
+          </form>
+        </section>
+      </div>
+    </section>
+
+    <section class="section section-tight">
+      <div class="container">
+        <div class="card-grid">
+          <article class="card card-mint reveal"><div class="card-icon">🧡</div><h3>Cultura de cuidado</h3><p>Ambiente acolhedor, respeitoso e atento às necessidades das crianças e das famílias.</p></article>
+          <article class="card card-yellow reveal"><div class="card-icon">📚</div><h3>Intenção pedagógica</h3><p>Rotina estruturada com observação, projetos, documentação e escuta da criança.</p></article>
+          <article class="card card-sky reveal"><div class="card-icon">🤝</div><h3>Trabalho em equipe</h3><p>Colaboração entre educadores, apoio, coordenação, famílias e comunidade escolar.</p></article>
+        </div>
+      </div>
+    </section>
+
+</div>
+
+</html>
