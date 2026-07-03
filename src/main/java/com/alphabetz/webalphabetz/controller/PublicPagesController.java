@@ -26,4 +26,9 @@ public class PublicPagesController {
         return "turmas";
     }
 
+    @GetMapping("/blog")
+    public String blog() {
+        return "blog";
+    }
+
 }
