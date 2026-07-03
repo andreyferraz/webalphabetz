@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pt-BR" th:replace="~{layout :: layout('Início | Alphabetz', ~{::content})}">
+<header>
+    <title th:text="${title}"></title>
+</header>
+<div th:fragment="content">
+
+        <section class="hero" aria-labelledby="hero-title">
+      <div class="container hero-grid">
+        <div class="hero-content reveal">
+          <span class="kicker">Educação infantil em Vitória/ES</span>
+          <h1 id="hero-title" class="hero-title">Um começo <span class="mark-red">brilhante</span> para crianças que aprendem <span class="mark-yellow">brincando</span>.</h1>
+          <p class="hero-copy">A Alphabetz combina acolhimento, segurança e experiências pedagógicas vivas para crianças de 6 meses a 5 anos e 11 meses. Cada rotina é desenhada para cuidar, brincar, interagir e desenvolver.</p>
+          <div class="hero-cta">
+            <a class="btn btn-primary" th:href="@{/contato#agendar}" aria-label="Agendar uma visita à escola">Agendar uma visita</a>
+            <a class="btn btn-outline" th:href="@{/abordagem}">Conhecer abordagem</a>
+          </div>
+                    <div class="hero-badges" aria-label="Diferenciais da Alphabetz">
+            <div class="hero-badge" data-hero-badge><strong>6m+</strong><span>Berçário, creche e pré-escola</span></div>
+            <div class="hero-badge" data-hero-badge><strong>APZ</strong><span>Jornada por faixa etária</span></div>
+            <div class="hero-badge" data-hero-badge><strong>4 pilares</strong><span>Cuida, brinca, interage e desenvolve</span></div>
+          </div>
+        </div>
+        <div class="hero-media reveal">
+          <div class="hero-media-figure">
+            <img class="hero-illustration" th:src="@{/assets/crianca.png}" alt="Ilustração colorida de aprendizagem infantil" fetchpriority="high" decoding="async" />
+            <div class="float-card one"><span class="dot"></span> Afeto + autonomia</div>
+            <div class="float-card two"><span class="dot"></span> Espaços para explorar</div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <div class="wave-divider" aria-hidden="true"></div>
+    <section class="info-strip" aria-label="Informações rápidas">
+      <div class="container info-grid">
+        <div class="info-item reveal"><span class="info-icon"><i class="fa-solid fa-location-dot" aria-hidden="true"></i></span><div><strong>Enseada do Suá</strong><span>Vitória/ES</span></div></div>
+        <div class="info-item reveal"><span class="info-icon"><i class="fa-regular fa-clock" aria-hidden="true"></i></span><div><strong>7:20h às 18:45h</strong><span>Segunda a sexta</span></div></div>
+        <div class="info-item reveal"><span class="info-icon"><i class="fa-solid fa-school" aria-hidden="true"></i></span><div><strong>Educação Infantil</strong><span>De 6 meses a 5 anos</span></div></div>
+        <div class="info-item reveal"><span class="info-icon"><i class="fa-solid fa-utensils" aria-hidden="true"></i></span><div><strong>Rotina completa</strong><span>Bem-estar, higiene e alimentação</span></div></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="section-header reveal">
+          <div>
+            <span class="kicker">Por que escolher</span>
+            <h2>Uma escola com presença, método e encantamento.</h2>
+          </div>
+          <p>Mais do que um espaço bonito, a Alphabetz precisa comunicar confiança. Este layout valoriza a proposta pedagógica, destaca diferenciais e conduz a família para o agendamento de visita.</p>
+        </div>
+        <figure class="why-showcase reveal">
+          <img th:src="@{/assets/escola.png}" alt="Fachada da Escola Alphabetz em Vitória" />
+          <figcaption>Ambientes planejados para acolher, inspirar e desenvolver.</figcaption>
+        </figure>
+        <article class="tour-highlight reveal" aria-labelledby="tour-title">
+          <div class="tour-content">
+            <span class="tour-tag"><i class="fa-solid fa-vr-cardboard" aria-hidden="true"></i> Tour 360º</span>
+            <h3 id="tour-title">Visite a escola sem sair de casa.</h3>
+            <p>Explore os ambientes da Alphabetz em uma experiência imersiva e conheça os espaços que acolhem as crianças todos os dias.</p>
+            <ul class="tour-list" aria-label="Destaques do tour virtual">
+              <li>Salas e ambientes pedagógicos</li>
+              <li>Áreas de convivência e brincadeiras</li>
+              <li>Visão real do espaço da unidade</li>
+            </ul>
+            <a class="btn btn-primary" href="https://www.google.com/maps/@-20.3152803,-40.2904582,0a,76.3y,19.79h,84t/data=!3m4!1e1!3m2!1sCIABIhCivMAtAcSlrS1SQMpBYV-g!2e10?source=apiv3" target="_blank" rel="noopener">Abrir tour 360 no Google Maps</a>
+          </div>
+          <div class="tour-embed-shell" aria-label="Prévia do tour no Google Maps">
+            <iframe
+              class="tour-embed"
+              title="Prévia do tour da Escola Alphabetz"
+              src="https://www.google.com/maps/embed?pb=!4v1783036689810!6m8!1m7!1sCAoSHENJQUJJaENpdk1BdEFjU2xyUzFTUU1wQllWLWc.!2m2!1d-20.31528031956011!2d-40.29045822536873!3f19.79!4f-6!5f0.7482978769202497"
+              style="border:0;"
+              allowfullscreen
+              loading="lazy"
+              referrerpolicy="strict-origin-when-cross-origin">
+            </iframe>
+          </div>
+        </article>
+        <div class="card-grid">
+          <article class="card card-mint reveal">
+            <div class="card-icon"><i class="fa-solid fa-seedling" aria-hidden="true"></i></div>
+            <h3>Desenvolvimento integral</h3>
+            <p>Atividades pensadas para estimular aspectos motores, cognitivos, sociais e emocionais, respeitando o tempo de cada criança.</p>
+          </article>
+          <article class="card card-yellow reveal">
+            <div class="card-icon"><i class="fa-solid fa-palette" aria-hidden="true"></i></div>
+            <h3>Aprendizagem viva</h3>
+            <p>Projetos, brincadeiras, histórias, materiais acessíveis e ambientes que convidam a experimentar, criar e descobrir.</p>
+          </article>
+          <article class="card card-sky reveal">
+            <div class="card-icon"><i class="fa-solid fa-handshake" aria-hidden="true"></i></div>
+            <h3>Família por perto</h3>
+            <p>Comunicação clara, rotina acompanhada e uma relação de confiança entre escola, criança e responsáveis.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section approach-band">
+      <div class="container approach-layout">
+        <div class="reveal">
+          <span class="kicker">Abordagem Alphabetz</span>
+          <h2>Inspirada em Reggio Emilia, com a criança no centro.</h2>
+          <p style="margin-top: 20px;">A proposta reconhece cada criança como única, capaz de sentir, explorar, expressar e se relacionar. O ambiente físico funciona como extensão do processo educativo e convida à autonomia.</p>
+          <div class="approach-pillars">
+            <div class="pillar-card"><h3>Cuida</h3><p>Afeto, segurança e atenção às necessidades individuais.</p></div>
+            <div class="pillar-card"><h3>Brinca</h3><p>Imaginação, curiosidade e descoberta como linguagem de aprendizagem.</p></div>
+            <div class="pillar-card"><h3>Interage</h3><p>Trocas entre crianças, educadores e famílias para ampliar horizontes.</p></div>
+            <div class="pillar-card"><h3>Desenvolve</h3><p>Acompanhamento respeitoso das conquistas de cada etapa.</p></div>
+          </div>
+        </div>
+        <div class="approach-visual reveal" aria-hidden="true">
+          <div class="orbit"></div>
+          <div class="orbit two"></div>
+          <div class="apz-center"><img th:src="@{/assets/apz-mark.png}" alt="" /></div>
+          <div class="bubble">Cuida</div>
+          <div class="bubble">Brinca</div>
+          <div class="bubble">Interage</div>
+          <div class="bubble">Desenvolve</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section programs">
+      <div class="container">
+        <div class="section-header reveal">
+          <div>
+            <span class="kicker">Jornada APZ</span>
+            <h2>Cada fase com intenção pedagógica e cuidado.</h2>
+          </div>
+          <p>Os programas foram organizados para comunicar evolução, segurança e uma progressão clara para a família desde o berçário até a pré-escola.</p>
+        </div>
+        <div class="program-grid">
+          <article class="program-card reveal" data-number="01">
+            <div class="program-visual"><img th:src="@{/assets/bercario_baby.png}" alt="Criança do programa Berçário Baby" loading="lazy" decoding="async" /></div>
+            <span class="program-age">6m a 1a11m</span>
+            <h3>Berçário | Baby</h3>
+            <p>Ambiente seguro, alimentação inclusa e estímulos afetivos para as primeiras descobertas.</p>
+          </article>
+          <article class="program-card reveal" data-number="02">
+            <div class="program-visual"><img th:src="@{/assets/apz_start.png}" alt="Criança do programa APZ Start" loading="lazy" decoding="async" /></div>
+            <span class="program-age">2 anos</span>
+            <h3>APZ Start</h3>
+            <p>Rotina acolhedora para linguagem, movimento, socialização e autonomia inicial.</p>
+          </article>
+          <article class="program-card reveal" data-number="03">
+            <div class="program-visual"><img th:src="@{/assets/apz_move.png}" alt="Criança do programa APZ Move" loading="lazy" decoding="async" /></div>
+            <span class="program-age">3 anos</span>
+            <h3>APZ Move</h3>
+            <p>Exploração corporal, brincadeiras estruturadas e projetos que estimulam a curiosidade.</p>
+          </article>
+          <article class="program-card reveal" data-number="04">
+            <div class="program-visual"><img th:src="@{/assets/apz_jump.png}" alt="Criança do programa APZ Jump" loading="lazy" decoding="async" /></div>
+            <span class="program-age">4 anos</span>
+            <h3>APZ Jump</h3>
+            <p>Experiências colaborativas para ampliar repertório, expressão e criatividade.</p>
+          </article>
+          <article class="program-card reveal" data-number="05">
+            <div class="program-visual"><img th:src="@{/assets/apz_fly.png}" alt="Criança do programa APZ Fly" loading="lazy" decoding="async" /></div>
+            <span class="program-age">5 anos</span>
+            <h3>APZ Fly</h3>
+            <p>Preparação leve para novos desafios, com confiança, autonomia e encantamento.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section testimonial-section">
+      <div class="container testimonial-shell">
+        <div class="testimonial-card reveal">
+          <div class="testimonial-media">
+            <button class="testimonial-open" type="button" data-testimonial-open aria-label="Abrir foto ampliada">
+              <img class="testimonial-image" th:src="@{/assets/slide/3013153_1_054751154538.jpg}" alt="Momento da rotina escolar da Alphabetz" data-testimonial-image loading="lazy" decoding="async" />
+            </button>
+          </div>
+          <div class="testimonial-controls" aria-label="Controle do slide de fotos">
+            <button class="icon-btn" type="button" data-testimonial-prev aria-label="Foto anterior">←</button>
+            <button class="icon-btn" type="button" data-testimonial-next aria-label="Próxima foto">→</button>
+          </div>
+        </div>
+        <div class="success-card reveal">
+          <h3>Felicidade + confiança</h3>
+          <p>O maior indicador de sucesso: crianças seguras, famílias próximas e uma rotina que encanta.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section home-links-section">
+      <div class="container">
+        <div class="section-header reveal">
+          <div>
+            <span class="kicker">Mais conexões</span>
+            <h2>Conteúdo para famílias e oportunidades para educadores.</h2>
+          </div>
+          <p>Além de apresentar a escola, o site agora direciona para conteúdos institucionais e para uma experiência completa de candidatura.</p>
+        </div>
+        <div class="feature-duo">
+          <article class="feature-panel blog-panel reveal">
+            <span class="panel-eyebrow">Blog Alphabetz</span>
+            <h3>Ideias, rotina escolar e desenvolvimento infantil.</h3>
+            <p>Uma área editorial para aproximar famílias, explicar a proposta pedagógica e fortalecer autoridade da escola.</p>
+            <a class="btn btn-primary" th:href="@{/blog}">Ver publicações</a>
+          </article>
+          <article class="feature-panel career-panel reveal">
+            <span class="panel-eyebrow">Trabalhe conosco</span>
+            <h3>Um canal bonito e direto para receber currículos.</h3>
+            <p>Formulário com dados profissionais, área de interesse e anexo de currículo para triagem interna da escola.</p>
+            <a class="btn btn-yellow" th:href="@{/trabalhe-conosco}">Enviar currículo</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta-section">
+      <div class="container">
+        <div class="cta-box reveal">
+          <div class="cta-content">
+            <span class="kicker">Próximo passo</span>
+            <h2>Transforme curiosidade em visita.</h2>
+            <p>Uma landing institucional precisa encantar e converter. O CTA foi pensado para levar a família direto ao contato e reduzir atrito no agendamento.</p>
+            <div class="cta-actions">
+              <a class="btn btn-yellow" th:href="@{/contato#agendar}">Agendar visita</a>
+              <a class="btn btn-outline" th:href="@{/turmas}">Ver turmas</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+</div>
+</html>
