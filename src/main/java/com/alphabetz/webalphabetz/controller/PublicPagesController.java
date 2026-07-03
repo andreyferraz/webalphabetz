@@ -11,4 +11,9 @@ public class PublicPagesController {
         return "index";
     }
 
+    @GetMapping("/escola")
+    public String escola() {
+        return "escola";
+    }
+
 }

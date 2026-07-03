@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pt-BR"
+    th:replace="~{layout :: layout('A escola | Alphabetz', ~{::content})}">
+<header>
+    <title th:text="${title}"></title>
+</header>
+<div th:fragment="content">
+
+    <section class="page-hero">
+        <div class="container page-hero-grid">
+            <div class="reveal">
+                <span class="kicker">A Escola</span>
+                <h1>Um ambiente preparado para florescer.</h1>
+                <p>A Alphabetz é dedicada à Educação Infantil e atende crianças de 6 meses a 5 anos e 11 meses. A nova
+                    proposta visual posiciona a escola como acolhedora, inovadora e tecnicamente estruturada.</p>
+            </div>
+            <div class="page-hero-visual reveal" aria-hidden="true">
+                <div class="stack-card"><strong>Segurança</strong><span>Rotina acolhedora e ambientes preparados.</span>
+                </div>
+                <div class="stack-card"><strong>Criatividade</strong><span>Experiências lúdicas e projetos
+                        diversificados.</span></div>
+                <div class="stack-card"><strong>Família</strong><span>Confiança, transparência e proximidade.</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container split-grid">
+            <div class="reveal">
+                <span class="kicker">Essência Alphabetz</span>
+                <h2>Cuidado institucional com linguagem emocional.</h2>
+                <p style="margin-top: 20px;">O layout deixa a escola menos “simples” sem perder clareza: cores da marca,
+                    blocos amplos, ilustrações orgânicas, chamadas fortes e uma hierarquia visual que transmite
+                    profissionalismo.</p>
+                <div class="timeline" style="margin-top: 34px;">
+                    <div class="timeline-item"><span class="timeline-number">01</span>
+                        <div class="timeline-content">
+                            <h3>Missão</h3>
+                            <p>Promover excelência em educação, desenvolvendo criatividade, interação e vínculos que
+                                contribuem para o desenvolvimento integral.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item"><span class="timeline-number">02</span>
+                        <div class="timeline-content">
+                            <h3>Visão</h3>
+                            <p>Ser referência em educação inovadora, com uma comunidade onde cada criança floresça e
+                                cada educador inspire.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item"><span class="timeline-number">03</span>
+                        <div class="timeline-content">
+                            <h3>Experiência</h3>
+                            <p>Unir cuidado, brincadeira, interação e desenvolvimento em uma rotina leve, segura e
+                                visualmente memorável.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="media-card reveal">
+                <img th:src="@{/assets/campus-map.svg}" alt="Ilustração de campus escolar" />
+            </div>
+        </div>
+    </section>
+
+    <section class="section section-tight programs">
+        <div class="container">
+            <div class="section-header reveal">
+                <div>
+                    <span class="kicker">Valores</span>
+                    <h2>O que sustenta a experiência.</h2>
+                </div>
+                <p>Os valores foram convertidos em cards de leitura rápida para melhorar retenção, escaneabilidade e
+                    percepção de maturidade institucional.</p>
+            </div>
+            <div class="value-grid">
+                <article class="value-card reveal"><strong>01</strong>
+                    <h3>Inovação</h3>
+                    <p>Novas soluções e abordagens para aprimorar a experiência educacional.</p>
+                </article>
+                <article class="value-card reveal"><strong>02</strong>
+                    <h3>Cuidado</h3>
+                    <p>Tratamento atencioso, respeitoso e empático em cada interação.</p>
+                </article>
+                <article class="value-card reveal"><strong>03</strong>
+                    <h3>Família</h3>
+                    <p>Transparência, confiança e parceria no crescimento das crianças.</p>
+                </article>
+                <article class="value-card reveal"><strong>04</strong>
+                    <h3>Excelência</h3>
+                    <p>Ambiente acolhedor, seguro e criativo para impulsionar o desenvolvimento.</p>
+                </article>
+                <article class="value-card reveal"><strong>05</strong>
+                    <h3>Colaboração</h3>
+                    <p>Compromisso, honestidade e dedicação para um trabalho harmonioso.</p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+</div>
+
+</html>
