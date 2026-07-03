@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pt-BR"
+    th:replace="~{layout :: layout('Turmas | Alphabetz', ~{::content})}">
+<header>
+    <title th:text="${title}"></title>
+</header>
+<div th:fragment="content">
+
+    <section class="page-hero">
+        <div class="container page-hero-grid">
+            <div class="reveal">
+                <span class="kicker">Turmas APZ</span>
+                <h1>Uma jornada clara para cada idade.</h1>
+                <p>Cada programa comunica uma etapa de crescimento, com linguagem simples para a família e organização
+                    visual que facilita comparação entre idades.</p>
+            </div>
+            <div class="page-hero-visual reveal" aria-hidden="true">
+                <div class="stack-card"><strong>Baby</strong><span>6 meses a 1 ano e 11 meses</span></div>
+                <div class="stack-card"><strong>Start · Move · Jump</strong><span>2, 3 e 4 anos</span></div>
+                <div class="stack-card"><strong>Fly</strong><span>5 anos</span></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section programs">
+        <div class="container">
+            <div class="filter-bar reveal" aria-label="Filtro de turmas">
+                <button class="filter-btn is-active" type="button" data-filter="all">Todas</button>
+                <button class="filter-btn" type="button" data-filter="bercario">Berçário</button>
+                <button class="filter-btn" type="button" data-filter="creche">Creche</button>
+                <button class="filter-btn" type="button" data-filter="pre">Pré-escola</button>
+            </div>
+            <div class="class-grid">
+                <article class="class-card reveal" data-category="bercario" data-color="red">
+                    <div class="class-meta"><span class="program-age">6 meses a 1 ano e 11 meses</span>
+                        <h3>Berçário | Baby</h3>
+                        <p>Primeiras descobertas em um ambiente seguro, acolhedor e com alimentação inclusa.</p>
+                        <ul>
+                            <li>Estímulos sensoriais</li>
+                            <li>Rotina de cuidado</li>
+                            <li>Vínculo e adaptação</li>
+                        </ul>
+                    </div>
+                    <div class="class-visual">🍼</div>
+                </article>
+                <article class="class-card reveal" data-category="creche" data-color="mint">
+                    <div class="class-meta"><span class="program-age">2 anos</span>
+                        <h3>APZ Start</h3>
+                        <p>Início da autonomia, socialização e descoberta por meio da brincadeira orientada.</p>
+                        <ul>
+                            <li>Linguagem e movimento</li>
+                            <li>Exploração guiada</li>
+                            <li>Convivência</li>
+                        </ul>
+                    </div>
+                    <div class="class-visual">🚀</div>
+                </article>
+                <article class="class-card reveal" data-category="creche" data-color="yellow">
+                    <div class="class-meta"><span class="program-age">3 anos</span>
+                        <h3>APZ Move</h3>
+                        <p>Projetos e experiências que convidam a criança a investigar, criar e se expressar.</p>
+                        <ul>
+                            <li>Coordenação motora</li>
+                            <li>Curiosidade ativa</li>
+                            <li>Expressão criativa</li>
+                        </ul>
+                    </div>
+                    <div class="class-visual">🎈</div>
+                </article>
+                <article class="class-card reveal" data-category="pre" data-color="sky">
+                    <div class="class-meta"><span class="program-age">4 anos</span>
+                        <h3>APZ Jump</h3>
+                        <p>Ampliação do repertório com desafios lúdicos, interações e projetos colaborativos.</p>
+                        <ul>
+                            <li>Trabalho em equipe</li>
+                            <li>Autonomia</li>
+                            <li>Comunicação</li>
+                        </ul>
+                    </div>
+                    <div class="class-visual">🌈</div>
+                </article>
+                <article class="class-card reveal" data-category="pre" data-color="orange">
+                    <div class="class-meta"><span class="program-age">5 anos</span>
+                        <h3>APZ Fly</h3>
+                        <p>Preparação para novos ciclos com confiança, criatividade e respeito ao tempo da infância.</p>
+                        <ul>
+                            <li>Pré-letramento</li>
+                            <li>Resolução de problemas</li>
+                            <li>Confiança emocional</li>
+                        </ul>
+                    </div>
+                    <div class="class-visual">🪽</div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container app-panel reveal">
+            <div>
+                <span class="kicker">Rotina conectada</span>
+                <h2>Acompanhe o dia a dia escolar com facilidade.</h2>
+                <p>A área do aplicativo aparece como um bloco premium, reforçando modernidade e proximidade com os
+                    responsáveis.</p>
+                <div class="cta-actions"><a class="btn btn-yellow" th:href="@{/contato#agendar}">Conversar com a
+                        escola</a></div>
+            </div>
+            <div class="phone-mock" aria-hidden="true">
+                <div class="phone-screen">
+                    <img class="phone-logo" th:src="@{/assets/alphabetz-logo.png}" alt="" />
+                    <div class="phone-card">Rotina do dia</div>
+                    <div class="phone-line"></div>
+                    <div class="phone-line" style="width: 78%;"></div>
+                    <div class="phone-card">Fotos e comunicados</div>
+                    <div class="phone-line" style="width: 62%;"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</div>
+
+</html>
