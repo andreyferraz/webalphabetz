@@ -182,6 +182,48 @@
     'assets/slide/desenvolve9.jpg',
     'assets/slide/desenvolve10.jpg'
   ];
+
+  const turmasSlides = [
+    'assets/slide/turmas/3013153_1_1756728277555277461865119.jpg',
+    'assets/slide/turmas/3013153_1_1756728277555277466014838.jpg',
+    'assets/slide/turmas/3013153_1_1756728277555277467388884.jpg',
+    'assets/slide/turmas/3013153_1_1756728277555277467427437.jpg',
+    'assets/slide/turmas/3013153_1_1756728277555277467617408.jpg',
+    'assets/slide/turmas/3013153_1_1756728277555277467948723.jpg',
+    'assets/slide/turmas/3013153_1_1756728277555277468630666.jpg',
+    'assets/slide/turmas/3013153_1_1756728277555277469267209.jpg',
+    'assets/slide/turmas/3013153_1_274491530687.jpg',
+    'assets/slide/turmas/3013153_1_274492056263.jpg',
+    'assets/slide/turmas/3013153_1_274492420453.jpg',
+    'assets/slide/turmas/3013153_1_274493646863.jpg',
+    'assets/slide/turmas/3013153_1_274495102714.jpg',
+    'assets/slide/turmas/3013153_1_274496168163.jpg',
+    'assets/slide/turmas/3013153_1_274498851981.jpg',
+    'assets/slide/turmas/3013153_1_324741187435.jpg',
+    'assets/slide/turmas/3013153_1_324741615260.jpg',
+    'assets/slide/turmas/3013153_1_324742678035.jpg',
+    'assets/slide/turmas/3013153_1_324743399804.jpg',
+    'assets/slide/turmas/3013153_1_324744420532.jpg',
+    'assets/slide/turmas/3013153_1_324746749160.jpg',
+    'assets/slide/turmas/3013153_1_324748031535.jpg',
+    'assets/slide/turmas/3013153_1_324748796482.jpg',
+    'assets/slide/turmas/3013153_1_324749358014.jpg',
+    'assets/slide/turmas/3013153_1_779631055374.jpg',
+    'assets/slide/turmas/3013153_1_779633315976.jpg',
+    'assets/slide/turmas/3013153_1_779633535005.jpg',
+    'assets/slide/turmas/3013153_1_779634358269.jpg',
+    'assets/slide/turmas/3013153_1_779635435252.jpg',
+    'assets/slide/turmas/3013153_1_77963722274.jpg',
+    'assets/slide/turmas/3013153_1_779638112979.jpg',
+    'assets/slide/turmas/3013153_1_824373088205.jpg',
+    'assets/slide/turmas/3013153_1_824374458178.jpg',
+    'assets/slide/turmas/3013153_1_824374707831.jpg',
+    'assets/slide/turmas/3013153_1_824376031385.jpg',
+    'assets/slide/turmas/3013153_1_824377023968.jpg',
+    'assets/slide/turmas/3013153_1_824378261072.jpg',
+    'assets/slide/turmas/3013153_1_824378286035.jpg',
+    'assets/slide/turmas/3013153_1_824379201751.jpg'
+  ];
   const lightbox = $('[data-lightbox]');
   const lightboxImage = $('[data-lightbox-image]');
   const lightboxCloseEls = $$('[data-lightbox-close]');
@@ -190,7 +232,8 @@
     cuida: cuidaSlides,
     brinca: brincaSlides,
     interage: interageSlides,
-    desenvolve: desenvolveSlides
+    desenvolve: desenvolveSlides,
+    turmas: turmasSlides
   };
   const testimonialCards = $$('[data-testimonial-set]');
 

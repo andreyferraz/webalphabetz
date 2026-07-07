@@ -1112,6 +1112,20 @@ p {
   margin-top: 30px;
 }
 
+.testimonial-card-turmas {
+  width: min(100%, 980px);
+  margin: 0 auto;
+  padding: 32px;
+}
+
+.testimonial-card-turmas .testimonial-media {
+  min-height: clamp(300px, 46vw, 560px);
+}
+
+.testimonial-card-turmas .testimonial-image {
+  height: clamp(300px, 46vw, 560px);
+}
+
 .icon-btn {
   width: 48px;
   height: 48px;
@@ -2474,6 +2488,15 @@ body {
   .class-visual { width: 150px; }
   .phone-mock { width: 220px; }
   .media-card-escola { min-height: 360px; }
+  .testimonial-card-turmas {
+    padding: 20px;
+    border-radius: 24px;
+  }
+  .testimonial-card-turmas .testimonial-media,
+  .testimonial-card-turmas .testimonial-image {
+    min-height: 260px;
+    height: 260px;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

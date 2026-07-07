@@ -24,12 +24,6 @@
 
     <section class="section programs">
         <div class="container">
-            <div class="filter-bar reveal" aria-label="Filtro de turmas">
-                <button class="filter-btn is-active" type="button" data-filter="all">Todas</button>
-                <button class="filter-btn" type="button" data-filter="bercario">Berçário</button>
-                <button class="filter-btn" type="button" data-filter="creche">Creche</button>
-                <button class="filter-btn" type="button" data-filter="pre">Pré-escola</button>
-            </div>
             <div class="class-grid">
                 <article class="class-card reveal" data-category="bercario" data-color="red">
                     <div class="class-meta"><span class="program-age">6 meses a 1 ano e 11 meses</span>
@@ -41,7 +35,7 @@
                             <li>Vínculo e adaptação</li>
                         </ul>
                     </div>
-                    <div class="class-visual">🍼</div>
+                    <div class="class-visual"><img th:src="@{/assets/bercario_baby.png}" alt="Criança do Berçário Baby" loading="lazy" decoding="async" /></div>
                 </article>
                 <article class="class-card reveal" data-category="creche" data-color="mint">
                     <div class="class-meta"><span class="program-age">2 anos</span>
@@ -53,7 +47,7 @@
                             <li>Convivência</li>
                         </ul>
                     </div>
-                    <div class="class-visual">🚀</div>
+                    <div class="class-visual"><img th:src="@{/assets/apz_start.png}" alt="Criança do APZ Start" loading="lazy" decoding="async" /></div>
                 </article>
                 <article class="class-card reveal" data-category="creche" data-color="yellow">
                     <div class="class-meta"><span class="program-age">3 anos</span>
@@ -65,7 +59,7 @@
                             <li>Expressão criativa</li>
                         </ul>
                     </div>
-                    <div class="class-visual">🎈</div>
+                    <div class="class-visual"><img th:src="@{/assets/apz_move.png}" alt="Criança do APZ Move" loading="lazy" decoding="async" /></div>
                 </article>
                 <article class="class-card reveal" data-category="pre" data-color="sky">
                     <div class="class-meta"><span class="program-age">4 anos</span>
@@ -77,7 +71,7 @@
                             <li>Comunicação</li>
                         </ul>
                     </div>
-                    <div class="class-visual">🌈</div>
+                    <div class="class-visual"><img th:src="@{/assets/apz_jump.png}" alt="Criança do APZ Jump" loading="lazy" decoding="async" /></div>
                 </article>
                 <article class="class-card reveal" data-category="pre" data-color="orange">
                     <div class="class-meta"><span class="program-age">5 anos</span>
@@ -89,30 +83,24 @@
                             <li>Confiança emocional</li>
                         </ul>
                     </div>
-                    <div class="class-visual">🪽</div>
+                    <div class="class-visual"><img th:src="@{/assets/apz_fly.png}" alt="Criança do APZ Fly" loading="lazy" decoding="async" /></div>
                 </article>
             </div>
         </div>
     </section>
 
     <section class="section">
-        <div class="container app-panel reveal">
-            <div>
-                <span class="kicker">Rotina conectada</span>
-                <h2>Acompanhe o dia a dia escolar com facilidade.</h2>
-                <p>A área do aplicativo aparece como um bloco premium, reforçando modernidade e proximidade com os
-                    responsáveis.</p>
-                <div class="cta-actions"><a class="btn btn-yellow" th:href="@{/contato#agendar}">Conversar com a
-                        escola</a></div>
-            </div>
-            <div class="phone-mock" aria-hidden="true">
-                <div class="phone-screen">
-                    <img class="phone-logo" th:src="@{/assets/alphabetz-logo.png}" alt="" />
-                    <div class="phone-card">Rotina do dia</div>
-                    <div class="phone-line"></div>
-                    <div class="phone-line" style="width: 78%;"></div>
-                    <div class="phone-card">Fotos e comunicados</div>
-                    <div class="phone-line" style="width: 62%;"></div>
+        <div class="container">
+            <div class="testimonial-card testimonial-card-turmas reveal" data-testimonial-set="turmas">
+                <div class="testimonial-media">
+                    <button class="testimonial-open" type="button" data-testimonial-open aria-label="Abrir foto ampliada">
+                        <img class="testimonial-image" th:src="@{/assets/slide/turmas/3013153_1_1756728277555277461865119.jpg}"
+                            alt="Momentos das turmas da Alphabetz" data-testimonial-image loading="lazy" decoding="async" />
+                    </button>
+                </div>
+                <div class="testimonial-controls" aria-label="Controle do slide de fotos">
+                    <button class="icon-btn" type="button" data-testimonial-prev aria-label="Foto anterior">←</button>
+                    <button class="icon-btn" type="button" data-testimonial-next aria-label="Próxima foto">→</button>
                 </div>
             </div>
         </div>
