@@ -235,7 +235,7 @@
     desenvolve: desenvolveSlides,
     turmas: turmasSlides
   };
-  const testimonialCards = $$('[data-testimonial-set]');
+  const testimonialCards = $$('.testimonial-card');
 
   const openLightbox = imageSrc => {
     if (!lightbox || !lightboxImage || !imageSrc) return;
