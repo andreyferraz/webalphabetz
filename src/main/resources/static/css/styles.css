@@ -851,9 +851,50 @@ p {
   font-size: .98rem;
 }
 
-.card-mint::after { background: var(--mint); }
-.card-yellow::after { background: var(--yellow); }
-.card-sky::after { background: var(--sky); }
+.card-mint {
+  background: var(--orange);
+  color: var(--white);
+}
+
+.card-yellow {
+  background: var(--coral);
+  color: var(--white);
+}
+
+.card-sky {
+  background: var(--yellow);
+  color: var(--navy);
+}
+
+.card-mint h3,
+.card-mint p,
+.card-yellow h3,
+.card-yellow p {
+  color: var(--white);
+}
+
+.card-sky h3,
+.card-sky p {
+  color: var(--navy);
+}
+
+.card-mint .card-icon,
+.card-yellow .card-icon,
+.card-sky .card-icon {
+  background: rgba(255,255,255,.9);
+}
+
+.card-mint .card-icon {
+  color: var(--orange);
+}
+
+.card-yellow .card-icon {
+  color: var(--coral);
+}
+
+.card-sky .card-icon {
+  color: var(--navy);
+}
 .card-orange::after { background: var(--orange); }
 .card-coral::after { background: var(--coral); }
 
@@ -2569,7 +2610,13 @@ body {
 .blog-panel::after,
 .career-note.note-three,
 .thumb-red {
-  background: rgb(245,156,25);
+  background: rgb(245, 156, 25);
+}
+
+.card-mint::after,
+.card-yellow::after,
+.card-sky::after {
+  background: rgba(255,255,255,.18);
 }
 
 .hero::before {
