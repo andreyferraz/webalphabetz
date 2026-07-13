@@ -462,7 +462,7 @@ p {
   right: 0;
   bottom: .08em;
   height: .22em;
-  background: var(--red);
+  background: #FFA700;
   z-index: -1;
   border-radius: 999px;
 }
