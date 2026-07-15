@@ -2872,3 +2872,204 @@ body[data-page="index.html"] .bubble:nth-of-type(5) {
       url("../assets/slide/brinca11.jpg") 58% center / cover no-repeat;
   }
 }
+
+/* Seção Lived English */
+.lived-english-section {
+  overflow: hidden;
+  background: #215FC4;
+}
+
+.lived-english-header {
+  max-width: 900px;
+  margin: 0 auto 54px;
+  text-align: center;
+}
+
+.lived-english-header h2 {
+  color: #FFDD00;
+  text-wrap: balance;
+}
+
+.lived-english-flow {
+  max-width: 1120px;
+  margin: 0 auto;
+}
+
+.lived-bubble {
+  position: relative;
+  z-index: 1;
+  padding: clamp(26px, 4vw, 42px);
+  border: 3px solid #01273E;
+  border-radius: 44px;
+  box-shadow: 10px 12px 0 rgba(1, 39, 62, .28);
+}
+
+.lived-bubble p {
+  color: #01273E;
+  font-weight: 700;
+  line-height: 1.65;
+}
+
+.lived-bubble-main {
+  max-width: 720px;
+  margin: 0 auto;
+  background: #F8C7DE;
+  text-align: center;
+}
+
+.lived-bubble-main p {
+  font-family: "Sora", Verdana, sans-serif;
+  font-size: clamp(1.05rem, 2vw, 1.35rem);
+}
+
+.lived-flow-connectors {
+  display: block;
+  width: 100%;
+  height: 100px;
+}
+
+.lived-flow-connectors path {
+  fill: none;
+  stroke: #FFDD00;
+  stroke-width: 7;
+  vector-effect: non-scaling-stroke;
+}
+
+.lived-flow-connectors marker path {
+  fill: #FFDD00;
+  stroke: none;
+}
+
+.lived-mobile-connector {
+  display: none;
+}
+
+.lived-english-branches {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 40px;
+}
+
+.lived-bubble-left {
+  background: #7AC6BA;
+}
+
+.lived-bubble-right {
+  background: #64A0EE;
+}
+
+.lived-experiences {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 20px;
+  margin-top: 88px;
+  align-items: stretch;
+}
+
+.lived-experience-card {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 3px solid #01273E;
+  border-radius: 30px;
+  background: #F8C7DE;
+  box-shadow: 8px 10px 0 rgba(1, 39, 62, .28);
+}
+
+.lived-experience-card:nth-child(1) {
+  border-top-color: #FFDD00;
+}
+
+.lived-experience-card:nth-child(2) {
+  border-top-color: #FFA700;
+}
+
+.lived-experience-card:nth-child(3) {
+  border-top-color: #7AC6BA;
+}
+
+.lived-experience-card:nth-child(4) {
+  border-top-color: #64A0EE;
+}
+
+.lived-experience-card img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+
+.lived-experience-copy {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  padding: 24px 22px 28px;
+}
+
+.lived-experience-copy h3 {
+  min-height: 2.1em;
+  color: #01273E;
+  font-size: clamp(1.25rem, 1.6vw, 1.65rem);
+}
+
+.lived-experience-copy p {
+  margin-top: 16px;
+  color: #01273E;
+  font-size: .92rem;
+  line-height: 1.65;
+}
+
+@media (max-width: 1120px) {
+  .lived-experiences {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 28px;
+  }
+
+  .lived-experience-copy h3 {
+    min-height: 0;
+  }
+}
+
+@media (max-width: 680px) {
+  .lived-english-header {
+    margin-bottom: 38px;
+  }
+
+  .lived-flow-connectors {
+    display: none;
+  }
+
+  .lived-mobile-connector {
+    display: grid;
+    min-height: 58px;
+    place-items: center;
+    color: #FFDD00;
+    font-size: 2.6rem;
+    font-weight: 900;
+  }
+
+  .lived-english-branches {
+    grid-template-columns: 1fr;
+    gap: 58px;
+  }
+
+  .lived-bubble-right::before {
+    position: absolute;
+    top: -52px;
+    left: 50%;
+    color: #FFDD00;
+    content: "↓";
+    font-size: 2.4rem;
+    font-weight: 900;
+    transform: translateX(-50%);
+  }
+
+  .lived-bubble {
+    border-radius: 32px;
+  }
+
+  .lived-experiences {
+    grid-template-columns: 1fr;
+    margin-top: 68px;
+  }
+}

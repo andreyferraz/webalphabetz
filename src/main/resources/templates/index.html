@@ -194,25 +194,97 @@
         </div>
     </section>
 
-    <section class="section testimonial-section">
-        <div class="container testimonial-shell">
-            <div class="testimonial-card reveal" data-testimonial-set="default">
-                <div class="testimonial-media">
-                    <button class="testimonial-open" type="button" data-testimonial-open
-                        aria-label="Abrir foto ampliada">
-                        <img class="testimonial-image" th:src="@{/assets/slide/3013153_1_054751154538.jpg}"
-                            alt="Momento da rotina escolar da Alphabetz" data-testimonial-image loading="lazy"
-                            decoding="async" />
-                    </button>
-                </div>
-                <div class="testimonial-controls" aria-label="Controle do slide de fotos">
-                    <button class="icon-btn" type="button" data-testimonial-prev aria-label="Foto anterior">←</button>
-                    <button class="icon-btn" type="button" data-testimonial-next aria-label="Próxima foto">→</button>
+    <section class="section lived-english-section" aria-labelledby="lived-english-title">
+        <div class="container">
+            <header class="lived-english-header reveal">
+                <h2 id="lived-english-title">O QUE É LIVED ENGLISH?</h2>
+            </header>
+
+            <div class="lived-english-flow reveal">
+                <article class="lived-bubble lived-bubble-main">
+                    <p>É um método de ensino do inglês que se baseia nas experiências do cotidiano.</p>
+                </article>
+
+                <svg class="lived-flow-connectors" viewBox="0 0 1000 100" preserveAspectRatio="none"
+                    aria-hidden="true" focusable="false">
+                    <defs>
+                        <marker id="lived-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8"
+                            markerHeight="8" orient="auto-start-reverse">
+                            <path d="M 0 0 L 10 5 L 0 10 z"></path>
+                        </marker>
+                    </defs>
+                    <path d="M 500 0 V 28 H 250 V 92" marker-end="url(#lived-arrow)"></path>
+                    <path d="M 500 28 H 750 V 92" marker-end="url(#lived-arrow)"></path>
+                </svg>
+                <span class="lived-mobile-connector" aria-hidden="true">↓</span>
+
+                <div class="lived-english-branches">
+                    <article class="lived-bubble lived-bubble-left">
+                        <p>Em vez de depender de aulas formais engessadas, essa metodologia incorpora o inglês de forma
+                            orgânica às atividades diárias da criança. Isso pode incluir brincadeiras, canções, histórias,
+                            interações sociais e experiências práticas que ocorrem naturalmente no ambiente em que a
+                            criança está inserida.</p>
+                    </article>
+                    <article class="lived-bubble lived-bubble-right">
+                        <p>Ao integrar o idioma inglês de maneira significativa e relevante às vivências cotidianas da
+                            criança, o Lived English promove um aprendizado mais eficaz, natural e duradouro, criando uma
+                            base sólida para o domínio do idioma desde tenra idade.</p>
+                    </article>
                 </div>
             </div>
-            <div class="success-card reveal">
-                <h3>Felicidade + confiança</h3>
-                <p>O maior indicador de sucesso: crianças seguras, famílias próximas e uma rotina que encanta.</p>
+
+            <div class="lived-experiences">
+                <article class="lived-experience-card reveal">
+                    <img th:src="@{/assets/slide/3013153_1_054751154538.jpg}"
+                        alt="Educadora conduzindo uma atividade de histórias com as crianças" loading="lazy"
+                        decoding="async" />
+                    <div class="lived-experience-copy">
+                        <h3>Storytime</h3>
+                        <p>Ao ouvirem histórias em inglês, as crianças aprimoram suas habilidades auditivas, a compreensão
+                            oral do idioma e a ampliação do vocabulário, de maneira natural e estimulante. Além disso, a
+                            exposição precoce a diferentes narrativas e contextos ajuda a enriquecer sua compreensão da
+                            língua inglesa desde cedo, enquanto estimula a imaginação e a criatividade.</p>
+                    </div>
+                </article>
+
+                <article class="lived-experience-card reveal">
+                    <img th:src="@{/assets/slide/3013153_1_054757699205.jpg}"
+                        alt="Crianças compartilhando uma refeição na escola" loading="lazy" decoding="async" />
+                    <div class="lived-experience-copy">
+                        <h3>Food Explorers</h3>
+                        <p>As crianças exploram a língua inglesa durante as refeições, beneficiando-se de uma abordagem
+                            natural e divertida que estimula o desenvolvimento linguístico enquanto desfrutam de suas
+                            refeições. Associar o aprendizado do idioma com atividades diárias como comer ajuda as crianças
+                            a absorver o novo vocabulário de forma mais eficaz, aumentando sua confiança no uso posterior do
+                            inglês.</p>
+                    </div>
+                </article>
+
+                <article class="lived-experience-card reveal">
+                    <img th:src="@{/assets/slide/3013153_1_054759271173.jpg}"
+                        alt="Crianças cantando juntas durante uma atividade musical" loading="lazy" decoding="async" />
+                    <div class="lived-experience-copy">
+                        <h3>Musical Adventure</h3>
+                        <p>Ao serem expostas à música em inglês, as crianças desenvolvem habilidades de escuta, pronúncia e
+                            compreensão auditiva de maneira natural e estimulante. Além disso, a repetição de letras e frases
+                            em canções ajuda a fortalecer a memorização do vocabulário e das estruturas linguísticas,
+                            contribuindo para um aprendizado mais eficaz e duradouro da língua inglesa.</p>
+                    </div>
+                </article>
+
+                <article class="lived-experience-card reveal">
+                    <img th:src="@{/assets/slide/3013153_1_44317384050.jpg}"
+                        alt="Crianças explorando plantas em uma atividade no jardim" loading="lazy" decoding="async" />
+                    <div class="lived-experience-copy">
+                        <h3>The Garden Project</h3>
+                        <p>Ao participarem do cuidado do jardim, as crianças aprendem novas palavras em inglês relacionadas
+                            às plantas, cores, texturas e ações de jardinagem, expandindo assim seu vocabulário de maneira
+                            prática e envolvente. Essa experiência proporciona um ambiente imersivo onde as crianças são
+                            expostas à linguagem de forma contextualizada, facilitando a compreensão e a retenção do idioma.
+                            Cuidar do jardim promove o desenvolvimento de habilidades motoras, cognitivas e sociais, enquanto
+                            nutre um senso de responsabilidade e conexão com a natureza desde a mais tenra idade.</p>
+                    </div>
+                </article>
             </div>
         </div>
     </section>
