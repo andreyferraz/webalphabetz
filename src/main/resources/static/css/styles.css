@@ -2805,3 +2805,70 @@ body[data-page="index.html"] .bubble:nth-of-type(5) {
     z-index: 120;
   }
 }
+
+/* Hero da home com fotografia de fundo */
+.hero {
+  background:
+    linear-gradient(90deg, rgba(1, 39, 62, .94) 0%, rgba(1, 39, 62, .82) 42%, rgba(1, 39, 62, .42) 72%, rgba(1, 39, 62, .22) 100%),
+    url("../assets/slide/brinca11.jpg") center center / cover no-repeat;
+}
+
+.hero::before,
+.hero::after {
+  display: none;
+}
+
+.hero-grid {
+  grid-template-columns: 1fr;
+  align-items: center;
+}
+
+.hero-content {
+  width: 100%;
+}
+
+.hero .kicker,
+.hero-title,
+.hero-copy {
+  color: #F8C7DE;
+}
+
+.hero-copy {
+  max-width: 100%;
+}
+
+.hero-title .mark-red {
+  color: #64A0EE;
+}
+
+.hero-title .mark-yellow {
+  color: #7AC6BA;
+}
+
+.hero .btn-outline {
+  color: #01273E;
+  background: #F8C7DE;
+  border-color: #F8C7DE;
+}
+
+.hero .btn-outline:hover {
+  color: #F8C7DE;
+  background: #004E4A;
+  border-color: #7AC6BA;
+}
+
+@media (max-width: 980px) {
+  .hero {
+    background:
+      linear-gradient(90deg, rgba(1, 39, 62, .95) 0%, rgba(1, 39, 62, .82) 60%, rgba(1, 39, 62, .58) 100%),
+      url("../assets/slide/brinca11.jpg") 58% center / cover no-repeat;
+  }
+}
+
+@media (max-width: 680px) {
+  .hero {
+    background:
+      linear-gradient(180deg, rgba(1, 39, 62, .92) 0%, rgba(1, 39, 62, .82) 100%),
+      url("../assets/slide/brinca11.jpg") 58% center / cover no-repeat;
+  }
+}
