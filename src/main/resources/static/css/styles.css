@@ -1894,7 +1894,7 @@ p {
 .site-footer {
   background: var(--navy);
   color: white;
-  padding: 72px 0 26px;
+  padding: 52px 0 20px;
   position: relative;
   overflow: hidden;
 }
@@ -1962,8 +1962,8 @@ p {
   justify-content: space-between;
   gap: 20px;
   border-top: 1px solid rgba(255,255,255,.14);
-  margin-top: 52px;
-  padding-top: 22px;
+  margin-top: 36px;
+  padding-top: 18px;
   font-size: .92rem;
 }
 
@@ -2699,10 +2699,12 @@ body {
 }
 
 .site-footer {
-  background:
-    radial-gradient(circle at 92% 10%, rgba(235, 89, 62, .26), transparent 24%),
-    linear-gradient(135deg, rgb(2, 50, 86), rgb(63, 152, 220));
+  background: #01273E;
   color: #fff;
+}
+
+.site-footer::before {
+  background: #FFDD00;
 }
 
 .site-footer::after {
@@ -2713,7 +2715,7 @@ body {
   width: 280px;
   height: 280px;
   border-radius: 50%;
-  background: rgb(245,156,25);
+  background: #FFA700;
 }
 
 .site-footer a,
