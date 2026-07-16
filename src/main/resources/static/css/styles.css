@@ -2043,7 +2043,22 @@ body {
 }
 
 .home-links-section {
-  background: linear-gradient(180deg, #fff 0%, var(--rose-soft) 100%);
+  background:
+    linear-gradient(180deg, rgba(1, 39, 62, .90) 0%, rgba(1, 39, 62, .72) 52%, rgba(1, 39, 62, .58) 100%),
+    url("../assets/slide/interage3.jpg") center center / cover no-repeat;
+}
+
+.home-links-section .section-header h2,
+.home-links-section .section-header p {
+  color: #F8C7DE;
+}
+
+.home-links-section .section-header p {
+  font-weight: 600;
+}
+
+.home-links-section .kicker {
+  color: #FFDD00;
 }
 
 .feature-duo {
@@ -3071,5 +3086,13 @@ body[data-page="index.html"] .bubble:nth-of-type(5) {
   .lived-experiences {
     grid-template-columns: 1fr;
     margin-top: 68px;
+  }
+}
+
+@media (max-width: 680px) {
+  .home-links-section {
+    background:
+      linear-gradient(180deg, rgba(1, 39, 62, .94) 0%, rgba(1, 39, 62, .78) 100%),
+      url("../assets/slide/interage3.jpg") 58% center / cover no-repeat;
   }
 }
