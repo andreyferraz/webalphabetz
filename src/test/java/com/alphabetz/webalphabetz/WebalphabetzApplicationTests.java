@@ -34,4 +34,24 @@ class WebalphabetzApplicationTests {
 				.contains("max-width: none;");
 	}
 
+	@Test
+	void blogHeroUsesSelectedBackgroundAndPreservesStructure() throws IOException {
+		String template = new ClassPathResource("templates/blog.html")
+				.getContentAsString(StandardCharsets.UTF_8);
+		String styles = new ClassPathResource("static/css/styles.css")
+				.getContentAsString(StandardCharsets.UTF_8);
+
+		assertThat(template)
+				.contains("<section class=\"page-hero page-hero-blog\">")
+				.contains("<div class=\"blog-hero-card reveal\" aria-hidden=\"true\">")
+				.contains("<div class=\"editorial-card\">")
+				.contains("Ver destaques")
+				.contains("Acessar blog oficial");
+		assertThat(styles)
+				.contains(".page-hero-blog {\n  background:")
+				.contains("3013153_1_054758958225.jpg")
+				.contains(".page-hero-blog > .page-hero-grid > .reveal > .kicker")
+				.contains(".page-hero-blog .hero-cta .btn-outline");
+	}
+
 }
