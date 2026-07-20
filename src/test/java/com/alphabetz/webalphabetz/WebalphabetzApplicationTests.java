@@ -54,4 +54,18 @@ class WebalphabetzApplicationTests {
 				.contains(".page-hero-blog .hero-cta .btn-outline");
 	}
 
+	@Test
+	void ctaKickersUseWhiteText() throws IOException {
+		String index = new ClassPathResource("templates/index.html")
+				.getContentAsString(StandardCharsets.UTF_8);
+		String blog = new ClassPathResource("templates/blog.html")
+				.getContentAsString(StandardCharsets.UTF_8);
+		String styles = new ClassPathResource("static/css/styles.css")
+				.getContentAsString(StandardCharsets.UTF_8);
+
+		assertThat(index).contains("<span class=\"kicker\">Próximo passo</span>");
+		assertThat(blog).contains("<span class=\"kicker\">Estratégia de conteúdo</span>");
+		assertThat(styles).contains(".cta-box .kicker {\n  color: #fff;\n}");
+	}
+
 }
