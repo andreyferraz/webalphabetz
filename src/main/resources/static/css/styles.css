@@ -3157,3 +3157,64 @@ body[data-page="index.html"] .bubble:nth-of-type(5) {
     min-height: 360px;
   }
 }
+
+/* Cores dos cards de Valores da página escola */
+.value-card-innovation {
+  background: #215FC4;
+}
+
+.value-card-care {
+  background: #F8C7DE;
+}
+
+.value-card-family {
+  background: #7AC6BA;
+}
+
+.value-card-excellence {
+  background: #FFDD00;
+}
+
+.value-card-collaboration {
+  background: #004E4A;
+}
+
+.value-card-innovation,
+.value-card-collaboration {
+  border-color: rgba(255,255,255,.22);
+}
+
+.value-card-innovation h3,
+.value-card-innovation p,
+.value-card-collaboration h3,
+.value-card-collaboration p {
+  color: #fff;
+}
+
+.value-card-innovation strong,
+.value-card-collaboration strong {
+  color: #fff;
+  background: rgba(255,255,255,.18);
+}
+
+.value-card-care,
+.value-card-family,
+.value-card-excellence {
+  border-color: rgba(1,39,62,.16);
+}
+
+.value-card-care h3,
+.value-card-care p,
+.value-card-family h3,
+.value-card-family p,
+.value-card-excellence h3,
+.value-card-excellence p {
+  color: #01273E;
+}
+
+.value-card-care strong,
+.value-card-family strong,
+.value-card-excellence strong {
+  color: #01273E;
+  background: rgba(1,39,62,.12);
+}
