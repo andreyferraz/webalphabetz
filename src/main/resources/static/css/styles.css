@@ -3098,3 +3098,32 @@ body[data-page="index.html"] .bubble:nth-of-type(5) {
       url("../assets/slide/interage3.jpg") 58% center / cover no-repeat;
   }
 }
+
+/* Hero da escola com fotografia de fundo */
+.page-hero-school {
+  background:
+    linear-gradient(90deg, rgba(1, 39, 62, .94) 0%, rgba(1, 39, 62, .82) 42%, rgba(1, 39, 62, .54) 72%, rgba(1, 39, 62, .38) 100%),
+    url("../assets/slide/3013153_1_05475444899.jpg") center 42% / cover no-repeat;
+}
+
+.page-hero-school .kicker,
+.page-hero-school h1,
+.page-hero-school p {
+  color: #F8C7DE;
+}
+
+@media (max-width: 980px) {
+  .page-hero-school {
+    background:
+      linear-gradient(90deg, rgba(1, 39, 62, .95) 0%, rgba(1, 39, 62, .86) 58%, rgba(1, 39, 62, .62) 100%),
+      url("../assets/slide/3013153_1_05475444899.jpg") 48% center / cover no-repeat;
+  }
+}
+
+@media (max-width: 680px) {
+  .page-hero-school {
+    background:
+      linear-gradient(180deg, rgba(1, 39, 62, .92) 0%, rgba(1, 39, 62, .82) 100%),
+      url("../assets/slide/3013153_1_05475444899.jpg") 48% center / cover no-repeat;
+  }
+}
