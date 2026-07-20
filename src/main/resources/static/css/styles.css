@@ -1000,10 +1000,10 @@ p {
   box-shadow: 0 22px 44px rgba(0,0,0,.16);
 }
 
-.bubble:nth-of-type(3) { left: 2%; top: 12%; background: var(--red); }
-.bubble:nth-of-type(4) { right: 8%; top: 3%; background: var(--yellow); }
-.bubble:nth-of-type(5) { left: 12%; bottom: 6%; background: var(--mint); }
-.bubble:nth-of-type(6) { right: 1%; bottom: 18%; background: var(--sky); }
+.bubble:nth-of-type(4) { left: 2%; top: 12%; background: var(--red); }
+.bubble:nth-of-type(5) { right: 8%; top: 3%; background: var(--yellow); }
+.bubble:nth-of-type(6) { left: 12%; bottom: 6%; background: var(--mint); }
+.bubble:nth-of-type(7) { right: 1%; bottom: 18%; background: var(--sky); }
 
 @keyframes spin {
   to { transform: rotate(360deg); }
@@ -2657,7 +2657,7 @@ body {
 .contact-icon,
 .phone-screen,
 .stack-card:nth-child(3),
-.bubble:nth-of-type(3),
+.bubble:nth-of-type(4),
 .blog-panel::after,
 .career-note.note-three,
 .thumb-red {
@@ -2812,7 +2812,8 @@ body[data-page="index.html"] .bubble {
 }
 
 body[data-page="index.html"] .bubble:nth-of-type(4),
-body[data-page="index.html"] .bubble:nth-of-type(5) {
+body[data-page="index.html"] .bubble:nth-of-type(5),
+body[data-page="index.html"] .bubble:nth-of-type(6) {
   color: var(--navy);
   text-shadow: none;
 }
@@ -3217,4 +3218,62 @@ body[data-page="index.html"] .bubble:nth-of-type(5) {
 .value-card-excellence strong {
   color: #01273E;
   background: rgba(1,39,62,.12);
+}
+
+/* Hero da Abordagem com fotografia de fundo */
+.page-hero-approach {
+  background:
+    linear-gradient(90deg, rgba(1, 39, 62, .94) 0%, rgba(1, 39, 62, .82) 42%, rgba(1, 39, 62, .54) 72%, rgba(1, 39, 62, .38) 100%),
+    url("../assets/slide/3013153_1_443177838032.jpg") center 42% / cover no-repeat;
+}
+
+.page-hero-approach .kicker,
+.page-hero-approach h1,
+.page-hero-approach > .page-hero-grid > .reveal > p {
+  color: #F8C7DE;
+}
+
+@media (max-width: 980px) {
+  .page-hero-approach {
+    background:
+      linear-gradient(90deg, rgba(1, 39, 62, .95) 0%, rgba(1, 39, 62, .86) 58%, rgba(1, 39, 62, .62) 100%),
+      url("../assets/slide/3013153_1_443177838032.jpg") 48% center / cover no-repeat;
+  }
+}
+
+@media (max-width: 680px) {
+  .page-hero-approach {
+    background:
+      linear-gradient(180deg, rgba(1, 39, 62, .92) 0%, rgba(1, 39, 62, .82) 100%),
+      url("../assets/slide/3013153_1_443177838032.jpg") 48% center / cover no-repeat;
+  }
+}
+
+/* Cores dos bubbles do hero da Abordagem */
+.page-hero-approach .bubble:nth-of-type(4) {
+  background: #FFA700;
+}
+
+.page-hero-approach .bubble:nth-of-type(5) {
+  background: #FFDD00;
+}
+
+.page-hero-approach .bubble:nth-of-type(6) {
+  background: #64A0EE;
+}
+
+.page-hero-approach .bubble:nth-of-type(7) {
+  background: #004E4A;
+}
+
+.page-hero-approach .bubble:nth-of-type(4),
+.page-hero-approach .bubble:nth-of-type(5),
+.page-hero-approach .bubble:nth-of-type(6) {
+  color: #01273E;
+  text-shadow: none;
+}
+
+.page-hero-approach .bubble:nth-of-type(7) {
+  color: #fff;
+  text-shadow: none;
 }
