@@ -100,4 +100,23 @@ class WebalphabetzApplicationTests {
 				.doesNotContain("🧡", "📚", "🤝");
 	}
 
+	@Test
+	void contactHeroUsesSelectedBackgroundAndPreservesStructure() throws IOException {
+		String template = new ClassPathResource("templates/contato.html")
+				.getContentAsString(StandardCharsets.UTF_8);
+		String styles = new ClassPathResource("static/css/styles.css")
+				.getContentAsString(StandardCharsets.UTF_8);
+
+		assertThat(template)
+				.contains("<section class=\"page-hero page-hero-contact\">")
+				.contains("<div class=\"page-hero-visual reveal\" aria-hidden=\"true\">")
+				.contains("<div class=\"stack-card\"><strong>WhatsApp</strong><span>(27) 3029-1110</span></div>")
+				.contains("<div class=\"stack-card\"><strong>Endereço</strong><span>Rua Florentina Faller, 45</span></div>")
+				.contains("<div class=\"stack-card\"><strong>Horário</strong><span>7:20h às 18:45h</span></div>");
+		assertThat(styles)
+				.contains(".page-hero-contact {\n  background:")
+				.contains("cuida5.jpg")
+				.contains(".page-hero-contact > .page-hero-grid > .reveal > .kicker");
+	}
+
 }
