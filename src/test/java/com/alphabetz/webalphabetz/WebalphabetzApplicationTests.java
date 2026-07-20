@@ -119,4 +119,26 @@ class WebalphabetzApplicationTests {
 				.contains(".page-hero-contact > .page-hero-grid > .reveal > .kicker");
 	}
 
+	@Test
+	void contactChannelsUseFontAwesomeIconsInsteadOfEmoji() throws IOException {
+		String template = new ClassPathResource("templates/contato.html")
+				.getContentAsString(StandardCharsets.UTF_8);
+
+		assertThat(template)
+				.contains("<i class=\"fa-solid fa-location-dot\" aria-hidden=\"true\"></i>")
+				.contains("<i class=\"fa-brands fa-whatsapp\" aria-hidden=\"true\"></i>")
+				.contains("<i class=\"fa-solid fa-envelope\" aria-hidden=\"true\"></i>")
+				.contains("<i class=\"fa-solid fa-briefcase\" aria-hidden=\"true\"></i>")
+				.contains("<i class=\"fa-solid fa-clock\" aria-hidden=\"true\"></i>")
+				.doesNotContain("📍", "📱", "✉️", "💼", "⏰");
+	}
+
+	@Test
+	void contactChannelIconsUseWhiteForContrast() throws IOException {
+		String styles = new ClassPathResource("static/css/styles.css")
+				.getContentAsString(StandardCharsets.UTF_8);
+
+		assertThat(styles).contains(".contact-icon i {\n  color: #fff;\n}");
+	}
+
 }

@@ -1760,6 +1760,10 @@ p {
   background: var(--red);
 }
 
+.contact-icon i {
+  color: #fff;
+}
+
 .contact-item strong {
   display: block;
   color: var(--navy);
