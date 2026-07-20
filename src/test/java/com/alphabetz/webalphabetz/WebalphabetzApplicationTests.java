@@ -68,4 +68,36 @@ class WebalphabetzApplicationTests {
 		assertThat(styles).contains(".cta-box .kicker {\n  color: #fff;\n}");
 	}
 
+	@Test
+	void careerHeroUsesSelectedBackgroundAndPreservesStructure() throws IOException {
+		String template = new ClassPathResource("templates/trabalhe-conosco.html")
+				.getContentAsString(StandardCharsets.UTF_8);
+		String styles = new ClassPathResource("static/css/styles.css")
+				.getContentAsString(StandardCharsets.UTF_8);
+
+		assertThat(template)
+				.contains("<section class=\"page-hero page-hero-career\">")
+				.contains("<div class=\"career-visual reveal\" aria-hidden=\"true\">")
+				.contains("<div class=\"career-badge\">APZ</div>")
+				.contains("Escuta ativa", "Afeto e rotina", "Educação infantil")
+				.contains("Enviar currículo", "curriculo.alphabetz@alphabetz.com.br");
+		assertThat(styles)
+				.contains(".page-hero-career {\n  background:")
+				.contains("3013153_1_054759271173.jpg")
+				.contains(".page-hero-career > .page-hero-grid > .reveal > .kicker")
+				.contains(".page-hero-career .hero-cta .btn-outline");
+	}
+
+	@Test
+	void careerCardsUseFontAwesomeIconsInsteadOfEmoji() throws IOException {
+		String template = new ClassPathResource("templates/trabalhe-conosco.html")
+				.getContentAsString(StandardCharsets.UTF_8);
+
+		assertThat(template)
+				.contains("<i class=\"fa-solid fa-heart\" aria-hidden=\"true\"></i>")
+				.contains("<i class=\"fa-solid fa-book-open\" aria-hidden=\"true\"></i>")
+				.contains("<i class=\"fa-solid fa-people-group\" aria-hidden=\"true\"></i>")
+				.doesNotContain("🧡", "📚", "🤝");
+	}
+
 }
