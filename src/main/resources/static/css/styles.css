@@ -3249,6 +3249,47 @@ body[data-page="index.html"] .bubble:nth-of-type(6) {
   }
 }
 
+/* Hero de Turmas com fotografia de fundo */
+.page-hero-classes {
+  background:
+    linear-gradient(90deg, rgba(1, 39, 62, .94) 0%, rgba(1, 39, 62, .82) 42%, rgba(1, 39, 62, .54) 72%, rgba(1, 39, 62, .38) 100%),
+    url("../assets/slide/3013153_1_1753361936458585664001742.jpg") center 45% / cover no-repeat;
+}
+
+.page-hero-classes .page-hero-grid {
+  grid-template-columns: 1fr;
+}
+
+.page-hero-classes .page-hero-grid > .reveal {
+  width: 100%;
+}
+
+.page-hero-classes .kicker,
+.page-hero-classes h1,
+.page-hero-classes p {
+  color: #F8C7DE;
+}
+
+.page-hero-classes p {
+  max-width: none;
+}
+
+@media (max-width: 980px) {
+  .page-hero-classes {
+    background:
+      linear-gradient(90deg, rgba(1, 39, 62, .95) 0%, rgba(1, 39, 62, .86) 58%, rgba(1, 39, 62, .62) 100%),
+      url("../assets/slide/3013153_1_1753361936458585664001742.jpg") 48% center / cover no-repeat;
+  }
+}
+
+@media (max-width: 680px) {
+  .page-hero-classes {
+    background:
+      linear-gradient(180deg, rgba(1, 39, 62, .92) 0%, rgba(1, 39, 62, .82) 100%),
+      url("../assets/slide/3013153_1_1753361936458585664001742.jpg") 48% center / cover no-repeat;
+  }
+}
+
 /* Cores dos bubbles do hero da Abordagem */
 .page-hero-approach .bubble:nth-of-type(4) {
   background: #FFA700;
