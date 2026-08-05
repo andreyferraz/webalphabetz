@@ -7,23 +7,23 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.alphabetz.webalphabetz.model.SlideAbordagemCuida;
-import com.alphabetz.webalphabetz.repository.SlideAbordagemCuidaRepository;
+import com.alphabetz.webalphabetz.model.Slides;
+import com.alphabetz.webalphabetz.repository.SlidesRepository;
 import com.alphabetz.webalphabetz.utils.ValidationUtils;
 
 @Service
-public class SlideAbordagemCuidaService {
+public class SlidesService {
 
-    private final SlideAbordagemCuidaRepository slideAbordagemCuidaRepository;
+    private final SlidesRepository slideRepository;
     private final FileUploadService fileUploadService;
 
-    public SlideAbordagemCuidaService(SlideAbordagemCuidaRepository slideAbordagemCuidaRepository, FileUploadService fileUploadService) {
-        this.slideAbordagemCuidaRepository = slideAbordagemCuidaRepository;
+    public SlidesService(SlidesRepository slideRepository, FileUploadService fileUploadService) {
+        this.slideRepository = slideRepository;
         this.fileUploadService = fileUploadService;
     }
 
     @Transactional
-    public SlideAbordagemCuida createSlide(SlideAbordagemCuida slide, MultipartFile imageFile){
+    public Slides createSlide(Slides slide, MultipartFile imageFile){
         ValidationUtils.validarCampoObrigatorio(slide, "slide");
         if(imageFile != null && !imageFile.isEmpty()){
             String imageUrl = fileUploadService.salvarImagem(imageFile);
@@ -35,15 +35,15 @@ public class SlideAbordagemCuidaService {
             slide.setId(UUID.randomUUID());
         }
         slide.setNew(true);
-        return slideAbordagemCuidaRepository.save(slide);
+        return slideRepository.save(slide);
     }
 
     @Transactional
-    public SlideAbordagemCuida updateSlide(SlideAbordagemCuida slide, MultipartFile imageFile){
+    public Slides updateSlide(Slides slide, MultipartFile imageFile){
         ValidationUtils.validarCampoObrigatorio(slide, "slide");
         UUID id = Objects.requireNonNull(slide.getId(), "id");
 
-        SlideAbordagemCuida existingSlide = slideAbordagemCuidaRepository.findById(id)
+        Slides existingSlide = slideRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Slide não encontrado."));
 
         if(imageFile != null && !imageFile.isEmpty()){
@@ -56,24 +56,24 @@ public class SlideAbordagemCuidaService {
             slide.setImagemUrl(existingSlide.getImagemUrl());
         }
         slide.setNew(false);
-        return slideAbordagemCuidaRepository.save(slide);
+        return slideRepository.save(slide);
     }
 
     @Transactional
     public void deleteSlide(UUID id){
         UUID slideId = Objects.requireNonNull(id, "id");
 
-        SlideAbordagemCuida existingSlide = slideAbordagemCuidaRepository.findById(slideId)
+        Slides existingSlide = slideRepository.findById(slideId)
                 .orElseThrow(() -> new IllegalArgumentException("Slide não encontrado."));
 
         if(existingSlide.getImagemUrl() != null && !existingSlide.getImagemUrl().isEmpty()){
             fileUploadService.removerImagem(existingSlide.getImagemUrl());
         }
-        slideAbordagemCuidaRepository.deleteById(slideId);
+        slideRepository.deleteById(slideId);
     }
 
-    public Iterable<SlideAbordagemCuida> getAllSlides(){
-        return slideAbordagemCuidaRepository.findAll();
+    public Iterable<Slides> getAllSlides(){
+        return slideRepository.findAll();
     }
 
 }

@@ -5,9 +5,9 @@ import java.util.UUID;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import com.alphabetz.webalphabetz.model.SlideAbordagemCuida;
+import com.alphabetz.webalphabetz.model.Slides;
 
 @Repository
-public interface SlideAbordagemCuidaRepository extends CrudRepository<SlideAbordagemCuida, UUID> {
+public interface SlidesRepository extends CrudRepository<Slides, UUID> {
 
 }

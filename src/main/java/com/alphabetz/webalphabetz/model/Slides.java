@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table("slide_abordagem_cuida")
-public class SlideAbordagemCuida implements Persistable<UUID> {
+public class Slides implements Persistable<UUID> {
 
     @Id
     @Column("id")
