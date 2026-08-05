@@ -25,6 +25,7 @@ public class SlidesService {
     @Transactional
     public Slides createSlide(Slides slide, MultipartFile imageFile){
         ValidationUtils.validarCampoObrigatorio(slide, "slide");
+        ValidationUtils.validarCampoStringObrigatorio(slide.getTitulo(), "titulo");
         if(imageFile != null && !imageFile.isEmpty()){
             String imageUrl = fileUploadService.salvarImagem(imageFile);
             slide.setImagemUrl(imageUrl);
@@ -41,6 +42,7 @@ public class SlidesService {
     @Transactional
     public Slides updateSlide(Slides slide, MultipartFile imageFile){
         ValidationUtils.validarCampoObrigatorio(slide, "slide");
+        ValidationUtils.validarCampoStringObrigatorio(slide.getTitulo(), "titulo");
         UUID id = Objects.requireNonNull(slide.getId(), "id");
 
         Slides existingSlide = slideRepository.findById(id)

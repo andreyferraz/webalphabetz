@@ -4,7 +4,16 @@ CREATE TABLE IF NOT EXISTS admin (
 	password TEXT NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS slide_abordagem_cuida (
+CREATE TABLE IF NOT EXISTS slides (
 	id TEXT PRIMARY KEY,
+	titulo TEXT NOT NULL,
 	imagem_url TEXT NOT NULL
 );
+
+CREATE TABLE IF NOT EXISTS blog(
+	id TEXT PRIMARY KEY,
+	titulo TEXT NOT NULL,
+	categoria TEXT NOT NULL,
+	conteudo TEXT NOT NULL,
+	imagem_url TEXT NOT NULL
+)

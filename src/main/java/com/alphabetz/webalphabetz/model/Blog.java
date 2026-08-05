@@ -15,8 +15,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table("slides")
-public class Slides implements Persistable<UUID> {
+@Table("blog")
+public class Blog implements Persistable<UUID> {
 
     @Id
     @Column("id")
@@ -24,6 +24,12 @@ public class Slides implements Persistable<UUID> {
 
     @Column("titulo")
     private String titulo;
+
+    @Column("categoria")
+    private String categoria;
+
+    @Column("conteudo")
+    private String conteudo;
 
     @Column("imagem_url")
     private String imagemUrl;
