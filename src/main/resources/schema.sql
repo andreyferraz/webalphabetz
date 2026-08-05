@@ -3,3 +3,8 @@ CREATE TABLE IF NOT EXISTS admin (
 	username TEXT NOT NULL UNIQUE,
 	password TEXT NOT NULL
 );
+
+CREATE TABLE IF NOT EXISTS slide_abordagem_cuida (
+	id TEXT PRIMARY KEY,
+	imagem_url TEXT NOT NULL
+);
