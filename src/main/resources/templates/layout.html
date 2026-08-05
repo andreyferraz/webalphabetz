@@ -107,8 +107,14 @@
             </div>
             <div class="footer-bottom">
                 <span>© 2026 Alphabetz. Todos os direitos reservados.</span>
-                <span class="dev-credit">Desenvolvido por <a href="https://www.andreyferraz.com.br" target="_blank"
-                        rel="noopener">Andrêy Ferraz</a></span>
+                <div class="footer-bottom-actions">
+                    <a class="footer-admin-link" th:href="@{/login}">
+                        <i class="fa-solid fa-lock" aria-hidden="true"></i>
+                        <span>Painel administrativo</span>
+                    </a>
+                    <span class="dev-credit">Desenvolvido por <a href="https://www.andreyferraz.com.br" target="_blank"
+                            rel="noopener">Andrêy Ferraz</a></span>
+                </div>
             </div>
         </div>
     </footer>

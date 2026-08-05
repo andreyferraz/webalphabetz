@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org"
+    th:replace="~{admin/layout :: layout('Segurança | Painel Alphabetz', 'security', ~{::content})}">
+
+<div th:fragment="content" class="admin-page-content security-page-content">
+    <section class="page-intro">
+        <span class="eyebrow eyebrow-mint">Conta e acesso</span>
+        <h1>Segurança</h1>
+        <p>Atualize sua senha para manter o painel administrativo protegido.</p>
+    </section>
+
+    <section class="security-grid">
+        <article class="admin-card password-card">
+            <header class="security-card-heading">
+                <span class="security-heading-icon"><i class="fa-solid fa-key" aria-hidden="true"></i></span>
+                <div><h2>Alterar senha</h2><p>Escolha uma senha forte e diferente das anteriores.</p></div>
+            </header>
+
+            <form class="admin-form password-form" data-password-form data-static-form data-success-title="Senha validada" data-success-message="A alteração foi simulada. Nenhum dado foi persistido.">
+                <div class="form-field">
+                    <label for="current-password">Senha atual <span>*</span></label>
+                    <div class="input-shell input-shell-plain">
+                        <input id="current-password" name="currentPassword" type="password" autocomplete="current-password" placeholder="Digite sua senha atual" required data-password-input />
+                        <button class="password-toggle" type="button" data-password-toggle aria-label="Exibir senha atual" aria-pressed="false"><i class="fa-regular fa-eye" aria-hidden="true"></i></button>
+                    </div>
+                </div>
+
+                <div class="form-separator"><span>Nova senha</span></div>
+
+                <div class="form-field">
+                    <label for="new-password">Nova senha <span>*</span></label>
+                    <div class="input-shell input-shell-plain">
+                        <input id="new-password" name="newPassword" type="password" autocomplete="new-password" placeholder="Crie uma nova senha" minlength="8" required data-password-input data-new-password />
+                        <button class="password-toggle" type="button" data-password-toggle aria-label="Exibir nova senha" aria-pressed="false"><i class="fa-regular fa-eye" aria-hidden="true"></i></button>
+                    </div>
+                    <div class="password-strength" aria-live="polite"><span data-strength-bar></span></div>
+                    <small data-strength-label>Use pelo menos 8 caracteres.</small>
+                </div>
+
+                <div class="form-field">
+                    <label for="confirm-password">Confirmar nova senha <span>*</span></label>
+                    <div class="input-shell input-shell-plain">
+                        <input id="confirm-password" name="confirmPassword" type="password" autocomplete="new-password" placeholder="Repita a nova senha" minlength="8" required data-password-input data-confirm-password />
+                        <button class="password-toggle" type="button" data-password-toggle aria-label="Exibir confirmação" aria-pressed="false"><i class="fa-regular fa-eye" aria-hidden="true"></i></button>
+                    </div>
+                    <small class="field-error" data-password-error hidden>As senhas não coincidem.</small>
+                </div>
+
+                <button class="admin-button admin-button-primary" type="submit"><i class="fa-solid fa-shield-halved" aria-hidden="true"></i> Atualizar senha</button>
+            </form>
+        </article>
+
+        <aside class="security-aside">
+            <article class="security-tip-card">
+                <span class="security-tip-illustration"><i class="fa-solid fa-shield-heart" aria-hidden="true"></i></span>
+                <span class="eyebrow eyebrow-light">Sua conta protegida</span>
+                <h2>Uma senha forte faz toda a diferença.</h2>
+                <p>Use uma combinação que seja fácil para você lembrar e difícil para outras pessoas descobrirem.</p>
+                <ul class="password-requirements" data-password-requirements>
+                    <li data-requirement="length"><i class="fa-solid fa-check" aria-hidden="true"></i> Pelo menos 8 caracteres</li>
+                    <li data-requirement="number"><i class="fa-solid fa-check" aria-hidden="true"></i> Ao menos um número</li>
+                    <li data-requirement="letter"><i class="fa-solid fa-check" aria-hidden="true"></i> Letras maiúsculas e minúsculas</li>
+                    <li data-requirement="symbol"><i class="fa-solid fa-check" aria-hidden="true"></i> Ao menos um símbolo</li>
+                </ul>
+            </article>
+
+            <article class="session-card">
+                <span class="session-icon"><i class="fa-solid fa-laptop" aria-hidden="true"></i></span>
+                <div><span class="eyebrow">Sessão atual</span><h3>Este dispositivo</h3><p>Acesso ativo como <strong xmlns:sec="http://www.thymeleaf.org/extras/spring-security" sec:authentication="name">admin</strong>.</p></div>
+                <span class="session-status">Ativa</span>
+            </article>
+        </aside>
+    </section>
+</div>
+
+</html>

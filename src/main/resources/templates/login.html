@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Acesso ao painel administrativo da Alphabetz." />
+    <title>Acesso administrativo | Alphabetz</title>
+    <link rel="icon" th:href="@{/assets/favicon.svg}" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+        integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" th:href="@{/css/admin.css}" />
+</head>
+
+<body class="login-page">
+    <main class="login-shell">
+        <section class="login-showcase" aria-labelledby="login-welcome-title">
+            <a class="login-brand" th:href="@{/}" aria-label="Voltar para o site Alphabetz">
+                <img th:src="@{/assets/alphabetz-logo.png}" alt="Alphabetz" />
+            </a>
+
+            <div class="login-showcase-copy">
+                <span class="login-kicker">Área administrativa</span>
+                <h1 id="login-welcome-title">Conteúdo organizado, cuidado em cada detalhe.</h1>
+                <p>Gerencie as histórias, registros e informações que aproximam a Alphabetz das famílias.</p>
+            </div>
+
+            <div class="login-orbit" aria-hidden="true">
+                <span class="login-orbit-center"><img th:src="@{/assets/apz-mark.png}" alt="" /></span>
+                <span class="login-orbit-dot login-orbit-dot-one"></span>
+                <span class="login-orbit-dot login-orbit-dot-two"></span>
+                <span class="login-orbit-dot login-orbit-dot-three"></span>
+            </div>
+        </section>
+
+        <section class="login-panel" aria-labelledby="login-title">
+            <div class="login-card">
+                <div class="login-card-heading">
+                    <span class="eyebrow">Bem-vindo de volta</span>
+                    <h2 id="login-title">Acesse o painel</h2>
+                    <p>Use suas credenciais administrativas para continuar.</p>
+                </div>
+
+                <div class="form-message form-message-error" th:if="${param.error}" role="alert">
+                    <i class="fa-solid fa-circle-exclamation" aria-hidden="true"></i>
+                    <span>Usuário ou senha inválidos. Tente novamente.</span>
+                </div>
+
+                <div class="form-message form-message-success" th:if="${param.logout}" role="status">
+                    <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
+                    <span>Sessão encerrada com segurança.</span>
+                </div>
+
+                <form class="login-form" th:action="@{/login}" method="post">
+                    <div class="form-field">
+                        <label for="username">Usuário</label>
+                        <div class="input-shell">
+                            <i class="fa-regular fa-user" aria-hidden="true"></i>
+                            <input id="username" name="username" type="text" autocomplete="username"
+                                placeholder="Digite seu usuário" required autofocus />
+                        </div>
+                    </div>
+
+                    <div class="form-field">
+                        <label for="password">Senha</label>
+                        <div class="input-shell">
+                            <i class="fa-solid fa-lock" aria-hidden="true"></i>
+                            <input id="password" name="password" type="password" autocomplete="current-password"
+                                placeholder="Digite sua senha" required data-password-input />
+                            <button class="password-toggle" type="button" data-password-toggle
+                                aria-label="Exibir senha" aria-pressed="false">
+                                <i class="fa-regular fa-eye" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <button class="admin-button admin-button-primary admin-button-full" type="submit">
+                        Entrar no painel
+                        <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+                    </button>
+                </form>
+
+                <a class="back-to-site" th:href="@{/}">
+                    <i class="fa-solid fa-arrow-left" aria-hidden="true"></i>
+                    Voltar para o site
+                </a>
+            </div>
+
+            <p class="login-footer">Alphabetz · Educação Infantil</p>
+        </section>
+    </main>
+
+    <script th:src="@{/js/admin.js}"></script>
+</body>
+
+</html>

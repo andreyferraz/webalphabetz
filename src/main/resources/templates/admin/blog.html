@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org"
+    th:replace="~{admin/layout :: layout('Blog | Painel Alphabetz', 'blog', ~{::content})}">
+
+<div th:fragment="content" class="admin-page-content">
+    <section class="page-intro page-intro-with-action">
+        <div>
+            <span class="eyebrow">Conteúdo editorial</span>
+            <h1>Blog</h1>
+            <p>Crie conteúdos que aproximam escola, família e infância.</p>
+        </div>
+        <button class="admin-button admin-button-primary" type="button" data-modal-open="blog-form" data-form-mode="create">
+            <i class="fa-solid fa-plus" aria-hidden="true"></i>
+            Nova postagem
+        </button>
+    </section>
+
+    <section class="content-toolbar" aria-label="Ferramentas do blog">
+        <label class="admin-search">
+            <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+            <span class="sr-only">Buscar postagens</span>
+            <input type="search" placeholder="Buscar pelo título da postagem..." data-filter-input="blog" />
+        </label>
+        <label class="admin-select-shell">
+            <i class="fa-solid fa-filter" aria-hidden="true"></i>
+            <span class="sr-only">Filtrar por categoria</span>
+            <select data-category-filter="blog">
+                <option value="">Todas as categorias</option>
+                <option value="pedagogia">Pedagogia</option>
+                <option value="familia">Família</option>
+                <option value="rotina">Rotina</option>
+                <option value="projetos">Projetos</option>
+            </select>
+        </label>
+        <div class="toolbar-summary toolbar-summary-end"><span><strong data-visible-count>4</strong> postagens</span></div>
+    </section>
+
+    <section class="posts-admin-list" data-filter-list="blog" aria-label="Postagens do blog">
+        <article class="post-admin-card" data-filter-item data-filter-text="papel brincar desenvolvimento infantil pedagogia" data-category="pedagogia">
+            <div class="post-admin-image">
+                <img th:src="@{/assets/slide/brinca9.jpg}" alt="Criança brincando na Alphabetz" />
+                <span class="content-status content-status-published">Publicado</span>
+            </div>
+            <div class="post-admin-copy">
+                <div class="post-category post-category-coral">Pedagogia</div>
+                <h2>O papel do brincar no desenvolvimento infantil</h2>
+                <p>Como experiências lúdicas favorecem linguagem, imaginação, socialização e resolução de problemas.</p>
+                <div class="content-meta"><span><i class="fa-regular fa-calendar" aria-hidden="true"></i> 04 ago. 2026</span><span><i class="fa-regular fa-clock" aria-hidden="true"></i> 5 min de leitura</span></div>
+            </div>
+            <div class="post-admin-actions">
+                <button class="admin-button admin-button-outline admin-button-small" type="button" data-modal-open="blog-form" data-form-mode="edit" data-item-name="O papel do brincar no desenvolvimento infantil"><i class="fa-regular fa-pen-to-square" aria-hidden="true"></i> Editar</button>
+                <button class="icon-button icon-button-danger" type="button" title="Excluir" aria-label="Excluir postagem" data-delete-trigger data-delete-type-value="a postagem" data-delete-name-value="O papel do brincar no desenvolvimento infantil"><i class="fa-regular fa-trash-can" aria-hidden="true"></i></button>
+            </div>
+        </article>
+
+        <article class="post-admin-card" data-filter-item data-filter-text="adaptacao escolar seguranca criancas responsaveis familia" data-category="familia">
+            <div class="post-admin-image">
+                <img th:src="@{/assets/slide/cuida4.jpg}" alt="Momento de acolhimento na Alphabetz" />
+                <span class="content-status content-status-published">Publicado</span>
+            </div>
+            <div class="post-admin-copy">
+                <div class="post-category post-category-mint">Família</div>
+                <h2>Adaptação escolar: segurança para crianças e responsáveis</h2>
+                <p>Orientações para tornar a chegada à escola mais acolhedora, previsível e tranquila.</p>
+                <div class="content-meta"><span><i class="fa-regular fa-calendar" aria-hidden="true"></i> 29 jul. 2026</span><span><i class="fa-regular fa-clock" aria-hidden="true"></i> 4 min de leitura</span></div>
+            </div>
+            <div class="post-admin-actions">
+                <button class="admin-button admin-button-outline admin-button-small" type="button" data-modal-open="blog-form" data-form-mode="edit" data-item-name="Adaptação escolar: segurança para crianças e responsáveis"><i class="fa-regular fa-pen-to-square" aria-hidden="true"></i> Editar</button>
+                <button class="icon-button icon-button-danger" type="button" title="Excluir" aria-label="Excluir postagem" data-delete-trigger data-delete-type-value="a postagem" data-delete-name-value="Adaptação escolar: segurança para crianças e responsáveis"><i class="fa-regular fa-trash-can" aria-hidden="true"></i></button>
+            </div>
+        </article>
+
+        <article class="post-admin-card" data-filter-item data-filter-text="ambientes preparados investigar escolher criar rotina" data-category="rotina">
+            <div class="post-admin-image">
+                <img th:src="@{/assets/escola_interacao.jpg}" alt="Ambiente preparado da Alphabetz" />
+                <span class="content-status content-status-published">Publicado</span>
+            </div>
+            <div class="post-admin-copy">
+                <div class="post-category post-category-yellow">Rotina</div>
+                <h2>Ambientes preparados para investigar, escolher e criar</h2>
+                <p>Por que organização, materiais acessíveis e escuta ativa ampliam a autonomia infantil.</p>
+                <div class="content-meta"><span><i class="fa-regular fa-calendar" aria-hidden="true"></i> 18 jul. 2026</span><span><i class="fa-regular fa-clock" aria-hidden="true"></i> 6 min de leitura</span></div>
+            </div>
+            <div class="post-admin-actions">
+                <button class="admin-button admin-button-outline admin-button-small" type="button" data-modal-open="blog-form" data-form-mode="edit" data-item-name="Ambientes preparados para investigar, escolher e criar"><i class="fa-regular fa-pen-to-square" aria-hidden="true"></i> Editar</button>
+                <button class="icon-button icon-button-danger" type="button" title="Excluir" aria-label="Excluir postagem" data-delete-trigger data-delete-type-value="a postagem" data-delete-name-value="Ambientes preparados para investigar, escolher e criar"><i class="fa-regular fa-trash-can" aria-hidden="true"></i></button>
+            </div>
+        </article>
+
+        <article class="post-admin-card" data-filter-item data-filter-text="projetos curiosidade criancas projetos" data-category="projetos">
+            <div class="post-admin-image">
+                <img th:src="@{/assets/slide/desenvolve4.jpg}" alt="Projeto pedagógico da Alphabetz" />
+                <span class="content-status content-status-draft">Rascunho</span>
+            </div>
+            <div class="post-admin-copy">
+                <div class="post-category post-category-blue">Projetos</div>
+                <h2>Projetos que nascem da curiosidade das crianças</h2>
+                <p>Um olhar para investigações e experiências que valorizam as perguntas das crianças.</p>
+                <div class="content-meta"><span><i class="fa-regular fa-calendar" aria-hidden="true"></i> Editado hoje</span><span><i class="fa-regular fa-clock" aria-hidden="true"></i> 3 min de leitura</span></div>
+            </div>
+            <div class="post-admin-actions">
+                <button class="admin-button admin-button-outline admin-button-small" type="button" data-modal-open="blog-form" data-form-mode="edit" data-item-name="Projetos que nascem da curiosidade das crianças"><i class="fa-regular fa-pen-to-square" aria-hidden="true"></i> Editar</button>
+                <button class="icon-button icon-button-danger" type="button" title="Excluir" aria-label="Excluir postagem" data-delete-trigger data-delete-type-value="a postagem" data-delete-name-value="Projetos que nascem da curiosidade das crianças"><i class="fa-regular fa-trash-can" aria-hidden="true"></i></button>
+            </div>
+        </article>
+    </section>
+
+    <div class="empty-filter-state" data-empty-state="blog" hidden>
+        <span><i class="fa-regular fa-folder-open" aria-hidden="true"></i></span>
+        <h2>Nenhuma postagem encontrada</h2>
+        <p>Ajuste a busca ou selecione outra categoria.</p>
+    </div>
+
+    <div class="admin-modal" data-modal="blog-form" hidden aria-hidden="true">
+        <div class="modal-backdrop" data-modal-close></div>
+        <section class="modal-dialog modal-dialog-form modal-dialog-wide" role="dialog" aria-modal="true" aria-labelledby="blog-modal-title">
+            <header class="modal-heading">
+                <div><span class="eyebrow">Conteúdo editorial</span><h2 id="blog-modal-title" data-modal-form-title>Nova postagem</h2></div>
+                <button class="modal-close" type="button" data-modal-close aria-label="Fechar"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
+            </header>
+
+            <form class="admin-form" data-static-form data-success-title="Postagem salva" data-success-message="O conteúdo foi atualizado apenas nesta demonstração.">
+                <div class="form-grid form-grid-two">
+                    <div class="form-field form-field-span-two">
+                        <label for="blog-title">Título <span>*</span></label>
+                        <input id="blog-title" name="titulo" type="text" placeholder="Digite um título claro e convidativo" required data-item-name-input />
+                    </div>
+                    <div class="form-field">
+                        <label for="blog-category">Categoria <span>*</span></label>
+                        <select id="blog-category" name="categoria" required>
+                            <option value="">Selecione uma categoria</option><option>Pedagogia</option><option>Família</option><option>Rotina</option><option>Projetos</option>
+                        </select>
+                    </div>
+                    <div class="form-field">
+                        <label for="blog-status">Status</label>
+                        <select id="blog-status" name="status"><option>Publicado</option><option>Rascunho</option></select>
+                    </div>
+                    <div class="form-field form-field-span-two">
+                        <label for="blog-summary">Resumo <span>*</span></label>
+                        <textarea id="blog-summary" name="resumo" rows="3" maxlength="180" placeholder="Uma apresentação curta para o card da postagem" required></textarea>
+                        <small>Até 180 caracteres.</small>
+                    </div>
+                    <div class="form-field form-field-span-two">
+                        <span class="form-label">Imagem de capa <span>*</span></span>
+                        <label class="upload-zone upload-zone-compact" for="blog-image" data-drop-zone>
+                            <span class="upload-icon"><i class="fa-regular fa-image" aria-hidden="true"></i></span>
+                            <span><strong>Selecione uma imagem de capa</strong><small>JPG, PNG ou WebP</small></span>
+                            <input id="blog-image" name="imagem" type="file" accept="image/jpeg,image/png,image/webp" data-image-input />
+                        </label>
+                        <div class="image-preview-grid image-preview-single" data-image-preview aria-live="polite"></div>
+                    </div>
+                    <div class="form-field form-field-span-two">
+                        <label for="blog-content">Conteúdo <span>*</span></label>
+                        <div class="editor-toolbar" aria-hidden="true"><button type="button"><strong>B</strong></button><button type="button"><em>I</em></button><button type="button"><i class="fa-solid fa-list-ul"></i></button><button type="button"><i class="fa-solid fa-link"></i></button></div>
+                        <textarea id="blog-content" class="editor-textarea" name="conteudo" rows="8" placeholder="Escreva o conteúdo completo da postagem..." required></textarea>
+                    </div>
+                </div>
+                <div class="modal-actions">
+                    <button class="admin-button admin-button-muted" type="button" data-modal-close>Cancelar</button>
+                    <button class="admin-button admin-button-primary" type="submit"><i class="fa-regular fa-floppy-disk" aria-hidden="true"></i> Salvar postagem</button>
+                </div>
+            </form>
+        </section>
+    </div>
+</div>
+
+</html>

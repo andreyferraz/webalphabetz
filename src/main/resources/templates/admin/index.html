@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org"
+    th:replace="~{admin/layout :: layout('Visão geral | Painel Alphabetz', 'overview', ~{::content})}">
+
+<div th:fragment="content" class="admin-page-content">
+    <section class="page-intro page-intro-with-action">
+        <div>
+            <span class="eyebrow">Visão geral</span>
+            <h1>Olá, <span sec:authentication="name" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">admin</span>!</h1>
+            <p>Acompanhe e organize os conteúdos da Alphabetz em um só lugar.</p>
+        </div>
+        <div class="intro-date">
+            <span class="intro-date-icon"><i class="fa-regular fa-calendar" aria-hidden="true"></i></span>
+            <div><small>Hoje</small><strong>Conteúdo em dia</strong></div>
+        </div>
+    </section>
+
+    <section class="metric-grid" aria-label="Resumo do painel">
+        <article class="metric-card metric-card-coral">
+            <div class="metric-card-heading">
+                <span class="metric-icon"><i class="fa-regular fa-images" aria-hidden="true"></i></span>
+                <span class="metric-trend"><i class="fa-solid fa-arrow-trend-up" aria-hidden="true"></i> Ativos</span>
+            </div>
+            <strong class="metric-value">04</strong>
+            <span class="metric-label">Coleções de slides</span>
+            <div class="metric-footer"><strong>36 fotos</strong><span>organizadas nas coleções</span></div>
+        </article>
+
+        <article class="metric-card metric-card-blue">
+            <div class="metric-card-heading">
+                <span class="metric-icon"><i class="fa-regular fa-newspaper" aria-hidden="true"></i></span>
+                <span class="metric-trend"><i class="fa-solid fa-wand-magic-sparkles" aria-hidden="true"></i> Conteúdo</span>
+            </div>
+            <strong class="metric-value">04</strong>
+            <span class="metric-label">Postagens no blog</span>
+            <div class="metric-footer"><strong>4 categorias</strong><span>na vitrine editorial</span></div>
+        </article>
+
+        <article class="metric-card metric-card-mint">
+            <div class="metric-card-heading">
+                <span class="metric-icon"><i class="fa-regular fa-user" aria-hidden="true"></i></span>
+                <span class="metric-trend"><i class="fa-solid fa-shield" aria-hidden="true"></i> Seguro</span>
+            </div>
+            <strong class="metric-value">01</strong>
+            <span class="metric-label">Administrador</span>
+            <div class="metric-footer"><strong>Protegido</strong><span>com acesso autenticado</span></div>
+        </article>
+    </section>
+
+    <section class="dashboard-grid">
+        <article class="admin-card quick-actions-card">
+            <header class="card-heading-row">
+                <div>
+                    <span class="eyebrow">Atalhos</span>
+                    <h2>O que deseja fazer?</h2>
+                </div>
+                <span class="card-heading-decoration" aria-hidden="true"></span>
+            </header>
+
+            <div class="quick-actions">
+                <a class="quick-action quick-action-coral" th:href="@{/admin/slides}">
+                    <span><i class="fa-solid fa-plus" aria-hidden="true"></i></span>
+                    <div><strong>Novo slide</strong><small>Crie uma coleção de fotos</small></div>
+                    <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+                </a>
+                <a class="quick-action quick-action-blue" th:href="@{/admin/blog}">
+                    <span><i class="fa-solid fa-pen-nib" aria-hidden="true"></i></span>
+                    <div><strong>Nova postagem</strong><small>Publique uma nova história</small></div>
+                    <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+                </a>
+                <a class="quick-action quick-action-mint" th:href="@{/admin/seguranca}">
+                    <span><i class="fa-solid fa-key" aria-hidden="true"></i></span>
+                    <div><strong>Alterar senha</strong><small>Atualize suas credenciais</small></div>
+                    <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+                </a>
+            </div>
+        </article>
+
+        <article class="admin-card activity-card">
+            <header class="card-heading-row">
+                <div>
+                    <span class="eyebrow">Histórico</span>
+                    <h2>Atividades recentes</h2>
+                </div>
+                <button class="icon-button" type="button" aria-label="Mais opções">
+                    <i class="fa-solid fa-ellipsis" aria-hidden="true"></i>
+                </button>
+            </header>
+
+            <ol class="activity-list">
+                <li>
+                    <span class="activity-icon activity-icon-coral"><i class="fa-regular fa-images" aria-hidden="true"></i></span>
+                    <div><strong>Coleção “Brinca” atualizada</strong><span>3 novas fotos adicionadas</span></div>
+                    <time>Hoje</time>
+                </li>
+                <li>
+                    <span class="activity-icon activity-icon-blue"><i class="fa-regular fa-newspaper" aria-hidden="true"></i></span>
+                    <div><strong>Postagem publicada</strong><span>Projetos que nascem da curiosidade</span></div>
+                    <time>Ontem</time>
+                </li>
+                <li>
+                    <span class="activity-icon activity-icon-mint"><i class="fa-solid fa-shield-halved" aria-hidden="true"></i></span>
+                    <div><strong>Acesso administrativo</strong><span>Sessão iniciada com segurança</span></div>
+                    <time>2 dias</time>
+                </li>
+            </ol>
+        </article>
+    </section>
+
+    <aside class="integration-banner">
+        <span class="integration-icon"><i class="fa-solid fa-puzzle-piece" aria-hidden="true"></i></span>
+        <div>
+            <span class="eyebrow eyebrow-light">Próxima etapa</span>
+            <h2>Painel preparado para integração</h2>
+            <p>Os controles desta versão são demonstrativos. A estrutura visual já está pronta para ser conectada aos serviços de slides, blog e administração.</p>
+        </div>
+        <span class="integration-badge">Versão estática</span>
+    </aside>
+</div>
+
+</html>

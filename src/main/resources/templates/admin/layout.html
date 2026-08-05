@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org"
+    xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+    th:fragment="layout(title, activePage, content)">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Painel administrativo da Alphabetz." />
+    <title th:text="${title}">Painel administrativo | Alphabetz</title>
+    <link rel="icon" th:href="@{/assets/favicon.svg}" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+        integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" th:href="@{/css/admin.css}" />
+</head>
+
+<body class="admin-page">
+    <a class="admin-skip-link" href="#admin-content">Ir para o conteúdo</a>
+    <div class="admin-shell">
+        <div class="sidebar-backdrop" data-sidebar-close></div>
+
+        <aside class="admin-sidebar" data-sidebar aria-label="Menu administrativo">
+            <div class="sidebar-heading">
+                <a class="sidebar-brand" th:href="@{/admin}" aria-label="Painel Alphabetz">
+                    <img th:src="@{/assets/alphabetz-logo.png}" alt="Alphabetz" />
+                </a>
+                <button class="sidebar-close" type="button" data-sidebar-close aria-label="Fechar menu">
+                    <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+                </button>
+            </div>
+
+            <div class="sidebar-label">Administração</div>
+            <nav class="sidebar-nav">
+                <a th:href="@{/admin}" th:classappend="${activePage == 'overview'} ? ' is-active' : ''">
+                    <span class="nav-icon nav-icon-blue"><i class="fa-solid fa-table-cells-large" aria-hidden="true"></i></span>
+                    <span>Visão geral</span>
+                </a>
+                <a th:href="@{/admin/slides}" th:classappend="${activePage == 'slides'} ? ' is-active' : ''">
+                    <span class="nav-icon nav-icon-coral"><i class="fa-regular fa-images" aria-hidden="true"></i></span>
+                    <span>Slides</span>
+                </a>
+                <a th:href="@{/admin/blog}" th:classappend="${activePage == 'blog'} ? ' is-active' : ''">
+                    <span class="nav-icon nav-icon-yellow"><i class="fa-regular fa-newspaper" aria-hidden="true"></i></span>
+                    <span>Blog</span>
+                </a>
+                <a th:href="@{/admin/seguranca}" th:classappend="${activePage == 'security'} ? ' is-active' : ''">
+                    <span class="nav-icon nav-icon-mint"><i class="fa-solid fa-shield-halved" aria-hidden="true"></i></span>
+                    <span>Segurança</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-spacer"></div>
+
+            <a class="sidebar-site-link" th:href="@{/}" target="_blank">
+                <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i>
+                <span>Visualizar site</span>
+            </a>
+
+            <div class="sidebar-profile">
+                <span class="profile-avatar" aria-hidden="true">A</span>
+                <div class="profile-copy">
+                    <strong sec:authentication="name">admin</strong>
+                    <span>Administrador</span>
+                </div>
+                <form th:action="@{/logout}" method="post">
+                    <button type="submit" title="Sair" aria-label="Sair do painel">
+                        <i class="fa-solid fa-arrow-right-from-bracket" aria-hidden="true"></i>
+                    </button>
+                </form>
+            </div>
+        </aside>
+
+        <div class="admin-workspace">
+            <header class="admin-topbar">
+                <button class="mobile-menu-button" type="button" data-sidebar-open aria-label="Abrir menu">
+                    <i class="fa-solid fa-bars" aria-hidden="true"></i>
+                </button>
+                <div class="topbar-breadcrumb">
+                    <span>Painel administrativo</span>
+                    <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
+                    <strong th:switch="${activePage}">
+                        <span th:case="'slides'">Slides</span>
+                        <span th:case="'blog'">Blog</span>
+                        <span th:case="'security'">Segurança</span>
+                        <span th:case="*">Visão geral</span>
+                    </strong>
+                </div>
+                <div class="topbar-actions">
+                    <span class="static-status"><span></span> Versão demonstrativa</span>
+                    <a class="topbar-avatar" th:href="@{/admin/seguranca}" aria-label="Abrir segurança">
+                        <span>A</span>
+                    </a>
+                </div>
+            </header>
+
+            <main id="admin-content" class="admin-content" th:replace="${content}">
+                Conteúdo administrativo
+            </main>
+        </div>
+    </div>
+
+    <div class="admin-toast" data-toast role="status" aria-live="polite" aria-atomic="true">
+        <span class="toast-icon"><i class="fa-solid fa-check" aria-hidden="true"></i></span>
+        <div>
+            <strong data-toast-title>Ação simulada</strong>
+            <p data-toast-message>Nenhuma alteração foi persistida.</p>
+        </div>
+        <button type="button" data-toast-close aria-label="Fechar notificação">
+            <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+        </button>
+    </div>
+
+    <div class="admin-modal" data-modal="delete" hidden aria-hidden="true">
+        <div class="modal-backdrop" data-modal-close></div>
+        <section class="modal-dialog modal-dialog-small" role="dialog" aria-modal="true"
+            aria-labelledby="delete-modal-title">
+            <button class="modal-close" type="button" data-modal-close aria-label="Fechar">
+                <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+            </button>
+            <span class="modal-alert-icon"><i class="fa-regular fa-trash-can" aria-hidden="true"></i></span>
+            <div class="modal-centered-copy">
+                <span class="eyebrow eyebrow-coral">Confirmar exclusão</span>
+                <h2 id="delete-modal-title">Excluir <span data-delete-type>item</span>?</h2>
+                <p>Você está prestes a excluir <strong data-delete-name>este conteúdo</strong>. Nesta versão, a ação será apenas simulada.</p>
+            </div>
+            <div class="modal-actions modal-actions-centered">
+                <button class="admin-button admin-button-muted" type="button" data-modal-close>Cancelar</button>
+                <button class="admin-button admin-button-danger" type="button" data-confirm-delete>
+                    <i class="fa-regular fa-trash-can" aria-hidden="true"></i>
+                    Excluir
+                </button>
+            </div>
+        </section>
+    </div>
+
+    <script th:src="@{/js/admin.js}"></script>
+</body>
+
+</html>
