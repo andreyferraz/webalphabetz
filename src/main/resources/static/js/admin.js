@@ -250,6 +250,7 @@
   const strengthBar = $('[data-strength-bar]');
   const strengthLabel = $('[data-strength-label]');
   const requirementList = $('[data-password-requirements]');
+  const passwordForm = $('[data-password-form]');
 
   const passwordRules = password => ({
     length: password.length >= 8,
@@ -260,6 +261,7 @@
 
   const updatePasswordState = () => {
     if (!newPassword) return;
+    newPassword.setCustomValidity('');
     const rules = passwordRules(newPassword.value);
     const validRules = Object.values(rules).filter(Boolean).length;
     const strength = validRules * 25;
@@ -285,18 +287,21 @@
   newPassword?.addEventListener('input', updatePasswordState);
   confirmPassword?.addEventListener('input', updatePasswordState);
 
+  passwordForm?.addEventListener('submit', event => {
+    const rules = passwordRules(newPassword?.value || '');
+    const meetsRequirements = Object.values(rules).every(Boolean);
+    newPassword?.setCustomValidity(meetsRequirements ? '' : 'A senha precisa atender a todos os requisitos.');
+
+    const matches = newPassword?.value === confirmPassword?.value;
+    confirmPassword?.setCustomValidity(matches ? '' : 'As senhas não coincidem.');
+    if (passwordError) passwordError.hidden = matches;
+
+    if (!passwordForm.reportValidity()) event.preventDefault();
+  });
+
   $$('[data-static-form]').forEach(form => {
     form.addEventListener('submit', event => {
       event.preventDefault();
-
-      if (form.matches('[data-password-form]')) {
-        const rules = passwordRules(newPassword?.value || '');
-        const meetsRequirements = Object.values(rules).every(Boolean);
-        newPassword?.setCustomValidity(meetsRequirements ? '' : 'A senha precisa atender a todos os requisitos.');
-        const matches = newPassword?.value === confirmPassword?.value;
-        confirmPassword?.setCustomValidity(matches ? '' : 'As senhas não coincidem.');
-        if (passwordError) passwordError.hidden = matches;
-      }
 
       if (!form.reportValidity()) return;
 
@@ -308,7 +313,6 @@
 
       form.reset();
       $$('[data-image-preview]', form).forEach(preview => { preview.innerHTML = ''; });
-      if (form.matches('[data-password-form]')) updatePasswordState();
     });
   });
 })();

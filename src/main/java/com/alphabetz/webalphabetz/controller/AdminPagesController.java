@@ -3,6 +3,7 @@ package com.alphabetz.webalphabetz.controller;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +16,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.alphabetz.webalphabetz.model.Blog;
 import com.alphabetz.webalphabetz.model.Slides;
 import com.alphabetz.webalphabetz.service.BlogService;
+import com.alphabetz.webalphabetz.service.AdminService;
 import com.alphabetz.webalphabetz.service.SlidesService;
 
 @Controller
@@ -22,10 +24,13 @@ public class AdminPagesController {
 
     private final SlidesService slidesService;
     private final BlogService blogService;
+    private final AdminService adminService;
 
-    public AdminPagesController(SlidesService slidesService, BlogService blogService) {
+    public AdminPagesController(SlidesService slidesService, BlogService blogService,
+            AdminService adminService) {
         this.slidesService = slidesService;
         this.blogService = blogService;
+        this.adminService = adminService;
     }
 
     @GetMapping("/login")
@@ -137,6 +142,22 @@ public class AdminPagesController {
     @GetMapping("/admin/seguranca")
     public String security() {
         return "admin/seguranca";
+    }
+
+    @PostMapping("/admin/seguranca/senha")
+    public String changePassword(Authentication authentication,
+            @RequestParam String currentPassword,
+            @RequestParam String newPassword,
+            @RequestParam String confirmPassword,
+            RedirectAttributes redirectAttributes) {
+        try {
+            adminService.changePasswordByUsername(
+                    authentication.getName(), currentPassword, newPassword, confirmPassword);
+            redirectAttributes.addFlashAttribute("successMessage", "Senha atualizada com sucesso.");
+        } catch (RuntimeException exception) {
+            redirectAttributes.addFlashAttribute("errorMessage", errorMessage(exception));
+        }
+        return "redirect:/admin/seguranca";
     }
 
     private String errorMessage(RuntimeException exception) {

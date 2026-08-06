@@ -75,10 +75,12 @@ public class AdminService {
         return adminRepository.save(existing);
     }
 
-    public Admin changePasswordByUsername(String username, String currentPassword, String newPassword) {
+    public Admin changePasswordByUsername(String username, String currentPassword, String newPassword,
+            String confirmPassword) {
         ValidationUtils.validarCampoStringObrigatorio(username, USERNAME_FIELD);
         ValidationUtils.validarCampoStringObrigatorio(currentPassword, "currentPassword");
         ValidationUtils.validarCampoStringObrigatorio(newPassword, PASSWORD_FIELD);
+        ValidationUtils.validarCampoStringObrigatorio(confirmPassword, "confirmPassword");
 
         Admin existing = adminRepository.findByUsername(username)
             .orElseThrow(() -> new IllegalArgumentException(ADMIN_NOT_FOUND));
@@ -87,9 +89,35 @@ public class AdminService {
             throw new IllegalArgumentException("Senha atual inválida.");
         }
 
+        if (!newPassword.equals(confirmPassword)) {
+            throw new IllegalArgumentException("A confirmação da nova senha não coincide.");
+        }
+
+        validateStrongPassword(newPassword);
+
+        if (passwordEncoder.matches(newPassword, existing.getPassword())) {
+            throw new IllegalArgumentException("A nova senha deve ser diferente da senha atual.");
+        }
+
         existing.setPassword(passwordEncoder.encode(newPassword));
         existing.setNew(false);
         return adminRepository.save(existing);
+    }
+
+    private void validateStrongPassword(String password) {
+        if (password.length() < 8 || password.length() > 72) {
+            throw new IllegalArgumentException("A nova senha deve ter entre 8 e 72 caracteres.");
+        }
+
+        boolean hasNumber = password.chars().anyMatch(Character::isDigit);
+        boolean hasLowercase = password.chars().anyMatch(Character::isLowerCase);
+        boolean hasUppercase = password.chars().anyMatch(Character::isUpperCase);
+        boolean hasSymbol = password.chars().anyMatch(character -> !Character.isLetterOrDigit(character));
+
+        if (!hasNumber || !hasLowercase || !hasUppercase || !hasSymbol) {
+            throw new IllegalArgumentException(
+                    "A nova senha deve conter número, letras maiúsculas e minúsculas e símbolo.");
+        }
     }
 
 }
