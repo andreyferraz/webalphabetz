@@ -416,6 +416,16 @@ h1, h2, h3, p { margin-top: 0; }
 .editor-toolbar { min-height: 42px; display: flex; align-items: center; gap: 4px; padding: 5px 8px; border: 1px solid #d9e2e9; border-bottom: 0; border-radius: 12px 12px 0 0; background: #f5f7f9; }
 .editor-toolbar button { width: 31px; height: 31px; border: 0; border-radius: 7px; color: var(--admin-muted); background: transparent; }
 .editor-textarea { border-radius: 0 0 12px 12px !important; }
+.quill-form-field .ql-toolbar.ql-snow { border-color: #d9e2e9; border-radius: 12px 12px 0 0; background: #f5f7f9; font-family: inherit; }
+.quill-form-field .ql-container.ql-snow { min-height: 260px; border-color: #d9e2e9; border-radius: 0 0 12px 12px; background: white; font-family: inherit; font-size: .8rem; }
+.quill-form-field .ql-editor { min-height: 260px; line-height: 1.7; }
+.quill-form-field .ql-editor.ql-blank::before { color: #96a4b0; font-style: normal; }
+.quill-form-field:focus-within .ql-toolbar.ql-snow,
+.quill-form-field:focus-within .ql-container.ql-snow { border-color: #91b2e7; }
+.quill-form-field.is-invalid .ql-toolbar.ql-snow,
+.quill-form-field.is-invalid .ql-container.ql-snow { border-color: var(--admin-coral); }
+.blog-current-cover { width: min(100%, 230px); aspect-ratio: 16 / 9; margin-bottom: 4px; overflow: hidden; border: 1px solid var(--admin-border); border-radius: 13px; background: #eef2f5; }
+.blog-current-cover img { width: 100%; height: 100%; object-fit: cover; }
 
 /* Security */
 .security-page-content { max-width: 1260px; }

@@ -12,16 +12,20 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.alphabetz.webalphabetz.model.Blog;
 import com.alphabetz.webalphabetz.model.Slides;
+import com.alphabetz.webalphabetz.service.BlogService;
 import com.alphabetz.webalphabetz.service.SlidesService;
 
 @Controller
 public class AdminPagesController {
 
     private final SlidesService slidesService;
+    private final BlogService blogService;
 
-    public AdminPagesController(SlidesService slidesService) {
+    public AdminPagesController(SlidesService slidesService, BlogService blogService) {
         this.slidesService = slidesService;
+        this.blogService = blogService;
     }
 
     @GetMapping("/login")
@@ -82,8 +86,52 @@ public class AdminPagesController {
     }
 
     @GetMapping("/admin/blog")
-    public String blog() {
+    public String blog(Model model) {
+        List<Blog> posts = blogService.getAllPosts();
+        model.addAttribute("posts", posts);
         return "admin/blog";
+    }
+
+    @PostMapping("/admin/blog")
+    public String createBlogPost(@RequestParam String titulo,
+            @RequestParam String categoria,
+            @RequestParam String conteudo,
+            @RequestParam(name = "imagem", required = false) MultipartFile image,
+            RedirectAttributes redirectAttributes) {
+        try {
+            blogService.createPost(titulo, categoria, conteudo, image);
+            redirectAttributes.addFlashAttribute("successMessage", "Postagem criada com sucesso.");
+        } catch (RuntimeException exception) {
+            redirectAttributes.addFlashAttribute("errorMessage", errorMessage(exception));
+        }
+        return "redirect:/admin/blog";
+    }
+
+    @PostMapping("/admin/blog/{id}")
+    public String updateBlogPost(@PathVariable UUID id,
+            @RequestParam String titulo,
+            @RequestParam String categoria,
+            @RequestParam String conteudo,
+            @RequestParam(name = "imagem", required = false) MultipartFile image,
+            RedirectAttributes redirectAttributes) {
+        try {
+            blogService.updatePost(id, titulo, categoria, conteudo, image);
+            redirectAttributes.addFlashAttribute("successMessage", "Postagem atualizada com sucesso.");
+        } catch (RuntimeException exception) {
+            redirectAttributes.addFlashAttribute("errorMessage", errorMessage(exception));
+        }
+        return "redirect:/admin/blog";
+    }
+
+    @PostMapping("/admin/blog/{id}/excluir")
+    public String deleteBlogPost(@PathVariable UUID id, RedirectAttributes redirectAttributes) {
+        try {
+            blogService.deletePost(id);
+            redirectAttributes.addFlashAttribute("successMessage", "Postagem excluída com sucesso.");
+        } catch (RuntimeException exception) {
+            redirectAttributes.addFlashAttribute("errorMessage", errorMessage(exception));
+        }
+        return "redirect:/admin/blog";
     }
 
     @GetMapping("/admin/seguranca")

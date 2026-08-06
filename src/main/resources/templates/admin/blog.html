@@ -9,11 +9,20 @@
             <h1>Blog</h1>
             <p>Crie conteúdos que aproximam escola, família e infância.</p>
         </div>
-        <button class="admin-button admin-button-primary" type="button" data-modal-open="blog-form" data-form-mode="create">
+        <button class="admin-button admin-button-primary" type="button" data-modal-open="blog-create">
             <i class="fa-solid fa-plus" aria-hidden="true"></i>
             Nova postagem
         </button>
     </section>
+
+    <div class="form-message form-message-success" th:if="${successMessage}">
+        <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
+        <span th:text="${successMessage}">Operação realizada com sucesso.</span>
+    </div>
+    <div class="form-message form-message-error" th:if="${errorMessage}">
+        <i class="fa-solid fa-circle-exclamation" aria-hidden="true"></i>
+        <span th:text="${errorMessage}">Não foi possível concluir a operação.</span>
+    </div>
 
     <section class="content-toolbar" aria-label="Ferramentas do blog">
         <label class="admin-search">
@@ -32,136 +41,203 @@
                 <option value="projetos">Projetos</option>
             </select>
         </label>
-        <div class="toolbar-summary toolbar-summary-end"><span><strong data-visible-count>4</strong> postagens</span></div>
+        <div class="toolbar-summary toolbar-summary-end">
+            <span><strong data-visible-count th:text="${#lists.size(posts)}">0</strong> postagens</span>
+        </div>
     </section>
 
-    <section class="posts-admin-list" data-filter-list="blog" aria-label="Postagens do blog">
-        <article class="post-admin-card" data-filter-item data-filter-text="papel brincar desenvolvimento infantil pedagogia" data-category="pedagogia">
+    <section class="posts-admin-list" data-filter-list="blog" aria-label="Postagens do blog"
+        th:if="${!#lists.isEmpty(posts)}">
+        <article class="post-admin-card" data-filter-item th:each="post : ${posts}"
+            th:attr="data-filter-text=${post.titulo},data-category=${post.categoria}">
             <div class="post-admin-image">
-                <img th:src="@{/assets/slide/brinca9.jpg}" alt="Criança brincando na Alphabetz" />
+                <img th:src="@{/uploads/{filename}(filename=${post.imagemUrl})}"
+                    th:alt="|Imagem de capa de ${post.titulo}|" />
                 <span class="content-status content-status-published">Publicado</span>
             </div>
             <div class="post-admin-copy">
-                <div class="post-category post-category-coral">Pedagogia</div>
-                <h2>O papel do brincar no desenvolvimento infantil</h2>
-                <p>Como experiências lúdicas favorecem linguagem, imaginação, socialização e resolução de problemas.</p>
-                <div class="content-meta"><span><i class="fa-regular fa-calendar" aria-hidden="true"></i> 04 ago. 2026</span><span><i class="fa-regular fa-clock" aria-hidden="true"></i> 5 min de leitura</span></div>
+                <div class="post-category"
+                    th:classappend="${post.categoria == 'Pedagogia'} ? ' post-category-coral' : (${post.categoria == 'Família'} ? ' post-category-mint' : (${post.categoria == 'Rotina'} ? ' post-category-yellow' : ' post-category-blue'))"
+                    th:text="${post.categoria}">Categoria</div>
+                <h2 th:text="${post.titulo}">Título da postagem</h2>
+                <p th:text="${post.resumo}">Resumo da postagem.</p>
+                <div class="content-meta">
+                    <span><i class="fa-solid fa-database" aria-hidden="true"></i> Conteúdo persistido</span>
+                    <span><i class="fa-regular fa-clock" aria-hidden="true"></i>
+                        <span th:text="|${post.tempoLeitura} min de leitura|">1 min de leitura</span>
+                    </span>
+                </div>
             </div>
             <div class="post-admin-actions">
-                <button class="admin-button admin-button-outline admin-button-small" type="button" data-modal-open="blog-form" data-form-mode="edit" data-item-name="O papel do brincar no desenvolvimento infantil"><i class="fa-regular fa-pen-to-square" aria-hidden="true"></i> Editar</button>
-                <button class="icon-button icon-button-danger" type="button" title="Excluir" aria-label="Excluir postagem" data-delete-trigger data-delete-type-value="a postagem" data-delete-name-value="O papel do brincar no desenvolvimento infantil"><i class="fa-regular fa-trash-can" aria-hidden="true"></i></button>
-            </div>
-        </article>
-
-        <article class="post-admin-card" data-filter-item data-filter-text="adaptacao escolar seguranca criancas responsaveis familia" data-category="familia">
-            <div class="post-admin-image">
-                <img th:src="@{/assets/slide/cuida4.jpg}" alt="Momento de acolhimento na Alphabetz" />
-                <span class="content-status content-status-published">Publicado</span>
-            </div>
-            <div class="post-admin-copy">
-                <div class="post-category post-category-mint">Família</div>
-                <h2>Adaptação escolar: segurança para crianças e responsáveis</h2>
-                <p>Orientações para tornar a chegada à escola mais acolhedora, previsível e tranquila.</p>
-                <div class="content-meta"><span><i class="fa-regular fa-calendar" aria-hidden="true"></i> 29 jul. 2026</span><span><i class="fa-regular fa-clock" aria-hidden="true"></i> 4 min de leitura</span></div>
-            </div>
-            <div class="post-admin-actions">
-                <button class="admin-button admin-button-outline admin-button-small" type="button" data-modal-open="blog-form" data-form-mode="edit" data-item-name="Adaptação escolar: segurança para crianças e responsáveis"><i class="fa-regular fa-pen-to-square" aria-hidden="true"></i> Editar</button>
-                <button class="icon-button icon-button-danger" type="button" title="Excluir" aria-label="Excluir postagem" data-delete-trigger data-delete-type-value="a postagem" data-delete-name-value="Adaptação escolar: segurança para crianças e responsáveis"><i class="fa-regular fa-trash-can" aria-hidden="true"></i></button>
-            </div>
-        </article>
-
-        <article class="post-admin-card" data-filter-item data-filter-text="ambientes preparados investigar escolher criar rotina" data-category="rotina">
-            <div class="post-admin-image">
-                <img th:src="@{/assets/escola_interacao.jpg}" alt="Ambiente preparado da Alphabetz" />
-                <span class="content-status content-status-published">Publicado</span>
-            </div>
-            <div class="post-admin-copy">
-                <div class="post-category post-category-yellow">Rotina</div>
-                <h2>Ambientes preparados para investigar, escolher e criar</h2>
-                <p>Por que organização, materiais acessíveis e escuta ativa ampliam a autonomia infantil.</p>
-                <div class="content-meta"><span><i class="fa-regular fa-calendar" aria-hidden="true"></i> 18 jul. 2026</span><span><i class="fa-regular fa-clock" aria-hidden="true"></i> 6 min de leitura</span></div>
-            </div>
-            <div class="post-admin-actions">
-                <button class="admin-button admin-button-outline admin-button-small" type="button" data-modal-open="blog-form" data-form-mode="edit" data-item-name="Ambientes preparados para investigar, escolher e criar"><i class="fa-regular fa-pen-to-square" aria-hidden="true"></i> Editar</button>
-                <button class="icon-button icon-button-danger" type="button" title="Excluir" aria-label="Excluir postagem" data-delete-trigger data-delete-type-value="a postagem" data-delete-name-value="Ambientes preparados para investigar, escolher e criar"><i class="fa-regular fa-trash-can" aria-hidden="true"></i></button>
-            </div>
-        </article>
-
-        <article class="post-admin-card" data-filter-item data-filter-text="projetos curiosidade criancas projetos" data-category="projetos">
-            <div class="post-admin-image">
-                <img th:src="@{/assets/slide/desenvolve4.jpg}" alt="Projeto pedagógico da Alphabetz" />
-                <span class="content-status content-status-draft">Rascunho</span>
-            </div>
-            <div class="post-admin-copy">
-                <div class="post-category post-category-blue">Projetos</div>
-                <h2>Projetos que nascem da curiosidade das crianças</h2>
-                <p>Um olhar para investigações e experiências que valorizam as perguntas das crianças.</p>
-                <div class="content-meta"><span><i class="fa-regular fa-calendar" aria-hidden="true"></i> Editado hoje</span><span><i class="fa-regular fa-clock" aria-hidden="true"></i> 3 min de leitura</span></div>
-            </div>
-            <div class="post-admin-actions">
-                <button class="admin-button admin-button-outline admin-button-small" type="button" data-modal-open="blog-form" data-form-mode="edit" data-item-name="Projetos que nascem da curiosidade das crianças"><i class="fa-regular fa-pen-to-square" aria-hidden="true"></i> Editar</button>
-                <button class="icon-button icon-button-danger" type="button" title="Excluir" aria-label="Excluir postagem" data-delete-trigger data-delete-type-value="a postagem" data-delete-name-value="Projetos que nascem da curiosidade das crianças"><i class="fa-regular fa-trash-can" aria-hidden="true"></i></button>
+                <button class="admin-button admin-button-outline admin-button-small" type="button"
+                    th:attr="data-modal-open=|blog-edit-${post.id}|">
+                    <i class="fa-regular fa-pen-to-square" aria-hidden="true"></i> Editar
+                </button>
+                <button class="icon-button icon-button-danger" type="button" title="Excluir"
+                    th:attr="aria-label=|Excluir ${post.titulo}|,data-modal-open=|blog-delete-${post.id}|">
+                    <i class="fa-regular fa-trash-can" aria-hidden="true"></i>
+                </button>
             </div>
         </article>
     </section>
 
-    <div class="empty-filter-state" data-empty-state="blog" hidden>
+    <div class="empty-filter-state" th:if="${#lists.isEmpty(posts)}">
+        <span><i class="fa-regular fa-folder-open" aria-hidden="true"></i></span>
+        <h2>Nenhuma postagem cadastrada</h2>
+        <p>Crie a primeira postagem para começar.</p>
+    </div>
+
+    <div class="empty-filter-state" data-empty-state="blog" hidden th:if="${!#lists.isEmpty(posts)}">
         <span><i class="fa-regular fa-folder-open" aria-hidden="true"></i></span>
         <h2>Nenhuma postagem encontrada</h2>
         <p>Ajuste a busca ou selecione outra categoria.</p>
     </div>
 
-    <div class="admin-modal" data-modal="blog-form" hidden aria-hidden="true">
+    <div class="admin-modal" data-modal="blog-create" hidden aria-hidden="true">
         <div class="modal-backdrop" data-modal-close></div>
-        <section class="modal-dialog modal-dialog-form modal-dialog-wide" role="dialog" aria-modal="true" aria-labelledby="blog-modal-title">
+        <section class="modal-dialog modal-dialog-form modal-dialog-wide" role="dialog" aria-modal="true"
+            aria-labelledby="blog-create-title">
             <header class="modal-heading">
-                <div><span class="eyebrow">Conteúdo editorial</span><h2 id="blog-modal-title" data-modal-form-title>Nova postagem</h2></div>
-                <button class="modal-close" type="button" data-modal-close aria-label="Fechar"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
+                <div>
+                    <span class="eyebrow">Conteúdo editorial</span>
+                    <h2 id="blog-create-title">Nova postagem</h2>
+                </div>
+                <button class="modal-close" type="button" data-modal-close aria-label="Fechar">
+                    <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+                </button>
             </header>
 
-            <form class="admin-form" data-static-form data-success-title="Postagem salva" data-success-message="O conteúdo foi atualizado apenas nesta demonstração.">
+            <form class="admin-form" th:action="@{/admin/blog}" method="post" enctype="multipart/form-data"
+                data-quill-form>
                 <div class="form-grid form-grid-two">
                     <div class="form-field form-field-span-two">
-                        <label for="blog-title">Título <span>*</span></label>
-                        <input id="blog-title" name="titulo" type="text" placeholder="Digite um título claro e convidativo" required data-item-name-input />
-                    </div>
-                    <div class="form-field">
-                        <label for="blog-category">Categoria <span>*</span></label>
-                        <select id="blog-category" name="categoria" required>
-                            <option value="">Selecione uma categoria</option><option>Pedagogia</option><option>Família</option><option>Rotina</option><option>Projetos</option>
-                        </select>
-                    </div>
-                    <div class="form-field">
-                        <label for="blog-status">Status</label>
-                        <select id="blog-status" name="status"><option>Publicado</option><option>Rascunho</option></select>
+                        <label for="blog-create-name">Título <span>*</span></label>
+                        <input id="blog-create-name" name="titulo" type="text" maxlength="180"
+                            placeholder="Digite um título claro e convidativo" required />
                     </div>
                     <div class="form-field form-field-span-two">
-                        <label for="blog-summary">Resumo <span>*</span></label>
-                        <textarea id="blog-summary" name="resumo" rows="3" maxlength="180" placeholder="Uma apresentação curta para o card da postagem" required></textarea>
-                        <small>Até 180 caracteres.</small>
+                        <label for="blog-create-category">Categoria <span>*</span></label>
+                        <select id="blog-create-category" name="categoria" required>
+                            <option value="">Selecione uma categoria</option>
+                            <option value="Pedagogia">Pedagogia</option>
+                            <option value="Família">Família</option>
+                            <option value="Rotina">Rotina</option>
+                            <option value="Projetos">Projetos</option>
+                        </select>
                     </div>
                     <div class="form-field form-field-span-two">
                         <span class="form-label">Imagem de capa <span>*</span></span>
-                        <label class="upload-zone upload-zone-compact" for="blog-image" data-drop-zone>
+                        <label class="upload-zone upload-zone-compact" for="blog-create-image" data-drop-zone>
                             <span class="upload-icon"><i class="fa-regular fa-image" aria-hidden="true"></i></span>
                             <span><strong>Selecione uma imagem de capa</strong><small>JPG, PNG ou WebP</small></span>
-                            <input id="blog-image" name="imagem" type="file" accept="image/jpeg,image/png,image/webp" data-image-input />
+                            <input id="blog-create-image" name="imagem" type="file"
+                                accept="image/jpeg,image/png,image/webp" required data-image-input />
                         </label>
                         <div class="image-preview-grid image-preview-single" data-image-preview aria-live="polite"></div>
                     </div>
-                    <div class="form-field form-field-span-two">
-                        <label for="blog-content">Conteúdo <span>*</span></label>
-                        <div class="editor-toolbar" aria-hidden="true"><button type="button"><strong>B</strong></button><button type="button"><em>I</em></button><button type="button"><i class="fa-solid fa-list-ul"></i></button><button type="button"><i class="fa-solid fa-link"></i></button></div>
-                        <textarea id="blog-content" class="editor-textarea" name="conteudo" rows="8" placeholder="Escreva o conteúdo completo da postagem..." required></textarea>
+                    <div class="form-field form-field-span-two quill-form-field">
+                        <span class="form-label">Conteúdo <span>*</span></span>
+                        <div class="quill-editor" data-quill-editor><p><br></p></div>
+                        <input type="hidden" name="conteudo" data-quill-input />
+                        <small class="field-error" data-quill-error hidden>Escreva o conteúdo da postagem.</small>
                     </div>
                 </div>
                 <div class="modal-actions">
                     <button class="admin-button admin-button-muted" type="button" data-modal-close>Cancelar</button>
-                    <button class="admin-button admin-button-primary" type="submit"><i class="fa-regular fa-floppy-disk" aria-hidden="true"></i> Salvar postagem</button>
+                    <button class="admin-button admin-button-primary" type="submit">
+                        <i class="fa-regular fa-floppy-disk" aria-hidden="true"></i> Salvar postagem
+                    </button>
                 </div>
             </form>
         </section>
     </div>
+
+    <th:block th:each="post : ${posts}">
+        <div class="admin-modal" th:attr="data-modal=|blog-edit-${post.id}|" hidden aria-hidden="true">
+            <div class="modal-backdrop" data-modal-close></div>
+            <section class="modal-dialog modal-dialog-form modal-dialog-wide" role="dialog" aria-modal="true"
+                th:attr="aria-labelledby=|blog-edit-title-${post.id}|">
+                <header class="modal-heading">
+                    <div>
+                        <span class="eyebrow">Conteúdo editorial</span>
+                        <h2 th:id="|blog-edit-title-${post.id}|">Editar postagem</h2>
+                    </div>
+                    <button class="modal-close" type="button" data-modal-close aria-label="Fechar">
+                        <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+                    </button>
+                </header>
+
+                <form class="admin-form" th:action="@{/admin/blog/{id}(id=${post.id})}"
+                    method="post" enctype="multipart/form-data" data-quill-form>
+                    <div class="form-grid form-grid-two">
+                        <div class="form-field form-field-span-two">
+                            <label th:for="|blog-name-${post.id}|">Título <span>*</span></label>
+                            <input th:id="|blog-name-${post.id}|" name="titulo" type="text" maxlength="180"
+                                th:value="${post.titulo}" required />
+                        </div>
+                        <div class="form-field form-field-span-two">
+                            <label th:for="|blog-category-${post.id}|">Categoria <span>*</span></label>
+                            <select th:id="|blog-category-${post.id}|" name="categoria" required>
+                                <option value="Pedagogia" th:selected="${post.categoria == 'Pedagogia'}">Pedagogia</option>
+                                <option value="Família" th:selected="${post.categoria == 'Família'}">Família</option>
+                                <option value="Rotina" th:selected="${post.categoria == 'Rotina'}">Rotina</option>
+                                <option value="Projetos" th:selected="${post.categoria == 'Projetos'}">Projetos</option>
+                            </select>
+                        </div>
+                        <div class="form-field form-field-span-two">
+                            <span class="form-label">Imagem de capa atual</span>
+                            <div class="blog-current-cover">
+                                <img th:src="@{/uploads/{filename}(filename=${post.imagemUrl})}"
+                                    th:alt="|Imagem de capa de ${post.titulo}|" />
+                            </div>
+                            <label class="upload-zone upload-zone-compact" th:for="|blog-image-${post.id}|" data-drop-zone>
+                                <span class="upload-icon"><i class="fa-regular fa-image" aria-hidden="true"></i></span>
+                                <span><strong>Substituir imagem de capa</strong><small>JPG, PNG ou WebP</small></span>
+                                <input th:id="|blog-image-${post.id}|" name="imagem" type="file"
+                                    accept="image/jpeg,image/png,image/webp" data-image-input />
+                            </label>
+                            <div class="image-preview-grid image-preview-single" data-image-preview aria-live="polite"></div>
+                        </div>
+                        <div class="form-field form-field-span-two quill-form-field">
+                            <span class="form-label">Conteúdo <span>*</span></span>
+                            <div class="quill-editor" data-quill-editor th:utext="${post.conteudo}"></div>
+                            <input type="hidden" name="conteudo" data-quill-input />
+                            <small class="field-error" data-quill-error hidden>Escreva o conteúdo da postagem.</small>
+                        </div>
+                    </div>
+                    <div class="modal-actions">
+                        <button class="admin-button admin-button-muted" type="button" data-modal-close>Cancelar</button>
+                        <button class="admin-button admin-button-primary" type="submit">
+                            <i class="fa-regular fa-floppy-disk" aria-hidden="true"></i> Salvar alterações
+                        </button>
+                    </div>
+                </form>
+            </section>
+        </div>
+
+        <div class="admin-modal" th:attr="data-modal=|blog-delete-${post.id}|" hidden aria-hidden="true">
+            <div class="modal-backdrop" data-modal-close></div>
+            <section class="modal-dialog modal-dialog-small" role="dialog" aria-modal="true"
+                th:attr="aria-labelledby=|blog-delete-title-${post.id}|">
+                <button class="modal-close" type="button" data-modal-close aria-label="Fechar">
+                    <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+                </button>
+                <span class="modal-alert-icon"><i class="fa-regular fa-trash-can" aria-hidden="true"></i></span>
+                <div class="modal-centered-copy">
+                    <span class="eyebrow eyebrow-coral">Confirmar exclusão</span>
+                    <h2 th:id="|blog-delete-title-${post.id}|">Excluir postagem?</h2>
+                    <p>A postagem <strong th:text="${post.titulo}">selecionada</strong> e sua imagem serão excluídas.</p>
+                </div>
+                <form class="modal-actions modal-actions-centered"
+                    th:action="@{/admin/blog/{id}/excluir(id=${post.id})}" method="post">
+                    <button class="admin-button admin-button-muted" type="button" data-modal-close>Cancelar</button>
+                    <button class="admin-button admin-button-danger" type="submit">
+                        <i class="fa-regular fa-trash-can" aria-hidden="true"></i> Excluir
+                    </button>
+                </form>
+            </section>
+        </div>
+    </th:block>
 </div>
 
 </html>

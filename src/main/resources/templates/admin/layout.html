@@ -14,6 +14,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
         integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link th:if="${activePage == 'blog'}" rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" />
     <link rel="stylesheet" th:href="@{/css/admin.css}" />
 </head>
 
@@ -136,6 +138,9 @@
         </section>
     </div>
 
+    <script th:if="${activePage == 'blog'}"
+        src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
+    <script th:if="${activePage == 'blog'}" th:src="@{/js/admin-blog.js}"></script>
     <script th:src="@{/js/admin.js}"></script>
 </body>
 

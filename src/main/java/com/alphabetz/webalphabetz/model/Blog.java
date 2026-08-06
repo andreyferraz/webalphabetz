@@ -35,6 +35,12 @@ public class Blog implements Persistable<UUID> {
     private String imagemUrl;
 
     @Transient
+    private String resumo;
+
+    @Transient
+    private int tempoLeitura;
+
+    @Transient
     private boolean isNew;
 
     @Override

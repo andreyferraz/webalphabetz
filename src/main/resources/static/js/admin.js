@@ -235,7 +235,9 @@
       dropZone.addEventListener('drop', event => {
         const droppedImages = Array.from(event.dataTransfer.files)
           .filter(file => file.type.startsWith('image/'));
-        selectedFiles = [...selectedFiles, ...droppedImages];
+        selectedFiles = input.multiple
+          ? [...selectedFiles, ...droppedImages]
+          : droppedImages.slice(0, 1);
         syncInputFiles();
         renderFiles();
       });
