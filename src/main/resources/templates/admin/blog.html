@@ -9,10 +9,16 @@
             <h1>Blog</h1>
             <p>Crie conteúdos que aproximam escola, família e infância.</p>
         </div>
-        <button class="admin-button admin-button-primary" type="button" data-modal-open="blog-create">
-            <i class="fa-solid fa-plus" aria-hidden="true"></i>
-            Nova postagem
-        </button>
+        <div class="page-intro-actions">
+            <button class="admin-button admin-button-outline" type="button" data-modal-open="blog-category-create">
+                <i class="fa-solid fa-folder-plus" aria-hidden="true"></i>
+                Adicionar categoria
+            </button>
+            <button class="admin-button admin-button-primary" type="button" data-modal-open="blog-create">
+                <i class="fa-solid fa-plus" aria-hidden="true"></i>
+                Nova postagem
+            </button>
+        </div>
     </section>
 
     <div class="form-message form-message-success" th:if="${successMessage}">
@@ -35,10 +41,8 @@
             <span class="sr-only">Filtrar por categoria</span>
             <select data-category-filter="blog">
                 <option value="">Todas as categorias</option>
-                <option value="pedagogia">Pedagogia</option>
-                <option value="familia">Família</option>
-                <option value="rotina">Rotina</option>
-                <option value="projetos">Projetos</option>
+                <option th:each="category : ${categories}" th:value="${category.nome}"
+                    th:text="${category.nome}">Categoria</option>
             </select>
         </label>
         <div class="toolbar-summary toolbar-summary-end">
@@ -119,10 +123,8 @@
                         <label for="blog-create-category">Categoria <span>*</span></label>
                         <select id="blog-create-category" name="categoria" required>
                             <option value="">Selecione uma categoria</option>
-                            <option value="Pedagogia">Pedagogia</option>
-                            <option value="Família">Família</option>
-                            <option value="Rotina">Rotina</option>
-                            <option value="Projetos">Projetos</option>
+                            <option th:each="category : ${categories}" th:value="${category.nome}"
+                                th:text="${category.nome}">Categoria</option>
                         </select>
                     </div>
                     <div class="form-field form-field-span-two">
@@ -152,6 +154,70 @@
         </section>
     </div>
 
+    <div class="admin-modal" data-modal="blog-category-create" hidden aria-hidden="true">
+        <div class="modal-backdrop" data-modal-close></div>
+        <section class="modal-dialog" role="dialog" aria-modal="true"
+            aria-labelledby="blog-category-create-title">
+            <header class="modal-heading">
+                <div>
+                    <span class="eyebrow">Organização editorial</span>
+                    <h2 id="blog-category-create-title">Gerenciar categorias</h2>
+                </div>
+                <button class="modal-close" type="button" data-modal-close aria-label="Fechar">
+                    <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+                </button>
+            </header>
+
+            <form class="admin-form" th:action="@{/admin/blog/categorias}" method="post">
+                <div class="form-field">
+                    <label for="blog-category-name">Nome <span>*</span></label>
+                    <input id="blog-category-name" name="nome" type="text" maxlength="80"
+                        placeholder="Ex.: Desenvolvimento infantil" required />
+                </div>
+                <div class="modal-actions">
+                    <button class="admin-button admin-button-muted" type="button" data-modal-close>Cancelar</button>
+                    <button class="admin-button admin-button-primary" type="submit">
+                        <i class="fa-regular fa-floppy-disk" aria-hidden="true"></i> Salvar categoria
+                    </button>
+                </div>
+            </form>
+
+            <div class="category-management">
+                <div class="category-management-heading">
+                    <span class="eyebrow">Categorias cadastradas</span>
+                    <strong th:text="${#lists.size(categories)}">0</strong>
+                </div>
+
+                <div class="category-management-empty" th:if="${#lists.isEmpty(categories)}">
+                    Nenhuma categoria cadastrada.
+                </div>
+
+                <div class="category-management-list" th:if="${!#lists.isEmpty(categories)}">
+                    <div class="category-management-row" th:each="category : ${categories}">
+                        <form class="category-edit-form"
+                            th:action="@{/admin/blog/categorias/{id}(id=${category.id})}" method="post">
+                            <label class="sr-only" th:for="|category-name-${category.id}|"
+                                th:text="|Editar categoria ${category.nome}|">Editar categoria</label>
+                            <input th:id="|category-name-${category.id}|" name="nome" type="text"
+                                maxlength="80" th:value="${category.nome}" required />
+                            <button class="icon-button" type="submit" title="Salvar alteração"
+                                th:attr="aria-label=|Salvar alteração de ${category.nome}|">
+                                <i class="fa-regular fa-floppy-disk" aria-hidden="true"></i>
+                            </button>
+                        </form>
+                        <form th:action="@{/admin/blog/categorias/{id}/excluir(id=${category.id})}"
+                            method="post">
+                            <button class="icon-button icon-button-danger" type="submit" title="Remover categoria"
+                                th:attr="aria-label=|Remover categoria ${category.nome}|">
+                                <i class="fa-regular fa-trash-can" aria-hidden="true"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
     <th:block th:each="post : ${posts}">
         <div class="admin-modal" th:attr="data-modal=|blog-edit-${post.id}|" hidden aria-hidden="true">
             <div class="modal-backdrop" data-modal-close></div>
@@ -178,10 +244,8 @@
                         <div class="form-field form-field-span-two">
                             <label th:for="|blog-category-${post.id}|">Categoria <span>*</span></label>
                             <select th:id="|blog-category-${post.id}|" name="categoria" required>
-                                <option value="Pedagogia" th:selected="${post.categoria == 'Pedagogia'}">Pedagogia</option>
-                                <option value="Família" th:selected="${post.categoria == 'Família'}">Família</option>
-                                <option value="Rotina" th:selected="${post.categoria == 'Rotina'}">Rotina</option>
-                                <option value="Projetos" th:selected="${post.categoria == 'Projetos'}">Projetos</option>
+                                <option th:each="category : ${categories}" th:value="${category.nome}"
+                                    th:text="${category.nome}" th:selected="${post.categoria == category.nome}">Categoria</option>
                             </select>
                         </div>
                         <div class="form-field form-field-span-two">

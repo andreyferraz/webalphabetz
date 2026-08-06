@@ -15,8 +15,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.alphabetz.webalphabetz.model.Blog;
 import com.alphabetz.webalphabetz.model.Slides;
-import com.alphabetz.webalphabetz.service.BlogService;
 import com.alphabetz.webalphabetz.service.AdminService;
+import com.alphabetz.webalphabetz.service.BlogCategoryService;
+import com.alphabetz.webalphabetz.service.BlogService;
 import com.alphabetz.webalphabetz.service.DashboardService;
 import com.alphabetz.webalphabetz.service.SlidesService;
 
@@ -25,13 +26,16 @@ public class AdminPagesController {
 
     private final SlidesService slidesService;
     private final BlogService blogService;
+    private final BlogCategoryService blogCategoryService;
     private final AdminService adminService;
     private final DashboardService dashboardService;
 
     public AdminPagesController(SlidesService slidesService, BlogService blogService,
-            AdminService adminService, DashboardService dashboardService) {
+            BlogCategoryService blogCategoryService, AdminService adminService,
+            DashboardService dashboardService) {
         this.slidesService = slidesService;
         this.blogService = blogService;
+        this.blogCategoryService = blogCategoryService;
         this.adminService = adminService;
         this.dashboardService = dashboardService;
     }
@@ -98,7 +102,44 @@ public class AdminPagesController {
     public String blog(Model model) {
         List<Blog> posts = blogService.getAllPosts();
         model.addAttribute("posts", posts);
+        model.addAttribute("categories", blogCategoryService.getAllCategories());
         return "admin/blog";
+    }
+
+    @PostMapping("/admin/blog/categorias")
+    public String createBlogCategory(@RequestParam String nome,
+            RedirectAttributes redirectAttributes) {
+        try {
+            blogCategoryService.createCategory(nome);
+            redirectAttributes.addFlashAttribute("successMessage", "Categoria criada com sucesso.");
+        } catch (RuntimeException exception) {
+            redirectAttributes.addFlashAttribute("errorMessage", errorMessage(exception));
+        }
+        return "redirect:/admin/blog";
+    }
+
+    @PostMapping("/admin/blog/categorias/{id}")
+    public String updateBlogCategory(@PathVariable UUID id, @RequestParam String nome,
+            RedirectAttributes redirectAttributes) {
+        try {
+            blogCategoryService.updateCategory(id, nome);
+            redirectAttributes.addFlashAttribute("successMessage", "Categoria atualizada com sucesso.");
+        } catch (RuntimeException exception) {
+            redirectAttributes.addFlashAttribute("errorMessage", errorMessage(exception));
+        }
+        return "redirect:/admin/blog";
+    }
+
+    @PostMapping("/admin/blog/categorias/{id}/excluir")
+    public String deleteBlogCategory(@PathVariable UUID id,
+            RedirectAttributes redirectAttributes) {
+        try {
+            blogCategoryService.deleteCategory(id);
+            redirectAttributes.addFlashAttribute("successMessage", "Categoria removida com sucesso.");
+        } catch (RuntimeException exception) {
+            redirectAttributes.addFlashAttribute("errorMessage", errorMessage(exception));
+        }
+        return "redirect:/admin/blog";
     }
 
     @PostMapping("/admin/blog")

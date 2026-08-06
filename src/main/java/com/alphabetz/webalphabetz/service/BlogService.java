@@ -28,15 +28,19 @@ public class BlogService {
 
     private final BlogRepository blogRepository;
     private final FileUploadService fileUploadService;
+    private final BlogCategoryService blogCategoryService;
 
-    public BlogService(BlogRepository blogRepository, FileUploadService fileUploadService) {
+    public BlogService(BlogRepository blogRepository, FileUploadService fileUploadService,
+            BlogCategoryService blogCategoryService) {
         this.blogRepository = blogRepository;
         this.fileUploadService = fileUploadService;
+        this.blogCategoryService = blogCategoryService;
     }
 
     @Transactional
     public Blog createPost(String titulo, String categoria, String conteudo, MultipartFile imageFile) {
         String sanitizedContent = validateAndSanitize(titulo, categoria, conteudo);
+        String existingCategory = blogCategoryService.requireExistingCategory(categoria);
         if (imageFile == null || imageFile.isEmpty()) {
             throw new IllegalArgumentException("A imagem de capa é obrigatória.");
         }
@@ -46,7 +50,7 @@ public class BlogService {
             Blog blog = new Blog();
             blog.setId(UUID.randomUUID());
             blog.setTitulo(titulo.trim());
-            blog.setCategoria(categoria.trim());
+            blog.setCategoria(existingCategory);
             blog.setConteudo(sanitizedContent);
             blog.setImagemUrl(imageUrl);
             blog.setNew(true);
@@ -62,6 +66,7 @@ public class BlogService {
             MultipartFile imageFile) {
         UUID blogId = Objects.requireNonNull(id, "id");
         String sanitizedContent = validateAndSanitize(titulo, categoria, conteudo);
+        String existingCategory = blogCategoryService.requireExistingCategory(categoria);
         Blog existingPost = blogRepository.findById(blogId)
                 .orElseThrow(() -> new IllegalArgumentException("Postagem não encontrada."));
 
@@ -71,7 +76,7 @@ public class BlogService {
                 : fileUploadService.salvarImagem(imageFile);
         try {
             existingPost.setTitulo(titulo.trim());
-            existingPost.setCategoria(categoria.trim());
+            existingPost.setCategoria(existingCategory);
             existingPost.setConteudo(sanitizedContent);
             if (newImageUrl != null) {
                 existingPost.setImagemUrl(newImageUrl);
