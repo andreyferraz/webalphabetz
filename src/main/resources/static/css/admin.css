@@ -188,6 +188,9 @@ h1, h2, h3, p { margin-top: 0; }
 .sidebar-spacer { flex: 1; min-height: 36px; }
 .sidebar-site-link { display: flex; align-items: center; gap: 12px; margin: 0 5px 18px; padding: 13px 15px; border: 1px solid rgba(255,255,255,.12); border-radius: 14px; color: rgba(255,255,255,.7); font-size: .8rem; font-weight: 700; }
 .sidebar-site-link:hover { color: white; border-color: rgba(255,255,255,.28); }
+.sidebar-developer-credit { margin: 0 8px 15px; color: rgba(255,255,255,.45); font-size: .61rem; line-height: 1.5; text-align: center; transition: color .2s ease; }
+.sidebar-developer-credit strong { color: rgba(255,255,255,.72); }
+.sidebar-developer-credit:hover, .sidebar-developer-credit:hover strong { color: var(--admin-yellow); }
 .sidebar-profile { display: flex; align-items: center; gap: 11px; padding: 16px 8px 2px; border-top: 1px solid rgba(255,255,255,.1); }
 .profile-avatar, .topbar-avatar span { display: grid; place-items: center; border-radius: 14px; font: 800 .95rem "Sora", sans-serif; color: var(--admin-navy); background: var(--admin-yellow); }
 .profile-avatar { width: 40px; height: 40px; }
@@ -219,8 +222,6 @@ h1, h2, h3, p { margin-top: 0; }
 .topbar-breadcrumb i { color: #a9b5bf; font-size: .58rem; }
 .topbar-breadcrumb strong { font-weight: 800; }
 .topbar-actions { display: flex; align-items: center; gap: 18px; }
-.static-status { display: inline-flex; align-items: center; gap: 8px; padding: 7px 11px; border-radius: 999px; color: var(--admin-green); font-size: .69rem; font-weight: 800; background: var(--admin-mint-soft); }
-.static-status > span { width: 7px; height: 7px; border-radius: 50%; background: var(--admin-mint); box-shadow: 0 0 0 4px rgba(122,198,186,.18); }
 .topbar-avatar span { width: 38px; height: 38px; }
 .mobile-menu-button { display: none; }
 .admin-content,
@@ -522,7 +523,6 @@ h1, h2, h3, p { margin-top: 0; }
   .login-panel { padding: 48px 22px 22px; }
   .admin-topbar { height: 70px; padding: 0 17px; }
   .topbar-breadcrumb { display: none; }
-  .static-status { padding: 6px 9px; font-size: .6rem; }
   .admin-content,
   .admin-workspace > .admin-page-content { padding: 25px 17px 38px; }
   .admin-page-content { gap: 20px; }
