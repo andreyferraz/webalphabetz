@@ -1,7 +1,10 @@
 package com.alphabetz.webalphabetz.service;
 
+import java.text.Normalizer;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.jsoup.Jsoup;
@@ -106,6 +109,30 @@ public class BlogService {
         return posts;
     }
 
+    public List<Blog> getPublicPostsNewestFirst() {
+        List<Blog> posts = blogRepository.findAllNewestFirst();
+        posts.forEach(this::enrich);
+        return posts;
+    }
+
+    public Optional<Blog> findPublicPostById(UUID id) {
+        return blogRepository.findById(Objects.requireNonNull(id, "id"))
+                .map(this::enrich);
+    }
+
+    public Optional<Blog> findPublicPostBySlug(String slug) {
+        return getPublicPostsNewestFirst().stream()
+                .filter(post -> post.getSlug().equals(slug))
+                .findFirst();
+    }
+
+    public List<Blog> getLatestPostsExcluding(UUID postId, int limit) {
+        return getPublicPostsNewestFirst().stream()
+                .filter(post -> !post.getId().equals(postId))
+                .limit(limit)
+                .toList();
+    }
+
     private String validateAndSanitize(String titulo, String categoria, String conteudo) {
         ValidationUtils.validarCampoStringObrigatorio(titulo, "titulo");
         ValidationUtils.validarCampoStringObrigatorio(categoria, "categoria");
@@ -123,6 +150,7 @@ public class BlogService {
                 blog.getConteudo() == null ? "" : blog.getConteudo(),
                 BLOG_CONTENT_SAFELIST);
         blog.setConteudo(safeContent);
+        blog.setSlug(toSlug(blog.getTitulo()));
         String plainText = Jsoup.parseBodyFragment(safeContent).text().trim();
         blog.setResumo(summarize(plainText));
         int words = plainText.isBlank() ? 0 : plainText.split("\\s+").length;
@@ -137,5 +165,13 @@ public class BlogService {
         String shortened = text.substring(0, 177);
         int lastSpace = shortened.lastIndexOf(' ');
         return (lastSpace > 120 ? shortened.substring(0, lastSpace) : shortened) + "...";
+    }
+
+    private String toSlug(String title) {
+        String normalizedTitle = Normalizer.normalize(title, Normalizer.Form.NFD)
+                .replaceAll("\\p{M}", "");
+        return normalizedTitle.toLowerCase(Locale.ROOT)
+                .replaceAll("[^a-z0-9]+", "-")
+                .replaceAll("(^-|-$)", "");
     }
 }

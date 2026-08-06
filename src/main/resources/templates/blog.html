@@ -11,23 +11,22 @@
             <div class="reveal">
                 <span class="kicker">Blog Alphabetz</span>
                 <h1>Conteúdo que aproxima escola, família e infância.</h1>
-                <p>Uma vitrine editorial para publicar dicas, projetos, registros de vivências, desenvolvimento infantil
-                    e bastidores da rotina escolar.</p>
+                <p>Dicas, projetos, registros de vivências, desenvolvimento infantil e bastidores da rotina escolar.</p>
                 <div class="hero-cta">
-                    <a class="btn btn-primary" href="#posts">Ver destaques</a>
-                    <a class="btn btn-outline" th:href="@{https://blog.alphabetz.com.br/}" target="_blank"
-                        rel="noopener">Acessar blog oficial</a>
+                    <a class="btn btn-primary" href="#posts">Ver publicações</a>
                 </div>
             </div>
-            <div class="blog-hero-card reveal" aria-hidden="true">
+            <a class="blog-hero-card reveal" th:if="${latestPost != null}"
+                th:href="@{/blog/{slug}(slug=${latestPost.slug})}"
+                th:attr="aria-label=|Ler ${latestPost.titulo}|">
                 <div class="blog-shape shape-one"></div>
                 <div class="blog-shape shape-two"></div>
                 <div class="editorial-card">
                     <span>nova publicação</span>
-                    <strong>Como o brincar constrói autonomia?</strong>
-                    <p>Um olhar sobre experiências que desenvolvem confiança, linguagem e criatividade.</p>
+                    <strong th:text="${latestPost.titulo}">Título da publicação</strong>
+                    <p th:text="${latestPost.resumo}">Resumo da publicação.</p>
                 </div>
-            </div>
+            </a>
         </div>
     </section>
 
@@ -38,48 +37,34 @@
                     <span class="kicker">Destaques editoriais</span>
                     <h2>Publicações pensadas para gerar confiança.</h2>
                 </div>
-                <p>Cards prontos para receber textos reais do time pedagógico, fotos da escola e links de leitura
-                    completa.</p>
+                <p>Conteúdos produzidos pela Alphabetz para compartilhar conhecimento, experiências e orientações.</p>
             </div>
-            <div class="blog-grid">
-                <article class="blog-card reveal" data-category="Pedagogia">
-                    <div class="blog-thumb thumb-red">Brinca</div>
+
+            <div class="blog-grid" th:if="${!#lists.isEmpty(posts)}">
+                <article class="blog-card reveal" th:each="post : ${posts}"
+                    th:attr="data-category=${post.categoria}">
+                    <a class="blog-thumb blog-thumb-image" th:href="@{/blog/{slug}(slug=${post.slug})}"
+                        th:attr="aria-label=|Ler ${post.titulo}|">
+                        <img th:src="@{/uploads/{filename}(filename=${post.imagemUrl})}"
+                            th:alt="|Imagem de capa de ${post.titulo}|" loading="lazy" decoding="async" />
+                    </a>
                     <div class="blog-content">
-                        <span class="blog-category">Pedagogia</span>
-                        <h3>O papel do brincar no desenvolvimento infantil</h3>
-                        <p>Como experiências lúdicas favorecem linguagem, imaginação, socialização e resolução de
-                            problemas.</p>
-                        <a href="https://blog.alphabetz.com.br/" target="_blank" rel="noopener">Ler no blog →</a>
+                        <span class="blog-category" th:text="${post.categoria}">Categoria</span>
+                        <h3 th:text="${post.titulo}">Título da notícia</h3>
+                        <p th:text="${post.resumo}">Resumo da notícia.</p>
+                        <div class="public-blog-meta">
+                            <i class="fa-regular fa-clock" aria-hidden="true"></i>
+                            <span th:text="|${post.tempoLeitura} min de leitura|">1 min de leitura</span>
+                        </div>
+                        <a th:href="@{/blog/{slug}(slug=${post.slug})}">Ler notícia →</a>
                     </div>
                 </article>
-                <article class="blog-card reveal" data-category="Família">
-                    <div class="blog-thumb thumb-mint">Cuida</div>
-                    <div class="blog-content">
-                        <span class="blog-category">Família</span>
-                        <h3>Adaptação escolar: segurança para crianças e responsáveis</h3>
-                        <p>Orientações para tornar a chegada à escola mais acolhedora, previsível e tranquila.</p>
-                        <a href="https://blog.alphabetz.com.br/" target="_blank" rel="noopener">Ler no blog →</a>
-                    </div>
-                </article>
-                <article class="blog-card reveal" data-category="Rotina">
-                    <div class="blog-thumb thumb-yellow">Interage</div>
-                    <div class="blog-content">
-                        <span class="blog-category">Rotina</span>
-                        <h3>Ambientes preparados para investigar, escolher e criar</h3>
-                        <p>Por que organização, materiais acessíveis e escuta ativa ampliam a autonomia infantil.</p>
-                        <a href="https://blog.alphabetz.com.br/" target="_blank" rel="noopener">Ler no blog →</a>
-                    </div>
-                </article>
-                <article class="blog-card reveal" data-category="Projetos">
-                    <div class="blog-thumb thumb-sky">Desenvolve</div>
-                    <div class="blog-content">
-                        <span class="blog-category">Projetos</span>
-                        <h3>Projetos que nascem da curiosidade das crianças</h3>
-                        <p>Um modelo de conteúdo para contar histórias reais da escola e valorizar a abordagem
-                            Alphabetz.</p>
-                        <a href="https://blog.alphabetz.com.br/" target="_blank" rel="noopener">Ler no blog →</a>
-                    </div>
-                </article>
+            </div>
+
+            <div class="blog-empty-state reveal" th:if="${#lists.isEmpty(posts)}">
+                <span class="kicker">Em breve</span>
+                <h2>Nenhuma publicação disponível.</h2>
+                <p>Novos conteúdos serão publicados aqui.</p>
             </div>
         </div>
     </section>
@@ -88,13 +73,12 @@
         <div class="container">
             <div class="cta-box reveal">
                 <div class="cta-content">
-                    <span class="kicker">Estratégia de conteúdo</span>
-                    <h2>O blog também vende confiança.</h2>
-                    <p>Conteúdo recorrente ajuda famílias a entenderem a proposta pedagógica, conhecerem a rotina e
-                        avançarem para o agendamento de visita.</p>
+                    <span class="kicker">Conheça a Alphabetz</span>
+                    <h2>Conteúdo também constrói confiança.</h2>
+                    <p>Conheça nossa proposta pedagógica, nossa rotina e os espaços preparados para cada etapa da infância.</p>
                     <div class="cta-actions">
                         <a class="btn btn-yellow" th:href="@{/contato#agendar}">Agendar visita</a>
-                        <a class="btn btn-outline" th:href="@{/trabalhe-conosco}">Trabalhe conosco</a>
+                        <a class="btn btn-outline" th:href="@{/abordagem}">Nossa abordagem</a>
                     </div>
                 </div>
             </div>

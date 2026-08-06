@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pt-BR"
+    th:replace="~{layout :: layout('Notícia | Alphabetz', ~{::content})}">
+<header>
+    <title th:text="${title}"></title>
+</header>
+<div th:fragment="content">
+
+    <section class="page-hero public-blog-post-hero">
+        <div class="container public-blog-post-heading reveal">
+            <a class="public-blog-back" th:href="@{/blog}"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Voltar para o blog</a>
+            <span class="kicker" th:text="${post.categoria}">Categoria</span>
+            <h1 th:text="${post.titulo}">Título da notícia</h1>
+            <div class="public-blog-post-meta">
+                <span><i class="fa-regular fa-clock" aria-hidden="true"></i>
+                    <span th:text="|${post.tempoLeitura} min de leitura|">1 min de leitura</span>
+                </span>
+                <span>Alphabetz</span>
+            </div>
+        </div>
+    </section>
+
+    <main class="section public-blog-post-section">
+        <article class="container public-blog-post">
+            <figure class="public-blog-post-cover-frame reveal">
+                <img class="public-blog-post-cover"
+                    th:src="@{/uploads/{filename}(filename=${post.imagemUrl})}"
+                    th:alt="|Imagem de capa de ${post.titulo}|" />
+            </figure>
+
+            <div class="public-blog-reading-card">
+                <div class="public-blog-reading-label">
+                    <i class="fa-solid fa-book-open" aria-hidden="true"></i>
+                    <span>Boa leitura</span>
+                </div>
+                <div class="public-blog-post-content" th:utext="${post.conteudo}"></div>
+                <footer class="public-blog-post-footer">
+                    <a class="btn btn-primary" th:href="@{/blog}">Ver todas as publicações</a>
+                </footer>
+            </div>
+        </article>
+
+        <section class="container public-blog-related" th:if="${!#lists.isEmpty(recentPosts)}">
+            <div class="public-blog-related-heading reveal">
+                <div>
+                    <span class="kicker">Continue lendo</span>
+                    <h2>Publicações recentes</h2>
+                </div>
+                <a th:href="@{/blog}">Ver todas <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+            </div>
+
+            <div class="public-blog-related-grid">
+                <a class="public-blog-related-card reveal" th:each="recentPost : ${recentPosts}"
+                    th:href="@{/blog/{slug}(slug=${recentPost.slug})}">
+                    <span class="public-blog-related-image">
+                        <img th:src="@{/uploads/{filename}(filename=${recentPost.imagemUrl})}"
+                            th:alt="|Imagem de capa de ${recentPost.titulo}|" loading="lazy" decoding="async" />
+                    </span>
+                    <span class="public-blog-related-body">
+                        <span class="blog-category" th:text="${recentPost.categoria}">Categoria</span>
+                        <strong th:text="${recentPost.titulo}">Título da publicação</strong>
+                        <span class="public-blog-meta">
+                            <i class="fa-regular fa-clock" aria-hidden="true"></i>
+                            <span th:text="|${recentPost.tempoLeitura} min de leitura|">1 min de leitura</span>
+                        </span>
+                    </span>
+                </a>
+            </div>
+        </section>
+    </main>
+
+</div>
+
+</html>
