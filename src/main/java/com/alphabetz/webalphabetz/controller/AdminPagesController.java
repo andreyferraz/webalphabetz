@@ -17,6 +17,7 @@ import com.alphabetz.webalphabetz.model.Blog;
 import com.alphabetz.webalphabetz.model.Slides;
 import com.alphabetz.webalphabetz.service.BlogService;
 import com.alphabetz.webalphabetz.service.AdminService;
+import com.alphabetz.webalphabetz.service.DashboardService;
 import com.alphabetz.webalphabetz.service.SlidesService;
 
 @Controller
@@ -25,12 +26,14 @@ public class AdminPagesController {
     private final SlidesService slidesService;
     private final BlogService blogService;
     private final AdminService adminService;
+    private final DashboardService dashboardService;
 
     public AdminPagesController(SlidesService slidesService, BlogService blogService,
-            AdminService adminService) {
+            AdminService adminService, DashboardService dashboardService) {
         this.slidesService = slidesService;
         this.blogService = blogService;
         this.adminService = adminService;
+        this.dashboardService = dashboardService;
     }
 
     @GetMapping("/login")
@@ -39,7 +42,8 @@ public class AdminPagesController {
     }
 
     @GetMapping("/admin")
-    public String overview() {
+    public String overview(Model model) {
+        model.addAttribute("dashboard", dashboardService.getSummary());
         return "admin/index";
     }
 

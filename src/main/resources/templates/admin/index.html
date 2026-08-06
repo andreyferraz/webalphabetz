@@ -11,7 +11,7 @@
         </div>
         <div class="intro-date">
             <span class="intro-date-icon"><i class="fa-regular fa-calendar" aria-hidden="true"></i></span>
-            <div><small>Hoje</small><strong>Conteúdo em dia</strong></div>
+            <div><small>Hoje</small><strong th:text="${dashboard.todayLabel}">Data atual</strong></div>
         </div>
     </section>
 
@@ -19,21 +19,27 @@
         <article class="metric-card metric-card-coral">
             <div class="metric-card-heading">
                 <span class="metric-icon"><i class="fa-regular fa-images" aria-hidden="true"></i></span>
-                <span class="metric-trend"><i class="fa-solid fa-arrow-trend-up" aria-hidden="true"></i> Ativos</span>
+                <span class="metric-trend"><i class="fa-solid fa-database" aria-hidden="true"></i> Persistidos</span>
             </div>
-            <strong class="metric-value">04</strong>
+            <strong class="metric-value" th:text="${dashboard.totalSlides}">0</strong>
             <span class="metric-label">Coleções de slides</span>
-            <div class="metric-footer"><strong>36 fotos</strong><span>organizadas nas coleções</span></div>
+            <div class="metric-footer">
+                <strong th:text="${dashboard.totalPhotos + (dashboard.totalPhotos == 1 ? ' foto' : ' fotos')}">0 fotos</strong>
+                <span>organizadas nas coleções</span>
+            </div>
         </article>
 
         <article class="metric-card metric-card-blue">
             <div class="metric-card-heading">
                 <span class="metric-icon"><i class="fa-regular fa-newspaper" aria-hidden="true"></i></span>
-                <span class="metric-trend"><i class="fa-solid fa-wand-magic-sparkles" aria-hidden="true"></i> Conteúdo</span>
+                <span class="metric-trend"><i class="fa-solid fa-database" aria-hidden="true"></i> Persistidas</span>
             </div>
-            <strong class="metric-value">04</strong>
+            <strong class="metric-value" th:text="${dashboard.totalPosts}">0</strong>
             <span class="metric-label">Postagens no blog</span>
-            <div class="metric-footer"><strong>4 categorias</strong><span>na vitrine editorial</span></div>
+            <div class="metric-footer">
+                <strong th:text="${dashboard.totalCategories + (dashboard.totalCategories == 1 ? ' categoria' : ' categorias')}">0 categorias</strong>
+                <span>na organização editorial</span>
+            </div>
         </article>
 
         <article class="metric-card metric-card-mint">
@@ -41,8 +47,8 @@
                 <span class="metric-icon"><i class="fa-regular fa-user" aria-hidden="true"></i></span>
                 <span class="metric-trend"><i class="fa-solid fa-shield" aria-hidden="true"></i> Seguro</span>
             </div>
-            <strong class="metric-value">01</strong>
-            <span class="metric-label">Administrador</span>
+            <strong class="metric-value" th:text="${dashboard.totalAdmins}">0</strong>
+            <span class="metric-label" th:text="${dashboard.totalAdmins == 1 ? 'Administrador' : 'Administradores'}">Administradores</span>
             <div class="metric-footer"><strong>Protegido</strong><span>com acesso autenticado</span></div>
         </article>
     </section>
@@ -79,29 +85,36 @@
         <article class="admin-card activity-card">
             <header class="card-heading-row">
                 <div>
-                    <span class="eyebrow">Histórico</span>
-                    <h2>Atividades recentes</h2>
+                    <span class="eyebrow">Dados atuais</span>
+                    <h2>Resumo operacional</h2>
                 </div>
-                <button class="icon-button" type="button" aria-label="Mais opções">
-                    <i class="fa-solid fa-ellipsis" aria-hidden="true"></i>
-                </button>
+                <span class="card-heading-decoration" aria-hidden="true"></span>
             </header>
 
             <ol class="activity-list">
                 <li>
                     <span class="activity-icon activity-icon-coral"><i class="fa-regular fa-images" aria-hidden="true"></i></span>
-                    <div><strong>Coleção “Brinca” atualizada</strong><span>3 novas fotos adicionadas</span></div>
-                    <time>Hoje</time>
+                    <div>
+                        <strong th:text="${dashboard.totalSlides + (dashboard.totalSlides == 1 ? ' coleção cadastrada' : ' coleções cadastradas')}">0 coleções cadastradas</strong>
+                        <span th:text="${dashboard.totalPhotos + (dashboard.totalPhotos == 1 ? ' foto armazenada' : ' fotos armazenadas')}">0 fotos armazenadas</span>
+                    </div>
+                    <time>Atual</time>
                 </li>
                 <li>
                     <span class="activity-icon activity-icon-blue"><i class="fa-regular fa-newspaper" aria-hidden="true"></i></span>
-                    <div><strong>Postagem publicada</strong><span>Projetos que nascem da curiosidade</span></div>
-                    <time>Ontem</time>
+                    <div>
+                        <strong th:text="${dashboard.totalPosts + (dashboard.totalPosts == 1 ? ' postagem cadastrada' : ' postagens cadastradas')}">0 postagens cadastradas</strong>
+                        <span th:text="${dashboard.totalCategories + (dashboard.totalCategories == 1 ? ' categoria utilizada' : ' categorias utilizadas')}">0 categorias utilizadas</span>
+                    </div>
+                    <time>Atual</time>
                 </li>
                 <li>
                     <span class="activity-icon activity-icon-mint"><i class="fa-solid fa-shield-halved" aria-hidden="true"></i></span>
-                    <div><strong>Acesso administrativo</strong><span>Sessão iniciada com segurança</span></div>
-                    <time>2 dias</time>
+                    <div>
+                        <strong th:text="${dashboard.totalAdmins + (dashboard.totalAdmins == 1 ? ' administrador ativo' : ' administradores ativos')}">0 administradores ativos</strong>
+                        <span>Acesso protegido por autenticação</span>
+                    </div>
+                    <time>Seguro</time>
                 </li>
             </ol>
         </article>
@@ -110,11 +123,11 @@
     <aside class="integration-banner">
         <span class="integration-icon"><i class="fa-solid fa-puzzle-piece" aria-hidden="true"></i></span>
         <div>
-            <span class="eyebrow eyebrow-light">Próxima etapa</span>
-            <h2>Painel preparado para integração</h2>
-            <p>Os controles desta versão são demonstrativos. A estrutura visual já está pronta para ser conectada aos serviços de slides, blog e administração.</p>
+            <span class="eyebrow eyebrow-light">Persistência ativa</span>
+            <h2>Painel conectado aos dados</h2>
+            <p>Slides, postagens e credenciais administrativas estão integrados ao banco de dados e refletidos neste resumo.</p>
         </div>
-        <span class="integration-badge">Versão estática</span>
+        <span class="integration-badge">Dados atualizados</span>
     </aside>
 </div>
 
