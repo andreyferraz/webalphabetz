@@ -1302,7 +1302,7 @@ p {
   position: relative;
   overflow: hidden;
   border-radius: 48px;
-  background: var(--blue);
+  background: #004E4A;
   color: white;
   padding: clamp(38px, 6vw, 72px);
   box-shadow: var(--shadow);
