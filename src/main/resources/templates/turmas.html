@@ -86,14 +86,19 @@
 
     <section class="section">
         <div class="container">
-            <div class="testimonial-card testimonial-card-turmas reveal" data-testimonial-set="turmas">
+            <div class="testimonial-card testimonial-card-turmas reveal" data-testimonial-set="turmas"
+                th:if="${turmasSlide != null and !#lists.isEmpty(turmasSlide.imagens)}">
+                <span hidden data-testimonial-slide th:each="image : ${turmasSlide.imagens}"
+                    th:attr="data-slide-src=@{/uploads/{filename}(filename=${image.imagemUrl})}"></span>
                 <div class="testimonial-media">
                     <button class="testimonial-open" type="button" data-testimonial-open aria-label="Abrir foto ampliada">
-                        <img class="testimonial-image" th:src="@{/assets/slide/turmas/3013153_1_1756728277555277461865119.jpg}"
+                        <img class="testimonial-image"
+                            th:src="@{/uploads/{filename}(filename=${turmasSlide.imagens[0].imagemUrl})}"
                             alt="Momentos das turmas da Alphabetz" data-testimonial-image loading="lazy" decoding="async" />
                     </button>
                 </div>
-                <div class="testimonial-controls" aria-label="Controle do slide de fotos">
+                <div class="testimonial-controls" aria-label="Controle do slide de fotos"
+                    th:if="${turmasSlide.quantidadeFotos > 1}">
                     <button class="icon-btn" type="button" data-testimonial-prev aria-label="Foto anterior">←</button>
                     <button class="icon-btn" type="button" data-testimonial-next aria-label="Próxima foto">→</button>
                 </div>

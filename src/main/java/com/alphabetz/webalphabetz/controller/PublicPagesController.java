@@ -49,7 +49,12 @@ public class PublicPagesController {
     }
 
     @GetMapping("/turmas")
-    public String turmas() {
+    public String turmas(Model model) {
+        Slides turmasSlide = slidesService.getAllSlides().stream()
+                .filter(slide -> slide.getTitulo().trim().toLowerCase(Locale.ROOT).contains("turmas"))
+                .findFirst()
+                .orElse(null);
+        model.addAttribute("turmasSlide", turmasSlide);
         return "turmas";
     }
 
