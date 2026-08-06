@@ -1,7 +1,5 @@
 package com.alphabetz.webalphabetz.model;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 import org.springframework.data.annotation.Id;
@@ -17,37 +15,27 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table("slides")
-public class Slides implements Persistable<UUID> {
+@Table("slide_images")
+public class SlideImage implements Persistable<UUID> {
 
     @Id
     @Column("id")
     private UUID id;
 
-    @Column("titulo")
-    private String titulo;
+    @Column("slide_id")
+    private UUID slideId;
 
     @Column("imagem_url")
     private String imagemUrl;
 
-    @Transient
-    private List<SlideImage> imagens = new ArrayList<>();
+    @Column("ordem")
+    private Integer ordem;
 
     @Transient
     private boolean isNew;
 
     @Override
-    public UUID getId() {
-        return id;
-    }
-
-    @Override
     public boolean isNew() {
         return isNew;
     }
-
-    public int getQuantidadeFotos() {
-        return imagens == null ? 0 : imagens.size();
-    }
-
 }

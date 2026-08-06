@@ -9,11 +9,20 @@
             <h1>Slides</h1>
             <p>Organize as coleções de fotos que apresentam as vivências da Alphabetz.</p>
         </div>
-        <button class="admin-button admin-button-primary" type="button" data-modal-open="slide-form" data-form-mode="create">
+        <button class="admin-button admin-button-primary" type="button" data-modal-open="slide-create">
             <i class="fa-solid fa-plus" aria-hidden="true"></i>
             Novo slide
         </button>
     </section>
+
+    <div class="form-message form-message-success" th:if="${successMessage}">
+        <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
+        <span th:text="${successMessage}">Operação realizada com sucesso.</span>
+    </div>
+    <div class="form-message form-message-error" th:if="${errorMessage}">
+        <i class="fa-solid fa-circle-exclamation" aria-hidden="true"></i>
+        <span th:text="${errorMessage}">Não foi possível concluir a operação.</span>
+    </div>
 
     <section class="content-toolbar" aria-label="Ferramentas de slides">
         <label class="admin-search">
@@ -22,159 +31,194 @@
             <input type="search" placeholder="Buscar pelo nome do slide..." data-filter-input="slides" />
         </label>
         <div class="toolbar-summary">
-            <span><strong data-visible-count>4</strong> coleções</span>
+            <span><strong data-visible-count th:text="${#lists.size(slides)}">0</strong> coleções</span>
             <span class="toolbar-divider"></span>
-            <span>36 fotos</span>
+            <span><strong th:text="${totalFotos}">0</strong> fotos</span>
         </div>
     </section>
 
-    <section class="slide-admin-grid" data-filter-list="slides" aria-label="Coleções de slides">
-        <article class="slide-admin-card" data-filter-item data-filter-text="cuida acolhimento cuidado">
-            <div class="slide-collage">
-                <img th:src="@{/assets/slide/cuida1.jpg}" alt="Crianças em vivência da coleção Cuida" />
-                <img th:src="@{/assets/slide/cuida2.jpg}" alt="Crianças em vivência da coleção Cuida" />
-                <img th:src="@{/assets/slide/cuida3.jpg}" alt="Crianças em vivência da coleção Cuida" />
-                <span class="photo-count"><i class="fa-regular fa-images" aria-hidden="true"></i> 8 fotos</span>
+    <section class="slide-admin-grid" data-filter-list="slides" aria-label="Coleções de slides"
+        th:if="${!#lists.isEmpty(slides)}">
+        <article class="slide-admin-card" data-filter-item th:each="slide : ${slides}"
+            th:attr="data-filter-text=${slide.titulo}">
+            <div class="slide-collage"
+                th:classappend="${slide.quantidadeFotos == 1} ? ' slide-collage-single' : (${slide.quantidadeFotos == 2} ? ' slide-collage-two' : '')">
+                <th:block th:each="image, status : ${slide.imagens}">
+                    <img th:if="${status.index < 3}"
+                        th:src="@{/uploads/{filename}(filename=${image.imagemUrl})}"
+                        th:alt="|Foto ${status.count} da coleção ${slide.titulo}|" />
+                </th:block>
+                <span class="photo-count">
+                    <i class="fa-regular fa-images" aria-hidden="true"></i>
+                    <span th:text="${slide.quantidadeFotos + (slide.quantidadeFotos == 1 ? ' foto' : ' fotos')}">0 fotos</span>
+                </span>
             </div>
             <div class="slide-admin-content">
                 <div class="slide-card-title">
-                    <div><span class="content-status content-status-active">Ativo</span><h2>Cuida</h2></div>
+                    <div>
+                        <span class="content-status content-status-active">Ativo</span>
+                        <h2 th:text="${slide.titulo}">Slide</h2>
+                    </div>
                     <div class="row-actions">
-                        <button class="icon-button" type="button" title="Editar" aria-label="Editar Cuida"
-                            data-modal-open="slide-form" data-form-mode="edit" data-item-name="Cuida">
+                        <button class="icon-button" type="button" title="Editar"
+                            th:attr="aria-label=|Editar ${slide.titulo}|,data-modal-open=|slide-edit-${slide.id}|">
                             <i class="fa-regular fa-pen-to-square" aria-hidden="true"></i>
                         </button>
-                        <button class="icon-button icon-button-danger" type="button" title="Excluir" aria-label="Excluir Cuida"
-                            data-delete-trigger data-delete-type-value="o slide" data-delete-name-value="Cuida">
+                        <button class="icon-button icon-button-danger" type="button" title="Excluir"
+                            th:attr="aria-label=|Excluir ${slide.titulo}|,data-modal-open=|slide-delete-${slide.id}|">
                             <i class="fa-regular fa-trash-can" aria-hidden="true"></i>
                         </button>
                     </div>
                 </div>
-                <p>Registros de acolhimento, cuidado e rotina.</p>
-                <div class="content-meta"><span><i class="fa-regular fa-clock" aria-hidden="true"></i> Atualizado hoje</span></div>
-            </div>
-        </article>
-
-        <article class="slide-admin-card" data-filter-item data-filter-text="brinca brincadeiras imaginação">
-            <div class="slide-collage">
-                <img th:src="@{/assets/slide/brinca1.jpg}" alt="Crianças em vivência da coleção Brinca" />
-                <img th:src="@{/assets/slide/brinca2.jpg}" alt="Crianças em vivência da coleção Brinca" />
-                <img th:src="@{/assets/slide/brinca3.jpg}" alt="Crianças em vivência da coleção Brinca" />
-                <span class="photo-count"><i class="fa-regular fa-images" aria-hidden="true"></i> 11 fotos</span>
-            </div>
-            <div class="slide-admin-content">
-                <div class="slide-card-title">
-                    <div><span class="content-status content-status-active">Ativo</span><h2>Brinca</h2></div>
-                    <div class="row-actions">
-                        <button class="icon-button" type="button" title="Editar" aria-label="Editar Brinca"
-                            data-modal-open="slide-form" data-form-mode="edit" data-item-name="Brinca">
-                            <i class="fa-regular fa-pen-to-square" aria-hidden="true"></i>
-                        </button>
-                        <button class="icon-button icon-button-danger" type="button" title="Excluir" aria-label="Excluir Brinca"
-                            data-delete-trigger data-delete-type-value="o slide" data-delete-name-value="Brinca">
-                            <i class="fa-regular fa-trash-can" aria-hidden="true"></i>
-                        </button>
-                    </div>
+                <p th:text="|Coleção com ${slide.quantidadeFotos} ${slide.quantidadeFotos == 1 ? 'foto' : 'fotos'}.|">
+                    Coleção de fotos.
+                </p>
+                <div class="content-meta">
+                    <span><i class="fa-solid fa-database" aria-hidden="true"></i> Conteúdo persistido</span>
                 </div>
-                <p>Momentos de brincadeira, imaginação e descoberta.</p>
-                <div class="content-meta"><span><i class="fa-regular fa-clock" aria-hidden="true"></i> Atualizado há 2 dias</span></div>
-            </div>
-        </article>
-
-        <article class="slide-admin-card" data-filter-item data-filter-text="interage convivencia troca">
-            <div class="slide-collage">
-                <img th:src="@{/assets/slide/interage1.jpg}" alt="Crianças em vivência da coleção Interage" />
-                <img th:src="@{/assets/slide/interage2.jpg}" alt="Crianças em vivência da coleção Interage" />
-                <img th:src="@{/assets/slide/interage3.jpg}" alt="Crianças em vivência da coleção Interage" />
-                <span class="photo-count"><i class="fa-regular fa-images" aria-hidden="true"></i> 7 fotos</span>
-            </div>
-            <div class="slide-admin-content">
-                <div class="slide-card-title">
-                    <div><span class="content-status content-status-active">Ativo</span><h2>Interage</h2></div>
-                    <div class="row-actions">
-                        <button class="icon-button" type="button" title="Editar" aria-label="Editar Interage"
-                            data-modal-open="slide-form" data-form-mode="edit" data-item-name="Interage">
-                            <i class="fa-regular fa-pen-to-square" aria-hidden="true"></i>
-                        </button>
-                        <button class="icon-button icon-button-danger" type="button" title="Excluir" aria-label="Excluir Interage"
-                            data-delete-trigger data-delete-type-value="o slide" data-delete-name-value="Interage">
-                            <i class="fa-regular fa-trash-can" aria-hidden="true"></i>
-                        </button>
-                    </div>
-                </div>
-                <p>Experiências de convivência, colaboração e troca.</p>
-                <div class="content-meta"><span><i class="fa-regular fa-clock" aria-hidden="true"></i> Atualizado há 1 semana</span></div>
-            </div>
-        </article>
-
-        <article class="slide-admin-card" data-filter-item data-filter-text="desenvolve aprendizagem autonomia">
-            <div class="slide-collage">
-                <img th:src="@{/assets/slide/desenvolve1.jpg}" alt="Crianças em vivência da coleção Desenvolve" />
-                <img th:src="@{/assets/slide/desenvolve2.jpg}" alt="Crianças em vivência da coleção Desenvolve" />
-                <img th:src="@{/assets/slide/desenvolve3.jpg}" alt="Crianças em vivência da coleção Desenvolve" />
-                <span class="photo-count"><i class="fa-regular fa-images" aria-hidden="true"></i> 10 fotos</span>
-            </div>
-            <div class="slide-admin-content">
-                <div class="slide-card-title">
-                    <div><span class="content-status content-status-active">Ativo</span><h2>Desenvolve</h2></div>
-                    <div class="row-actions">
-                        <button class="icon-button" type="button" title="Editar" aria-label="Editar Desenvolve"
-                            data-modal-open="slide-form" data-form-mode="edit" data-item-name="Desenvolve">
-                            <i class="fa-regular fa-pen-to-square" aria-hidden="true"></i>
-                        </button>
-                        <button class="icon-button icon-button-danger" type="button" title="Excluir" aria-label="Excluir Desenvolve"
-                            data-delete-trigger data-delete-type-value="o slide" data-delete-name-value="Desenvolve">
-                            <i class="fa-regular fa-trash-can" aria-hidden="true"></i>
-                        </button>
-                    </div>
-                </div>
-                <p>Descobertas que estimulam aprendizagem e autonomia.</p>
-                <div class="content-meta"><span><i class="fa-regular fa-clock" aria-hidden="true"></i> Atualizado há 2 semanas</span></div>
             </div>
         </article>
     </section>
 
-    <div class="empty-filter-state" data-empty-state="slides" hidden>
+    <div class="empty-filter-state" th:if="${#lists.isEmpty(slides)}">
+        <span><i class="fa-regular fa-folder-open" aria-hidden="true"></i></span>
+        <h2>Nenhum slide cadastrado</h2>
+        <p>Crie o primeiro slide para começar.</p>
+    </div>
+
+    <div class="empty-filter-state" data-empty-state="slides" hidden th:if="${!#lists.isEmpty(slides)}">
         <span><i class="fa-regular fa-folder-open" aria-hidden="true"></i></span>
         <h2>Nenhum slide encontrado</h2>
         <p>Tente buscar por outro nome.</p>
     </div>
 
-    <div class="admin-modal" data-modal="slide-form" hidden aria-hidden="true">
+    <div class="admin-modal" data-modal="slide-create" hidden aria-hidden="true">
         <div class="modal-backdrop" data-modal-close></div>
-        <section class="modal-dialog modal-dialog-form" role="dialog" aria-modal="true" aria-labelledby="slide-modal-title">
+        <section class="modal-dialog modal-dialog-form" role="dialog" aria-modal="true" aria-labelledby="slide-create-title">
             <header class="modal-heading">
-                <div><span class="eyebrow eyebrow-coral">Coleção de fotos</span><h2 id="slide-modal-title" data-modal-form-title>Novo slide</h2></div>
-                <button class="modal-close" type="button" data-modal-close aria-label="Fechar"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
+                <div>
+                    <span class="eyebrow eyebrow-coral">Coleção de fotos</span>
+                    <h2 id="slide-create-title">Novo slide</h2>
+                </div>
+                <button class="modal-close" type="button" data-modal-close aria-label="Fechar">
+                    <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+                </button>
             </header>
 
-            <form class="admin-form" data-static-form data-success-title="Slide salvo" data-success-message="A coleção foi atualizada apenas nesta demonstração.">
+            <form class="admin-form" th:action="@{/admin/slides}" method="post" enctype="multipart/form-data">
                 <div class="form-field">
-                    <label for="slide-title">Nome do slide <span>*</span></label>
-                    <input id="slide-title" name="titulo" type="text" placeholder="Ex.: Momentos no jardim" required data-item-name-input />
+                    <label for="slide-create-name">Nome do slide <span>*</span></label>
+                    <input id="slide-create-name" name="titulo" type="text" maxlength="120"
+                        placeholder="Ex.: Momentos no jardim" required />
                     <small>Esse nome ajuda a identificar a coleção no painel.</small>
                 </div>
 
                 <div class="form-field">
                     <span class="form-label">Fotos da coleção <span>*</span></span>
-                    <label class="upload-zone" for="slide-images" data-drop-zone>
+                    <label class="upload-zone" for="slide-create-images" data-drop-zone>
                         <span class="upload-icon"><i class="fa-solid fa-cloud-arrow-up" aria-hidden="true"></i></span>
                         <strong>Arraste fotos ou clique para selecionar</strong>
                         <span>JPG, PNG ou WebP · várias imagens permitidas</span>
-                        <input id="slide-images" name="images" type="file" accept="image/jpeg,image/png,image/webp" multiple data-image-input />
+                        <input id="slide-create-images" name="images" type="file"
+                            accept="image/jpeg,image/png,image/webp" multiple required data-image-input />
                     </label>
                     <div class="image-preview-grid" data-image-preview aria-live="polite"></div>
                 </div>
 
-                <aside class="form-note"><i class="fa-regular fa-lightbulb" aria-hidden="true"></i><p><strong>Preparado para múltiplas fotos.</strong> A persistência dessa coleção será conectada em uma etapa posterior.</p></aside>
-
                 <div class="modal-actions">
                     <button class="admin-button admin-button-muted" type="button" data-modal-close>Cancelar</button>
-                    <button class="admin-button admin-button-primary" type="submit"><i class="fa-regular fa-floppy-disk" aria-hidden="true"></i> Salvar slide</button>
+                    <button class="admin-button admin-button-primary" type="submit">
+                        <i class="fa-regular fa-floppy-disk" aria-hidden="true"></i> Salvar slide
+                    </button>
                 </div>
             </form>
         </section>
     </div>
+
+    <th:block th:each="slide : ${slides}">
+        <div class="admin-modal" th:attr="data-modal=|slide-edit-${slide.id}|" hidden aria-hidden="true">
+            <div class="modal-backdrop" data-modal-close></div>
+            <section class="modal-dialog modal-dialog-form" role="dialog" aria-modal="true"
+                th:attr="aria-labelledby=|slide-edit-title-${slide.id}|">
+                <header class="modal-heading">
+                    <div>
+                        <span class="eyebrow eyebrow-coral">Coleção de fotos</span>
+                        <h2 th:id="|slide-edit-title-${slide.id}|">Editar slide</h2>
+                    </div>
+                    <button class="modal-close" type="button" data-modal-close aria-label="Fechar">
+                        <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+                    </button>
+                </header>
+
+                <form class="admin-form" th:action="@{/admin/slides/{id}(id=${slide.id})}"
+                    method="post" enctype="multipart/form-data">
+                    <div class="form-field">
+                        <label th:for="|slide-name-${slide.id}|">Nome do slide <span>*</span></label>
+                        <input th:id="|slide-name-${slide.id}|" name="titulo" type="text" maxlength="120"
+                            th:value="${slide.titulo}" required />
+                    </div>
+
+                    <div class="form-field" th:if="${!#lists.isEmpty(slide.imagens)}">
+                        <span class="form-label">Fotos atuais</span>
+                        <small>Marque as fotos que deseja excluir.</small>
+                        <div class="image-preview-grid">
+                            <div class="image-preview-item existing-image-preview" th:each="image, status : ${slide.imagens}">
+                                <img th:src="@{/uploads/{filename}(filename=${image.imagemUrl})}"
+                                    th:alt="|Foto ${status.count} de ${slide.titulo}|" />
+                                <label class="existing-image-remove" th:if="${image.id != null}"
+                                    th:attr="aria-label=|Excluir foto ${status.count}|">
+                                    <input type="checkbox" name="removedImageIds" th:value="${image.id}" />
+                                    <span><i class="fa-solid fa-xmark" aria-hidden="true"></i></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-field">
+                        <span class="form-label">Adicionar novas fotos</span>
+                        <label class="upload-zone" th:for="|slide-images-${slide.id}|" data-drop-zone>
+                            <span class="upload-icon"><i class="fa-solid fa-cloud-arrow-up" aria-hidden="true"></i></span>
+                            <strong>Arraste fotos ou clique para selecionar</strong>
+                            <span>JPG, PNG ou WebP · várias imagens permitidas</span>
+                            <input th:id="|slide-images-${slide.id}|" name="images" type="file"
+                                accept="image/jpeg,image/png,image/webp" multiple data-image-input />
+                        </label>
+                        <div class="image-preview-grid" data-image-preview aria-live="polite"></div>
+                    </div>
+
+                    <div class="modal-actions">
+                        <button class="admin-button admin-button-muted" type="button" data-modal-close>Cancelar</button>
+                        <button class="admin-button admin-button-primary" type="submit">
+                            <i class="fa-regular fa-floppy-disk" aria-hidden="true"></i> Salvar alterações
+                        </button>
+                    </div>
+                </form>
+            </section>
+        </div>
+
+        <div class="admin-modal" th:attr="data-modal=|slide-delete-${slide.id}|" hidden aria-hidden="true">
+            <div class="modal-backdrop" data-modal-close></div>
+            <section class="modal-dialog modal-dialog-small" role="dialog" aria-modal="true"
+                th:attr="aria-labelledby=|slide-delete-title-${slide.id}|">
+                <button class="modal-close" type="button" data-modal-close aria-label="Fechar">
+                    <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+                </button>
+                <span class="modal-alert-icon"><i class="fa-regular fa-trash-can" aria-hidden="true"></i></span>
+                <div class="modal-centered-copy">
+                    <span class="eyebrow eyebrow-coral">Confirmar exclusão</span>
+                    <h2 th:id="|slide-delete-title-${slide.id}|">Excluir slide?</h2>
+                    <p>O slide <strong th:text="${slide.titulo}">selecionado</strong> e todas as suas fotos serão excluídos.</p>
+                </div>
+                <form class="modal-actions modal-actions-centered"
+                    th:action="@{/admin/slides/{id}/excluir(id=${slide.id})}" method="post">
+                    <button class="admin-button admin-button-muted" type="button" data-modal-close>Cancelar</button>
+                    <button class="admin-button admin-button-danger" type="submit">
+                        <i class="fa-regular fa-trash-can" aria-hidden="true"></i> Excluir
+                    </button>
+                </form>
+            </section>
+        </div>
+    </th:block>
 </div>
 
 </html>

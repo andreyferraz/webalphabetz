@@ -166,18 +166,25 @@
     const preview = $('[data-image-preview]', field || input.parentElement);
     const dropZone = input.closest('[data-drop-zone]');
     let objectUrls = [];
+    let selectedFiles = [];
 
     const clearObjectUrls = () => {
       objectUrls.forEach(url => URL.revokeObjectURL(url));
       objectUrls = [];
     };
 
-    const renderFiles = fileList => {
+    const syncInputFiles = () => {
+      const transfer = new DataTransfer();
+      selectedFiles.forEach(file => transfer.items.add(file));
+      input.files = transfer.files;
+    };
+
+    const renderFiles = () => {
       if (!preview) return;
       clearObjectUrls();
       preview.innerHTML = '';
 
-      Array.from(fileList).forEach((file, index) => {
+      selectedFiles.forEach((file, index) => {
         if (!file.type.startsWith('image/')) return;
         const url = URL.createObjectURL(file);
         objectUrls.push(url);
@@ -191,13 +198,26 @@
         remove.type = 'button';
         remove.setAttribute('aria-label', `Remover imagem ${index + 1}`);
         remove.innerHTML = '<i class="fa-solid fa-xmark" aria-hidden="true"></i>';
-        remove.addEventListener('click', () => item.remove());
+        remove.addEventListener('click', () => {
+          selectedFiles.splice(index, 1);
+          syncInputFiles();
+          renderFiles();
+        });
         item.append(image, remove);
         preview.append(item);
       });
     };
 
-    input.addEventListener('change', () => renderFiles(input.files));
+    input.addEventListener('change', () => {
+      selectedFiles = Array.from(input.files);
+      renderFiles();
+    });
+
+    input.form?.addEventListener('reset', () => {
+      selectedFiles = [];
+      clearObjectUrls();
+      if (preview) preview.innerHTML = '';
+    });
 
     if (dropZone) {
       ['dragenter', 'dragover'].forEach(eventName => {
@@ -212,7 +232,13 @@
           dropZone.classList.remove('is-dragging');
         });
       });
-      dropZone.addEventListener('drop', event => renderFiles(event.dataTransfer.files));
+      dropZone.addEventListener('drop', event => {
+        const droppedImages = Array.from(event.dataTransfer.files)
+          .filter(file => file.type.startsWith('image/'));
+        selectedFiles = [...selectedFiles, ...droppedImages];
+        syncInputFiles();
+        renderFiles();
+      });
     }
   });
 
