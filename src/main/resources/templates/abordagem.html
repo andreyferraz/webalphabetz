@@ -53,20 +53,27 @@
                         <div class="mini-feature">Acolhimento</div>
                         <div class="mini-feature">Atenção individual</div>
                     </div>
-                    <div class="testimonial-card reveal" style="margin-top: 26px;" data-testimonial-set="cuida">
-                        <div class="testimonial-media">
-                            <button class="testimonial-open" type="button" data-testimonial-open
-                                aria-label="Abrir foto ampliada">
-                                <img class="testimonial-image" th:src="@{/assets/slide/cuida1.jpg}"
-                                    alt="Momentos de cuidado e interação na rotina Alphabetz" data-testimonial-image
-                                    loading="lazy" decoding="async" />
-                            </button>
+                    <th:block th:with="slide=${slidesByTitle['cuida']}">
+                        <div class="testimonial-card reveal" style="margin-top: 26px;" data-testimonial-set="cuida"
+                            th:if="${slide != null and !#lists.isEmpty(slide.imagens)}">
+                            <span hidden data-testimonial-slide th:each="image : ${slide.imagens}"
+                                th:attr="data-slide-src=@{/uploads/{filename}(filename=${image.imagemUrl})}"></span>
+                            <div class="testimonial-media">
+                                <button class="testimonial-open" type="button" data-testimonial-open
+                                    aria-label="Abrir foto ampliada">
+                                    <img class="testimonial-image"
+                                        th:src="@{/uploads/{filename}(filename=${slide.imagens[0].imagemUrl})}"
+                                        alt="Momentos de cuidado e interação na rotina Alphabetz" data-testimonial-image
+                                        loading="lazy" decoding="async" />
+                                </button>
+                            </div>
+                            <div class="testimonial-controls" aria-label="Controle do slide de fotos"
+                                th:if="${slide.quantidadeFotos > 1}">
+                                <button class="icon-btn" type="button" data-testimonial-prev aria-label="Foto anterior">←</button>
+                                <button class="icon-btn" type="button" data-testimonial-next aria-label="Próxima foto">→</button>
+                            </div>
                         </div>
-                        <div class="testimonial-controls" aria-label="Controle do slide de fotos">
-                            <button class="icon-btn" type="button" data-testimonial-prev aria-label="Foto anterior">←</button>
-                            <button class="icon-btn" type="button" data-testimonial-next aria-label="Próxima foto">→</button>
-                        </div>
-                    </div>
+                    </th:block>
                 </article>
                 <article class="tab-panel" id="tab-brinca" role="tabpanel">
                     <span class="kicker">Pilar 02</span>
@@ -80,20 +87,27 @@
                         <div class="mini-feature">Exploração</div>
                         <div class="mini-feature">Aprendizagem ativa</div>
                     </div>
-                    <div class="testimonial-card reveal" style="margin-top: 26px;" data-testimonial-set="brinca">
-                        <div class="testimonial-media">
-                            <button class="testimonial-open" type="button" data-testimonial-open
-                                aria-label="Abrir foto ampliada">
-                                <img class="testimonial-image" th:src="@{/assets/slide/brinca1.jpg}"
-                                    alt="Momentos de brincadeira e descoberta na rotina Alphabetz" data-testimonial-image
-                                    loading="lazy" decoding="async" />
-                            </button>
+                    <th:block th:with="slide=${slidesByTitle['brinca']}">
+                        <div class="testimonial-card reveal" style="margin-top: 26px;" data-testimonial-set="brinca"
+                            th:if="${slide != null and !#lists.isEmpty(slide.imagens)}">
+                            <span hidden data-testimonial-slide th:each="image : ${slide.imagens}"
+                                th:attr="data-slide-src=@{/uploads/{filename}(filename=${image.imagemUrl})}"></span>
+                            <div class="testimonial-media">
+                                <button class="testimonial-open" type="button" data-testimonial-open
+                                    aria-label="Abrir foto ampliada">
+                                    <img class="testimonial-image"
+                                        th:src="@{/uploads/{filename}(filename=${slide.imagens[0].imagemUrl})}"
+                                        alt="Momentos de brincadeira e descoberta na rotina Alphabetz" data-testimonial-image
+                                        loading="lazy" decoding="async" />
+                                </button>
+                            </div>
+                            <div class="testimonial-controls" aria-label="Controle do slide de fotos"
+                                th:if="${slide.quantidadeFotos > 1}">
+                                <button class="icon-btn" type="button" data-testimonial-prev aria-label="Foto anterior">←</button>
+                                <button class="icon-btn" type="button" data-testimonial-next aria-label="Próxima foto">→</button>
+                            </div>
                         </div>
-                        <div class="testimonial-controls" aria-label="Controle do slide de fotos">
-                            <button class="icon-btn" type="button" data-testimonial-prev aria-label="Foto anterior">←</button>
-                            <button class="icon-btn" type="button" data-testimonial-next aria-label="Próxima foto">→</button>
-                        </div>
-                    </div>
+                    </th:block>
                 </article>
                 <article class="tab-panel" id="tab-interage" role="tabpanel">
                     <span class="kicker">Pilar 03</span>
@@ -107,20 +121,27 @@
                         <div class="mini-feature">Cooperação</div>
                         <div class="mini-feature">Família presente</div>
                     </div>
-                    <div class="testimonial-card reveal" style="margin-top: 26px;" data-testimonial-set="interage">
-                        <div class="testimonial-media">
-                            <button class="testimonial-open" type="button" data-testimonial-open
-                                aria-label="Abrir foto ampliada">
-                                <img class="testimonial-image" th:src="@{/assets/slide/interage1.jpg}"
-                                    alt="Momentos de interação e convivência na rotina Alphabetz" data-testimonial-image
-                                    loading="lazy" decoding="async" />
-                            </button>
+                    <th:block th:with="slide=${slidesByTitle['interage']}">
+                        <div class="testimonial-card reveal" style="margin-top: 26px;" data-testimonial-set="interage"
+                            th:if="${slide != null and !#lists.isEmpty(slide.imagens)}">
+                            <span hidden data-testimonial-slide th:each="image : ${slide.imagens}"
+                                th:attr="data-slide-src=@{/uploads/{filename}(filename=${image.imagemUrl})}"></span>
+                            <div class="testimonial-media">
+                                <button class="testimonial-open" type="button" data-testimonial-open
+                                    aria-label="Abrir foto ampliada">
+                                    <img class="testimonial-image"
+                                        th:src="@{/uploads/{filename}(filename=${slide.imagens[0].imagemUrl})}"
+                                        alt="Momentos de interação e convivência na rotina Alphabetz" data-testimonial-image
+                                        loading="lazy" decoding="async" />
+                                </button>
+                            </div>
+                            <div class="testimonial-controls" aria-label="Controle do slide de fotos"
+                                th:if="${slide.quantidadeFotos > 1}">
+                                <button class="icon-btn" type="button" data-testimonial-prev aria-label="Foto anterior">←</button>
+                                <button class="icon-btn" type="button" data-testimonial-next aria-label="Próxima foto">→</button>
+                            </div>
                         </div>
-                        <div class="testimonial-controls" aria-label="Controle do slide de fotos">
-                            <button class="icon-btn" type="button" data-testimonial-prev aria-label="Foto anterior">←</button>
-                            <button class="icon-btn" type="button" data-testimonial-next aria-label="Próxima foto">→</button>
-                        </div>
-                    </div>
+                    </th:block>
                 </article>
                 <article class="tab-panel" id="tab-desenvolve" role="tabpanel">
                     <span class="kicker">Pilar 04</span>
@@ -134,20 +155,27 @@
                         <div class="mini-feature">Criatividade</div>
                         <div class="mini-feature">Confiança</div>
                     </div>
-                    <div class="testimonial-card reveal" style="margin-top: 26px;" data-testimonial-set="desenvolve">
-                        <div class="testimonial-media">
-                            <button class="testimonial-open" type="button" data-testimonial-open
-                                aria-label="Abrir foto ampliada">
-                                <img class="testimonial-image" th:src="@{/assets/slide/desenvolve1.jpg}"
-                                    alt="Momentos de desenvolvimento e autonomia na rotina Alphabetz" data-testimonial-image
-                                    loading="lazy" decoding="async" />
-                            </button>
+                    <th:block th:with="slide=${slidesByTitle['desenvolve']}">
+                        <div class="testimonial-card reveal" style="margin-top: 26px;" data-testimonial-set="desenvolve"
+                            th:if="${slide != null and !#lists.isEmpty(slide.imagens)}">
+                            <span hidden data-testimonial-slide th:each="image : ${slide.imagens}"
+                                th:attr="data-slide-src=@{/uploads/{filename}(filename=${image.imagemUrl})}"></span>
+                            <div class="testimonial-media">
+                                <button class="testimonial-open" type="button" data-testimonial-open
+                                    aria-label="Abrir foto ampliada">
+                                    <img class="testimonial-image"
+                                        th:src="@{/uploads/{filename}(filename=${slide.imagens[0].imagemUrl})}"
+                                        alt="Momentos de desenvolvimento e autonomia na rotina Alphabetz" data-testimonial-image
+                                        loading="lazy" decoding="async" />
+                                </button>
+                            </div>
+                            <div class="testimonial-controls" aria-label="Controle do slide de fotos"
+                                th:if="${slide.quantidadeFotos > 1}">
+                                <button class="icon-btn" type="button" data-testimonial-prev aria-label="Foto anterior">←</button>
+                                <button class="icon-btn" type="button" data-testimonial-next aria-label="Próxima foto">→</button>
+                            </div>
                         </div>
-                        <div class="testimonial-controls" aria-label="Controle do slide de fotos">
-                            <button class="icon-btn" type="button" data-testimonial-prev aria-label="Foto anterior">←</button>
-                            <button class="icon-btn" type="button" data-testimonial-next aria-label="Próxima foto">→</button>
-                        </div>
-                    </div>
+                    </th:block>
                 </article>
             </div>
         </div>

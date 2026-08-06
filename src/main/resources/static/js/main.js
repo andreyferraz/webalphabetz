@@ -135,54 +135,6 @@
     'assets/slide/3013153_1_443179263051.jpg'
   ];
 
-  const cuidaSlides = [
-    'assets/slide/cuida1.jpg',
-    'assets/slide/cuida2.jpg',
-    'assets/slide/cuida3.jpg',
-    'assets/slide/cuida4.jpg',
-    'assets/slide/cuida5.jpg',
-    'assets/slide/cuida6.jpg',
-    'assets/slide/cuida7.jpg',
-    'assets/slide/cuida8.png'
-  ];
-
-  const brincaSlides = [
-    'assets/slide/brinca1.jpg',
-    'assets/slide/brinca2.jpg',
-    'assets/slide/brinca3.jpg',
-    'assets/slide/brinca4.jpg',
-    'assets/slide/brinca5.jpg',
-    'assets/slide/brinca6.jpg',
-    'assets/slide/brinca7.jpg',
-    'assets/slide/brinca8.jpg',
-    'assets/slide/brinca9.jpg',
-    'assets/slide/brinca10.jpg',
-    'assets/slide/brinca11.jpg'
-  ];
-
-  const interageSlides = [
-    'assets/slide/interage1.jpg',
-    'assets/slide/interage2.jpg',
-    'assets/slide/interage3.jpg',
-    'assets/slide/interage4.jpg',
-    'assets/slide/interage5.jpg',
-    'assets/slide/interage6.jpg',
-    'assets/slide/interage7.jpg'
-  ];
-
-  const desenvolveSlides = [
-    'assets/slide/desenvolve1.jpg',
-    'assets/slide/desenvolve2.jpg',
-    'assets/slide/desenvolve3.jpg',
-    'assets/slide/desenvolve4.jpg',
-    'assets/slide/desenvolve5.jpg',
-    'assets/slide/desenvolve6.jpg',
-    'assets/slide/desenvolve7.jpg',
-    'assets/slide/desenvolve8.jpg',
-    'assets/slide/desenvolve9.jpg',
-    'assets/slide/desenvolve10.jpg'
-  ];
-
   const turmasSlides = [
     'assets/slide/turmas/3013153_1_1756728277555277461865119.jpg',
     'assets/slide/turmas/3013153_1_1756728277555277466014838.jpg',
@@ -229,10 +181,6 @@
   const lightboxCloseEls = $$('[data-lightbox-close]');
   const slideSets = {
     default: defaultTestimonialSlides,
-    cuida: cuidaSlides,
-    brinca: brincaSlides,
-    interage: interageSlides,
-    desenvolve: desenvolveSlides,
     turmas: turmasSlides
   };
   const testimonialCards = $$('.testimonial-card');
@@ -259,7 +207,12 @@
     const prevBtn = $('[data-testimonial-prev]', card);
     const nextBtn = $('[data-testimonial-next]', card);
     const testimonialSet = card.dataset.testimonialSet || 'default';
-    const testimonialSlides = slideSets[testimonialSet] || defaultTestimonialSlides;
+    const persistedSlides = $$('[data-testimonial-slide]', card)
+      .map(item => item.dataset.slideSrc)
+      .filter(Boolean);
+    const testimonialSlides = persistedSlides.length
+      ? persistedSlides
+      : (slideSets[testimonialSet] || defaultTestimonialSlides);
     let testimonialIndex = 0;
 
     if (!imageEl || !testimonialSlides.length) return;
@@ -286,7 +239,7 @@
     nextBtn?.addEventListener('click', nextTestimonial);
     prevBtn?.addEventListener('click', prevTestimonial);
     imageEl.style.transition = 'opacity .18s ease';
-    window.setInterval(nextTestimonial, 6500);
+    if (testimonialSlides.length > 1) window.setInterval(nextTestimonial, 6500);
     openBtn?.addEventListener('click', () => openLightbox(imageEl.src));
   });
 
