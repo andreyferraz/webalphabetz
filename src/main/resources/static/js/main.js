@@ -298,7 +298,7 @@
 
   const careerForm = $('[data-career-form]');
   const careerStatus = $('[data-career-status]');
-  careerForm?.addEventListener('submit', event => {
+  careerForm?.addEventListener('submit', async event => {
     event.preventDefault();
     const data = new FormData(careerForm);
     const requiredFields = ['nome', 'email', 'telefone', 'area'];
@@ -331,7 +331,27 @@
       return;
     }
 
-    setCareerStatus('Candidatura validada. Integre este formulário a um backend para receber o anexo em produção.');
+    const submitButton = careerForm.querySelector('[data-career-submit]');
+    setCareerStatus('Enviando candidatura...');
+    if (submitButton) submitButton.disabled = true;
+
+    try {
+      const response = await fetch(careerForm.action, {
+        method: 'POST',
+        body: data,
+        headers: { Accept: 'application/json' }
+      });
+      const result = await response.json().catch(() => ({}));
+      if (!response.ok) {
+        throw new Error(result.message || 'Não foi possível enviar a candidatura.');
+      }
+      careerForm.reset();
+      setCareerStatus(result.message || 'Candidatura enviada com sucesso.');
+    } catch (error) {
+      setCareerStatus(error.message || 'Não foi possível enviar a candidatura.', '#E95032');
+    } finally {
+      if (submitButton) submitButton.disabled = false;
+    }
   });
 
 })();

@@ -38,7 +38,8 @@
         <section class="form-card career-form-card reveal" aria-labelledby="titulo-form-curriculo">
           <h2 id="titulo-form-curriculo">Envie seu currículo</h2>
           <p>Preencha os dados abaixo e anexe seu currículo em PDF, DOC ou DOCX.</p>
-          <form class="form-grid" data-career-form enctype="multipart/form-data" novalidate>
+          <form class="form-grid" th:action="@{/trabalhe-conosco/candidatura}" method="post"
+            data-career-form enctype="multipart/form-data" novalidate>
             <div class="form-row">
               <div class="field">
                 <label for="candidato-nome">Nome completo *</label>
@@ -99,10 +100,10 @@
               <small>Formatos aceitos: PDF, DOC ou DOCX. Tamanho sugerido: até 5 MB.</small>
             </div>
             <label class="consent-check">
-              <input type="checkbox" name="consentimento" required />
+              <input type="checkbox" name="consentimento" value="true" required />
               <span>Autorizo o uso dos meus dados para participação em processos seletivos da Escola Alphabetz.</span>
             </label>
-            <button class="btn btn-primary" type="submit">Enviar candidatura</button>
+            <button class="btn btn-primary" type="submit" data-career-submit>Enviar candidatura</button>
             <p class="form-status" data-career-status role="status" aria-live="polite"></p>
           </form>
         </section>
