@@ -261,39 +261,52 @@
     phoneInput.addEventListener('input', () => formatPhone(phoneInput));
   });
 
-  const form = $('[data-contact-form]');
-  const formStatus = $('[data-form-status]');
-  form?.addEventListener('submit', event => {
+  const ouvidoriaForm = $('[data-ouvidoria-form]');
+  const ouvidoriaStatus = $('[data-ouvidoria-status]');
+  ouvidoriaForm?.addEventListener('submit', async event => {
     event.preventDefault();
-    const data = new FormData(form);
-    const nome = String(data.get('nome') || '').trim();
-    const telefone = String(data.get('telefone') || '').trim();
-    const idade = String(data.get('idade') || '').trim();
-    const mensagem = String(data.get('mensagem') || '').trim();
+    const data = new FormData(ouvidoriaForm);
+    const requiredFields = ['nome', 'sobrenome', 'email', 'celular', 'perfil', 'areaAtuacao', 'assunto', 'detalhes'];
+    const missing = requiredFields.some(field => !String(data.get(field) || '').trim());
+    const files = ['arquivo', 'documentoImagem']
+      .map(name => ouvidoriaForm.querySelector(`[name="${name}"]`)?.files?.[0])
+      .filter(Boolean);
+    const setStatus = (message, color = '#004E4A') => {
+      if (!ouvidoriaStatus) return;
+      ouvidoriaStatus.textContent = message;
+      ouvidoriaStatus.style.color = color;
+    };
 
-    if (!nome || !telefone || !idade) {
-      if (formStatus) {
-        formStatus.textContent = 'Preencha nome, telefone e idade da criança.';
-        formStatus.style.color = '#E95032';
-      }
+    if (missing) {
+      setStatus('Preencha todos os campos obrigatórios.', '#E95032');
+      return;
+    }
+    if (files.some(file => file.size > 10 * 1024 * 1024)) {
+      setStatus('Cada arquivo deve ter até 10 MB.', '#E95032');
       return;
     }
 
-    const whatsappMessage = [
-      'Olá, Alphabetz! Gostaria de agendar uma visita.',
-      `Responsável: ${nome}`,
-      `Telefone: ${telefone}`,
-      `Idade da criança: ${idade}`,
-      mensagem ? `Mensagem: ${mensagem}` : ''
-    ].filter(Boolean).join('\n');
+    const submitButton = ouvidoriaForm.querySelector('[data-ouvidoria-submit]');
+    setStatus('Enviando manifestação...');
+    if (submitButton) submitButton.disabled = true;
 
-    if (formStatus) {
-      formStatus.textContent = 'Abrindo WhatsApp com a mensagem pronta...';
-      formStatus.style.color = '#004E4A';
+    try {
+      const response = await fetch(ouvidoriaForm.action, {
+        method: 'POST',
+        body: data,
+        headers: { Accept: 'application/json' }
+      });
+      const result = await response.json().catch(() => ({}));
+      if (!response.ok) {
+        throw new Error(result.message || 'Não foi possível registrar a manifestação.');
+      }
+      ouvidoriaForm.reset();
+      setStatus(result.message || 'Manifestação registrada com sucesso.');
+    } catch (error) {
+      setStatus(error.message || 'Não foi possível registrar a manifestação.', '#E95032');
+    } finally {
+      if (submitButton) submitButton.disabled = false;
     }
-
-    const url = `https://wa.me/552730291110?text=${encodeURIComponent(whatsappMessage)}`;
-    window.open(url, '_blank', 'noopener');
   });
 
   const careerForm = $('[data-career-form]');

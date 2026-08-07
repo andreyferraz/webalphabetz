@@ -57,6 +57,19 @@
 
         <article class="metric-card metric-card-yellow">
             <div class="metric-card-heading">
+                <span class="metric-icon"><i class="fa-solid fa-comments" aria-hidden="true"></i></span>
+                <span class="metric-trend"><i class="fa-solid fa-database" aria-hidden="true"></i> Persistidas</span>
+            </div>
+            <strong class="metric-value" th:text="${dashboard.totalManifestations}">0</strong>
+            <span class="metric-label" th:text="${dashboard.totalManifestations == 1 ? 'Manifestação recebida' : 'Manifestações recebidas'}">Manifestações recebidas</span>
+            <div class="metric-footer">
+                <strong>Dados e anexos</strong>
+                <span>armazenados na Ouvidoria</span>
+            </div>
+        </article>
+
+        <article class="metric-card metric-card-navy">
+            <div class="metric-card-heading">
                 <span class="metric-icon"><i class="fa-regular fa-user" aria-hidden="true"></i></span>
                 <span class="metric-trend"><i class="fa-solid fa-shield" aria-hidden="true"></i> Seguro</span>
             </div>
@@ -138,7 +151,7 @@
         <div>
             <span class="eyebrow eyebrow-light">Persistência ativa</span>
             <h2>Painel conectado aos dados</h2>
-            <p>Slides, postagens, candidaturas e credenciais administrativas estão integrados ao banco de dados e refletidos neste resumo.</p>
+            <p>Slides, postagens, candidaturas, manifestações da Ouvidoria e credenciais administrativas estão integrados ao banco de dados e refletidos neste resumo.</p>
         </div>
         <span class="integration-badge">Dados atualizados</span>
     </aside>

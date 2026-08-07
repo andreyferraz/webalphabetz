@@ -3787,7 +3787,7 @@ body[data-page="index.html"] .bubble:nth-of-type(6) {
 .page-hero-contact > .page-hero-grid > .reveal > .kicker,
 .page-hero-contact > .page-hero-grid > .reveal > h1,
 .page-hero-contact > .page-hero-grid > .reveal > p {
-  color: #F8C7DE;
+  color: #fff;
 }
 
 @media (max-width: 980px) {

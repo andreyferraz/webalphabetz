@@ -21,12 +21,14 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.alphabetz.webalphabetz.model.Blog;
 import com.alphabetz.webalphabetz.model.CareerApplication;
+import com.alphabetz.webalphabetz.model.OuvidoriaManifestacao;
 import com.alphabetz.webalphabetz.model.Slides;
 import com.alphabetz.webalphabetz.service.AdminService;
 import com.alphabetz.webalphabetz.service.BlogCategoryService;
 import com.alphabetz.webalphabetz.service.BlogService;
 import com.alphabetz.webalphabetz.service.CareerApplicationService;
 import com.alphabetz.webalphabetz.service.DashboardService;
+import com.alphabetz.webalphabetz.service.OuvidoriaService;
 import com.alphabetz.webalphabetz.service.SlidesService;
 
 @Controller
@@ -38,16 +40,19 @@ public class AdminPagesController {
     private final AdminService adminService;
     private final DashboardService dashboardService;
     private final CareerApplicationService careerApplicationService;
+    private final OuvidoriaService ouvidoriaService;
 
     public AdminPagesController(SlidesService slidesService, BlogService blogService,
             BlogCategoryService blogCategoryService, AdminService adminService,
-            DashboardService dashboardService, CareerApplicationService careerApplicationService) {
+            DashboardService dashboardService, CareerApplicationService careerApplicationService,
+            OuvidoriaService ouvidoriaService) {
         this.slidesService = slidesService;
         this.blogService = blogService;
         this.blogCategoryService = blogCategoryService;
         this.adminService = adminService;
         this.dashboardService = dashboardService;
         this.careerApplicationService = careerApplicationService;
+        this.ouvidoriaService = ouvidoriaService;
     }
 
     @GetMapping("/login")
@@ -234,6 +239,46 @@ public class AdminPagesController {
         return "redirect:/admin/candidaturas";
     }
 
+    @GetMapping("/admin/ouvidoria")
+    public String ombudsman(Model model) {
+        model.addAttribute("manifestations", ouvidoriaService.getAll());
+        return "admin/ouvidoria";
+    }
+
+    @GetMapping("/admin/ouvidoria/{id}/arquivo")
+    public ResponseEntity<ByteArrayResource> downloadManifestationFile(@PathVariable UUID id) {
+        try {
+            OuvidoriaManifestacao manifestation = ouvidoriaService.get(id);
+            return downloadAttachment(manifestation.getArquivoNome(), manifestation.getArquivoTipo(),
+                    manifestation.getArquivoTamanho(), manifestation.getArquivoConteudo());
+        } catch (IllegalArgumentException exception) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping("/admin/ouvidoria/{id}/documento")
+    public ResponseEntity<ByteArrayResource> downloadManifestationDocument(@PathVariable UUID id) {
+        try {
+            OuvidoriaManifestacao manifestation = ouvidoriaService.get(id);
+            return downloadAttachment(manifestation.getDocumentoImagemNome(),
+                    manifestation.getDocumentoImagemTipo(), manifestation.getDocumentoImagemTamanho(),
+                    manifestation.getDocumentoImagemConteudo());
+        } catch (IllegalArgumentException exception) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @PostMapping("/admin/ouvidoria/{id}/excluir")
+    public String deleteManifestation(@PathVariable UUID id, RedirectAttributes redirectAttributes) {
+        try {
+            ouvidoriaService.delete(id);
+            redirectAttributes.addFlashAttribute("successMessage", "Manifestação excluída com sucesso.");
+        } catch (RuntimeException exception) {
+            redirectAttributes.addFlashAttribute("errorMessage", errorMessage(exception));
+        }
+        return "redirect:/admin/ouvidoria";
+    }
+
     @PostMapping("/admin/seguranca/senha")
     public String changePassword(Authentication authentication,
             @RequestParam String currentPassword,
@@ -262,5 +307,20 @@ public class AdminPagesController {
         } catch (RuntimeException exception) {
             return MediaType.APPLICATION_OCTET_STREAM;
         }
+    }
+
+    private ResponseEntity<ByteArrayResource> downloadAttachment(
+            String name, String type, long size, byte[] content) {
+        if (name == null || name.isBlank() || content == null) {
+            return ResponseEntity.notFound().build();
+        }
+        ContentDisposition disposition = ContentDisposition.attachment()
+                .filename(name, StandardCharsets.UTF_8)
+                .build();
+        return ResponseEntity.ok()
+                .contentType(resumeContentType(type))
+                .contentLength(size)
+                .header(HttpHeaders.CONTENT_DISPOSITION, disposition.toString())
+                .body(new ByteArrayResource(content));
     }
 }

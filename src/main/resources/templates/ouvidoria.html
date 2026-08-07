@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pt-BR"
+    th:replace="~{layout :: layout('Ouvidoria | Alphabetz', ~{::content})}">
+<header><title th:text="${title}"></title></header>
+<div th:fragment="content">
+
+    <section class="page-hero page-hero-contact">
+        <div class="container page-hero-grid">
+            <div class="reveal">
+                <span class="kicker">Ouvidoria Alphabetz</span>
+                <h1>Um canal aberto para escutar, acolher e melhorar.</h1>
+                <p>Registre elogios, reclamações, denúncias, sugestões, críticas ou solicitações com segurança e objetividade.</p>
+            </div>
+            <div class="page-hero-visual reveal" aria-hidden="true">
+                <div class="stack-card"><strong>Escuta</strong><span>Sua manifestação é importante</span></div>
+                <div class="stack-card"><strong>Privacidade</strong><span>Dados armazenados com segurança</span></div>
+                <div class="stack-card"><strong>Acompanhamento</strong><span>Solicite retorno pelo formulário</span></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" id="manifestacao">
+        <div class="container contact-grid">
+            <aside class="contact-card reveal">
+                <span class="kicker">Fale com a escola</span>
+                <h2 style="margin-top:16px;">Canais oficiais</h2>
+                <p style="margin-top:18px;">Use os contatos abaixo para matrícula, visita, informações gerais ou envio
+                    de currículo.</p>
+                <div class="contact-list">
+                    <div class="contact-item"><span class="contact-icon"><i class="fa-solid fa-location-dot" aria-hidden="true"></i></span>
+                        <div><strong>Unidade</strong><span>Rua Florentina Faller, 45<br />Enseada do Suá -
+                                Vitória/ES</span></div>
+                    </div>
+                    <div class="contact-item"><span class="contact-icon"><i class="fa-brands fa-whatsapp" aria-hidden="true"></i></span>
+                        <div><strong>WhatsApp</strong><a href="https://wa.me/552730291110" target="_blank"
+                                rel="noopener">(27) 3029-1110</a></div>
+                    </div>
+                    <div class="contact-item"><span class="contact-icon"><i class="fa-solid fa-envelope" aria-hidden="true"></i></span>
+                        <div><strong>Recepção</strong><a
+                                href="mailto:recepcao@alphabetz.com.br">recepcao@alphabetz.com.br</a></div>
+                    </div>
+                    <div class="contact-item"><span class="contact-icon"><i class="fa-solid fa-briefcase" aria-hidden="true"></i></span>
+                        <div><strong>Trabalhe conosco</strong><a
+                                href="mailto:curriculo.alphabetz@alphabetz.com.br">curriculo.alphabetz@alphabetz.com.br</a>
+                        </div>
+                    </div>
+                    <div class="contact-item"><span class="contact-icon"><i class="fa-solid fa-clock" aria-hidden="true"></i></span>
+                        <div><strong>Funcionamento</strong><span>Segunda a sexta, das 7:20h às 18:45h</span></div>
+                    </div>
+                </div>
+                <div class="map-card">
+                    <iframe title="Mapa da Escola Alphabetz" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+                        src="https://www.google.com/maps?q=Rua%20Florentina%20Faller%2C%2045%20Enseada%20do%20Su%C3%A1%20Vit%C3%B3ria%20ES&output=embed"></iframe>
+                </div>
+            </aside>
+
+            <div class="form-card reveal">
+                <span class="kicker">Nova manifestação</span>
+                <h2 style="margin:16px 0 24px;">Formulário da Ouvidoria</h2>
+                <form class="form-grid" th:action="@{/ouvidoria/manifestacoes}" method="post"
+                    enctype="multipart/form-data" data-ouvidoria-form novalidate>
+                    <div class="form-row">
+                        <div class="field">
+                            <label for="ouvidoria-nome">Nome *</label>
+                            <input id="ouvidoria-nome" name="nome" type="text" autocomplete="given-name" required />
+                        </div>
+                        <div class="field">
+                            <label for="ouvidoria-sobrenome">Sobrenome *</label>
+                            <input id="ouvidoria-sobrenome" name="sobrenome" type="text" autocomplete="family-name" required />
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="field">
+                            <label for="ouvidoria-email">E-mail *</label>
+                            <input id="ouvidoria-email" name="email" type="email" autocomplete="email" required />
+                        </div>
+                        <div class="field">
+                            <label for="ouvidoria-celular">Número de celular *</label>
+                            <input id="ouvidoria-celular" class="phone-mask" name="celular" type="tel"
+                                autocomplete="tel" placeholder="(27) 99999-9999" required />
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="field">
+                            <label for="ouvidoria-perfil">Perfil *</label>
+                            <select id="ouvidoria-perfil" name="perfil" required>
+                                <option value="">Selecione</option>
+                                <option>Família ou responsável</option>
+                                <option>Aluno(a)</option>
+                                <option>Colaborador(a)</option>
+                                <option>Ex-colaborador(a)</option>
+                                <option>Prestador(a) de serviço</option>
+                                <option>Comunidade</option>
+                                <option>Outro</option>
+                            </select>
+                        </div>
+                        <div class="field">
+                            <label for="ouvidoria-area">Área de atuação *</label>
+                            <select id="ouvidoria-area" name="areaAtuacao" required>
+                                <option value="">Selecione</option>
+                                <option>Pedagógica</option>
+                                <option>Administrativa</option>
+                                <option>Atendimento</option>
+                                <option>Financeira</option>
+                                <option>Recursos Humanos</option>
+                                <option>Infraestrutura</option>
+                                <option>Tecnologia</option>
+                                <option>Outra</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label for="ouvidoria-assunto">Assunto Ouvidoria *</label>
+                        <select id="ouvidoria-assunto" name="assunto" required>
+                            <option value="">Selecione</option>
+                            <option>Elogio</option>
+                            <option>Reclamação</option>
+                            <option>Denúncia</option>
+                            <option>Sugestão</option>
+                            <option>Crítica</option>
+                            <option>Solicitação</option>
+                        </select>
+                    </div>
+                    <div class="form-row">
+                        <div class="field file-field">
+                            <label for="ouvidoria-arquivo">Carregamento de arquivo</label>
+                            <input id="ouvidoria-arquivo" name="arquivo" type="file"
+                                accept=".pdf,.doc,.docx,.txt,.jpg,.jpeg,.png,.webp" />
+                            <small>Envie documentos que embasem sua mensagem</small>
+                        </div>
+                        <div class="field file-field">
+                            <label for="ouvidoria-documento-imagem">Imagem do seu documento</label>
+                            <input id="ouvidoria-documento-imagem" name="documentoImagem" type="file"
+                                accept="image/jpeg,image/png,image/webp" />
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label for="ouvidoria-detalhes">Detalhes *</label>
+                        <textarea id="ouvidoria-detalhes" name="detalhes" required
+                            placeholder="Descreva com objetividade os detalhes da sua manifestação"></textarea>
+                        <small>Descreva com objetividade os detalhes da sua manifestação</small>
+                    </div>
+                    <label class="consent-check">
+                        <input type="checkbox" name="receberRetorno" value="true" />
+                        <span>Gostaria de receber um retorno sobre esta mensagem</span>
+                    </label>
+                    <p class="form-status" data-ouvidoria-status aria-live="polite"></p>
+                    <button class="btn btn-primary" type="submit" data-ouvidoria-submit>Enviar</button>
+                </form>
+            </div>
+        </div>
+    </section>
+</div>
+</html>

@@ -52,6 +52,10 @@
                     <span class="nav-icon nav-icon-blue"><i class="fa-solid fa-user-group" aria-hidden="true"></i></span>
                     <span>Candidaturas</span>
                 </a>
+                <a th:href="@{/admin/ouvidoria}" th:classappend="${activePage == 'ouvidoria'} ? ' is-active' : ''">
+                    <span class="nav-icon nav-icon-coral"><i class="fa-solid fa-comments" aria-hidden="true"></i></span>
+                    <span>Ouvidoria</span>
+                </a>
                 <a th:href="@{/admin/seguranca}" th:classappend="${activePage == 'security'} ? ' is-active' : ''">
                     <span class="nav-icon nav-icon-mint"><i class="fa-solid fa-shield-halved" aria-hidden="true"></i></span>
                     <span>Segurança</span>
@@ -96,6 +100,7 @@
                         <span th:case="'slides'">Slides</span>
                         <span th:case="'blog'">Blog</span>
                         <span th:case="'applications'">Candidaturas</span>
+                        <span th:case="'ouvidoria'">Ouvidoria</span>
                         <span th:case="'security'">Segurança</span>
                         <span th:case="*">Visão geral</span>
                     </strong>

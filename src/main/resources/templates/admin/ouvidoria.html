@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org"
+    th:replace="~{admin/layout :: layout('Ouvidoria | Painel Alphabetz', 'ouvidoria', ~{::content})}">
+
+<div th:fragment="content" class="admin-page-content">
+    <section class="page-intro page-intro-with-action">
+        <div>
+            <span class="eyebrow eyebrow-coral">Canal de escuta</span>
+            <h1>Ouvidoria</h1>
+            <p>Consulte as manifestações e os arquivos recebidos pelo site.</p>
+        </div>
+        <div class="applications-total">
+            <strong th:text="${#lists.size(manifestations)}">0</strong>
+            <span>manifestações</span>
+        </div>
+    </section>
+
+    <div class="form-message form-message-success" th:if="${successMessage}">
+        <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
+        <span th:text="${successMessage}">Operação realizada com sucesso.</span>
+    </div>
+    <div class="form-message form-message-error" th:if="${errorMessage}">
+        <i class="fa-solid fa-circle-exclamation" aria-hidden="true"></i>
+        <span th:text="${errorMessage}">Não foi possível concluir a operação.</span>
+    </div>
+
+    <section class="applications-admin-list" aria-label="Manifestações recebidas"
+        th:if="${!#lists.isEmpty(manifestations)}">
+        <article class="application-admin-card" th:each="manifestation : ${manifestations}">
+            <header class="application-card-heading">
+                <div class="application-avatar" aria-hidden="true">
+                    <i class="fa-solid fa-comment-dots" aria-hidden="true"></i>
+                </div>
+                <div>
+                    <span class="content-status content-status-active" th:text="${manifestation.assunto}">Assunto</span>
+                    <h2 th:text="|${manifestation.nome} ${manifestation.sobrenome}|">Nome completo</h2>
+                    <p th:text="${manifestation.enviadoEmFormatado}">01/01/2026 às 10:00</p>
+                </div>
+                <div class="application-actions">
+                    <a class="admin-button admin-button-outline" th:if="${manifestation.arquivoNome != null}"
+                        th:href="@{/admin/ouvidoria/{id}/arquivo(id=${manifestation.id})}">
+                        <i class="fa-solid fa-paperclip" aria-hidden="true"></i> Arquivo
+                    </a>
+                    <a class="admin-button admin-button-primary" th:if="${manifestation.documentoImagemNome != null}"
+                        th:href="@{/admin/ouvidoria/{id}/documento(id=${manifestation.id})}">
+                        <i class="fa-solid fa-image" aria-hidden="true"></i> Documento
+                    </a>
+                    <button class="icon-button icon-button-danger" type="button" title="Excluir manifestação"
+                        th:attr="aria-label=|Excluir manifestação de ${manifestation.nome}|,data-modal-open=|ouvidoria-delete-${manifestation.id}|">
+                        <i class="fa-regular fa-trash-can" aria-hidden="true"></i>
+                    </button>
+                </div>
+            </header>
+
+            <div class="application-data-grid">
+                <div><span>E-mail</span><a th:href="|mailto:${manifestation.email}|" th:text="${manifestation.email}">E-mail</a></div>
+                <div><span>Número de celular</span><strong th:text="${manifestation.celular}">Celular</strong></div>
+                <div><span>Perfil</span><strong th:text="${manifestation.perfil}">Perfil</strong></div>
+                <div><span>Área de atuação</span><strong th:text="${manifestation.areaAtuacao}">Área</strong></div>
+                <div><span>Assunto</span><strong th:text="${manifestation.assunto}">Assunto</strong></div>
+                <div><span>Solicitou retorno</span><strong th:text="${manifestation.isReceberRetorno() ? 'Sim' : 'Não'}">Não</strong></div>
+            </div>
+
+            <div class="application-resume">
+                <div>
+                    <span>Detalhes</span>
+                    <p th:text="${manifestation.detalhes}">Detalhes da manifestação.</p>
+                </div>
+                <div class="application-file-meta" th:if="${manifestation.arquivoNome != null || manifestation.documentoImagemNome != null}">
+                    <i class="fa-regular fa-folder-open" aria-hidden="true"></i>
+                    <div>
+                        <strong>Arquivos anexados</strong>
+                        <span th:text="${(manifestation.arquivoNome != null ? 1 : 0) + (manifestation.documentoImagemNome != null ? 1 : 0) + ' arquivo(s)'}">0 arquivos</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="admin-modal" th:attr="data-modal=|ouvidoria-delete-${manifestation.id}|" hidden aria-hidden="true">
+                <div class="modal-backdrop" data-modal-close></div>
+                <section class="modal-dialog modal-dialog-small" role="dialog" aria-modal="true"
+                    th:attr="aria-labelledby=|ouvidoria-delete-title-${manifestation.id}|">
+                    <button class="modal-close" type="button" data-modal-close aria-label="Fechar">
+                        <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+                    </button>
+                    <span class="modal-alert-icon"><i class="fa-regular fa-trash-can" aria-hidden="true"></i></span>
+                    <div class="modal-centered-copy">
+                        <span class="eyebrow eyebrow-coral">Confirmar exclusão</span>
+                        <h2 th:id="|ouvidoria-delete-title-${manifestation.id}|">Excluir manifestação?</h2>
+                        <p>A manifestação e todos os arquivos anexados serão excluídos definitivamente.</p>
+                    </div>
+                    <form class="modal-actions modal-actions-centered"
+                        th:action="@{/admin/ouvidoria/{id}/excluir(id=${manifestation.id})}" method="post">
+                        <button class="admin-button admin-button-muted" type="button" data-modal-close>Cancelar</button>
+                        <button class="admin-button admin-button-danger" type="submit">
+                            <i class="fa-regular fa-trash-can" aria-hidden="true"></i> Excluir
+                        </button>
+                    </form>
+                </section>
+            </div>
+        </article>
+    </section>
+
+    <div class="empty-filter-state" th:if="${#lists.isEmpty(manifestations)}">
+        <span><i class="fa-regular fa-folder-open" aria-hidden="true"></i></span>
+        <h2>Nenhuma manifestação recebida</h2>
+        <p>As mensagens enviadas pela Ouvidoria aparecerão aqui.</p>
+    </div>
+</div>
+</html>

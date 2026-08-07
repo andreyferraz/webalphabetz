@@ -87,9 +87,14 @@ public class PublicPagesController {
         return "trabalhe-conosco";
     }
 
+    @GetMapping("/ouvidoria")
+    public String ouvidoria() {
+        return "ouvidoria";
+    }
+
     @GetMapping("/contato")
-    public String contato() {
-        return "contato";
+    public String contatoRedirect() {
+        return "redirect:/ouvidoria";
     }
 
 }

@@ -102,8 +102,8 @@ class WebalphabetzApplicationTests {
 	}
 
 	@Test
-	void contactHeroUsesSelectedBackgroundAndPreservesStructure() throws IOException {
-		String template = new ClassPathResource("templates/contato.html")
+	void ombudsmanHeroUsesSelectedBackgroundAndPreservesStructure() throws IOException {
+		String template = new ClassPathResource("templates/ouvidoria.html")
 				.getContentAsString(StandardCharsets.UTF_8);
 		String styles = new ClassPathResource("static/css/styles.css")
 				.getContentAsString(StandardCharsets.UTF_8);
@@ -111,9 +111,9 @@ class WebalphabetzApplicationTests {
 		assertThat(template)
 				.contains("<section class=\"page-hero page-hero-contact\">")
 				.contains("<div class=\"page-hero-visual reveal\" aria-hidden=\"true\">")
-				.contains("<div class=\"stack-card\"><strong>WhatsApp</strong><span>(27) 3029-1110</span></div>")
-				.contains("<div class=\"stack-card\"><strong>Endereço</strong><span>Rua Florentina Faller, 45</span></div>")
-				.contains("<div class=\"stack-card\"><strong>Horário</strong><span>7:20h às 18:45h</span></div>");
+				.contains("<div class=\"stack-card\"><strong>Escuta</strong>")
+				.contains("<div class=\"stack-card\"><strong>Privacidade</strong>")
+				.contains("<div class=\"stack-card\"><strong>Acompanhamento</strong>");
 		assertThat(styles)
 				.contains(".page-hero-contact {\n  background:")
 				.contains("cuida5.jpg")
@@ -121,16 +121,14 @@ class WebalphabetzApplicationTests {
 	}
 
 	@Test
-	void contactChannelsUseFontAwesomeIconsInsteadOfEmoji() throws IOException {
-		String template = new ClassPathResource("templates/contato.html")
+	void ombudsmanUsesFontAwesomeIconsInsteadOfEmoji() throws IOException {
+		String template = new ClassPathResource("templates/ouvidoria.html")
 				.getContentAsString(StandardCharsets.UTF_8);
 
 		assertThat(template)
-				.contains("<i class=\"fa-solid fa-location-dot\" aria-hidden=\"true\"></i>")
-				.contains("<i class=\"fa-brands fa-whatsapp\" aria-hidden=\"true\"></i>")
-				.contains("<i class=\"fa-solid fa-envelope\" aria-hidden=\"true\"></i>")
-				.contains("<i class=\"fa-solid fa-briefcase\" aria-hidden=\"true\"></i>")
-				.contains("<i class=\"fa-solid fa-clock\" aria-hidden=\"true\"></i>")
+				.contains("<i class=\"fa-solid fa-list-check\" aria-hidden=\"true\"></i>")
+				.contains("<i class=\"fa-solid fa-paperclip\" aria-hidden=\"true\"></i>")
+				.contains("<i class=\"fa-solid fa-shield-halved\" aria-hidden=\"true\"></i>")
 				.doesNotContain("📍", "📱", "✉️", "💼", "⏰");
 	}
 

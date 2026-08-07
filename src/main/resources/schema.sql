@@ -52,6 +52,31 @@ CREATE TABLE IF NOT EXISTS career_applications (
 CREATE INDEX IF NOT EXISTS idx_career_applications_enviado_em
 	ON career_applications(enviado_em DESC);
 
+CREATE TABLE IF NOT EXISTS ouvidoria_manifestacoes (
+	id TEXT PRIMARY KEY,
+	nome TEXT NOT NULL,
+	sobrenome TEXT NOT NULL,
+	email TEXT NOT NULL,
+	celular TEXT NOT NULL,
+	perfil TEXT NOT NULL,
+	area_atuacao TEXT NOT NULL,
+	assunto TEXT NOT NULL,
+	detalhes TEXT NOT NULL,
+	receber_retorno INTEGER NOT NULL,
+	enviado_em TEXT NOT NULL,
+	arquivo_nome TEXT,
+	arquivo_tipo TEXT,
+	arquivo_tamanho INTEGER NOT NULL DEFAULT 0,
+	arquivo_conteudo BLOB,
+	documento_imagem_nome TEXT,
+	documento_imagem_tipo TEXT,
+	documento_imagem_tamanho INTEGER NOT NULL DEFAULT 0,
+	documento_imagem_conteudo BLOB
+);
+
+CREATE INDEX IF NOT EXISTS idx_ouvidoria_manifestacoes_enviado_em
+	ON ouvidoria_manifestacoes(enviado_em DESC);
+
 INSERT OR IGNORE INTO blog_categories (id, nome)
 SELECT id, nome
 FROM (
