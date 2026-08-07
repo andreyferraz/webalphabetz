@@ -11,6 +11,7 @@ import com.alphabetz.webalphabetz.model.DashboardSummary;
 import com.alphabetz.webalphabetz.repository.AdminRepository;
 import com.alphabetz.webalphabetz.repository.BlogRepository;
 import com.alphabetz.webalphabetz.repository.BlogCategoryRepository;
+import com.alphabetz.webalphabetz.repository.CareerApplicationRepository;
 import com.alphabetz.webalphabetz.repository.SlideImageRepository;
 import com.alphabetz.webalphabetz.repository.SlidesRepository;
 
@@ -25,17 +26,20 @@ public class DashboardService {
     private final SlideImageRepository slideImageRepository;
     private final BlogRepository blogRepository;
     private final BlogCategoryRepository blogCategoryRepository;
+    private final CareerApplicationRepository careerApplicationRepository;
     private final AdminRepository adminRepository;
 
     public DashboardService(SlidesRepository slidesRepository,
             SlideImageRepository slideImageRepository,
             BlogRepository blogRepository,
             BlogCategoryRepository blogCategoryRepository,
+            CareerApplicationRepository careerApplicationRepository,
             AdminRepository adminRepository) {
         this.slidesRepository = slidesRepository;
         this.slideImageRepository = slideImageRepository;
         this.blogRepository = blogRepository;
         this.blogCategoryRepository = blogCategoryRepository;
+        this.careerApplicationRepository = careerApplicationRepository;
         this.adminRepository = adminRepository;
     }
 
@@ -45,6 +49,7 @@ public class DashboardService {
                 slideImageRepository.count(),
                 blogRepository.count(),
                 blogCategoryRepository.count(),
+                careerApplicationRepository.count(),
                 adminRepository.count(),
                 LocalDate.now(SAO_PAULO).format(DATE_FORMAT));
     }

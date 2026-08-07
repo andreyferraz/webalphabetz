@@ -261,12 +261,13 @@ h1, h2, h3, p { margin-top: 0; }
 .icon-button-danger:hover { color: var(--admin-coral); border-color: #f0c7bf; background: var(--admin-coral-soft); }
 
 /* Overview */
-.metric-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.metric-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
 .metric-card { position: relative; isolation: isolate; min-height: 230px; padding: 24px; overflow: hidden; border: 1px solid rgba(1,39,62,.06); border-radius: 25px; background: white; box-shadow: var(--admin-shadow); }
 .metric-card::after { content: ""; position: absolute; z-index: -1; width: 130px; height: 130px; right: -62px; bottom: -62px; border-radius: 50%; opacity: .16; background: var(--metric-color); }
 .metric-card-coral { --metric-color: var(--admin-coral); }
 .metric-card-blue { --metric-color: var(--admin-blue); }
 .metric-card-mint { --metric-color: var(--admin-mint); }
+.metric-card-yellow { --metric-color: #c59f00; }
 .metric-card-heading { display: flex; align-items: center; justify-content: space-between; margin-bottom: 17px; }
 .metric-icon { width: 48px; height: 48px; display: grid; place-items: center; border-radius: 15px; color: var(--metric-color); font-size: 1.2rem; background: color-mix(in srgb, var(--metric-color) 14%, white); }
 .metric-trend { display: inline-flex; align-items: center; gap: 6px; padding: 6px 9px; border-radius: 999px; color: var(--admin-muted); font-size: .64rem; font-weight: 700; background: #f2f5f8; }
@@ -526,6 +527,7 @@ h1, h2, h3, p { margin-top: 0; }
   .metric-card { min-height: 215px; }
   .post-admin-card { grid-template-columns: 150px minmax(0, 1fr); }
   .post-admin-actions { grid-column: 2; padding: 0 22px 18px; justify-content: flex-end; }
+  .metric-grid { grid-template-columns: repeat(2, 1fr); }
 }
 
 @media (max-width: 940px) {

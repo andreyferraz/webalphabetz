@@ -5,6 +5,7 @@ public record DashboardSummary(
         long totalPhotos,
         long totalPosts,
         long totalCategories,
+        long totalApplications,
         long totalAdmins,
         String todayLabel) {
 }
