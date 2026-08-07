@@ -1616,6 +1616,19 @@ p {
   color: var(--navy);
 }
 
+.mini-feature:nth-child(1) {
+  color: #FFFFFF;
+  background: var(--coral);
+}
+
+.mini-feature:nth-child(2) {
+  background: var(--yellow);
+}
+
+.mini-feature:nth-child(3) {
+  background: var(--mint);
+}
+
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
