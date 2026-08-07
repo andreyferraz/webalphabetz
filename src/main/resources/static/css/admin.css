@@ -492,6 +492,30 @@ h1, h2, h3, p { margin-top: 0; }
 .admin-toast p { margin: 0; color: var(--admin-muted); font-size: .63rem; }
 .admin-toast button { border: 0; color: #8c9aa6; background: none; cursor: pointer; }
 
+.applications-total { min-width: 145px; padding: 15px 20px; border: 1px solid var(--admin-border); border-radius: 17px; text-align: center; background: white; box-shadow: var(--admin-shadow); }
+.applications-total strong { display: block; color: var(--admin-green); font: 800 1.7rem/1 "Sora", sans-serif; }
+.applications-total span { color: var(--admin-muted); font-size: .67rem; font-weight: 700; }
+.applications-admin-list { display: grid; gap: 18px; }
+.application-admin-card { padding: 25px; border: 1px solid var(--admin-border); border-radius: 23px; background: white; box-shadow: var(--admin-shadow); }
+.application-card-heading { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 15px; padding-bottom: 20px; border-bottom: 1px solid var(--admin-border); }
+.application-avatar { width: 52px; height: 52px; display: grid; place-items: center; border-radius: 17px; color: var(--admin-green); background: var(--admin-mint-soft); }
+.application-card-heading h2 { margin: 5px 0 3px; font: 800 1.05rem/1.3 "Sora", sans-serif; }
+.application-card-heading p { margin: 0; color: var(--admin-muted); font-size: .65rem; }
+.application-actions { display: flex; align-items: center; gap: 9px; }
+.application-data-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; padding: 22px 0; }
+.application-data-grid > div { min-width: 0; }
+.application-data-grid span, .application-resume > div > span { display: block; margin-bottom: 5px; color: var(--admin-muted); font-size: .61rem; font-weight: 800; text-transform: uppercase; letter-spacing: .04em; }
+.application-data-grid strong, .application-data-grid a { display: block; overflow-wrap: anywhere; color: var(--admin-ink); font-size: .74rem; line-height: 1.5; }
+.application-data-grid a:hover { color: var(--admin-blue); }
+.application-resume { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 22px; padding: 18px; border-radius: 16px; background: #f8fafc; }
+.application-resume p { margin: 0; color: var(--admin-ink); font-size: .72rem; line-height: 1.65; white-space: pre-line; }
+.application-file-meta { min-width: 210px; display: flex; align-items: center; gap: 11px; padding: 12px; border: 1px solid var(--admin-border); border-radius: 13px; background: white; }
+.application-file-meta > i { color: var(--admin-blue); font-size: 1.3rem; }
+.application-file-meta div { min-width: 0; }
+.application-file-meta strong, .application-file-meta span { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.application-file-meta strong { max-width: 190px; font-size: .68rem; }
+.application-file-meta span { margin-top: 3px; color: var(--admin-muted); font-size: .58rem; }
+
 @keyframes modal-in { from { opacity: 0; transform: translateY(18px) scale(.98); } to { opacity: 1; transform: none; } }
 @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
 
@@ -525,6 +549,7 @@ h1, h2, h3, p { margin-top: 0; }
   .slide-admin-grid { grid-template-columns: 1fr; }
   .security-grid { grid-template-columns: 1fr; }
   .security-aside { grid-template-columns: 1.2fr .8fr; }
+  .application-data-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
 @media (max-width: 680px) {
@@ -567,6 +592,14 @@ h1, h2, h3, p { margin-top: 0; }
   .modal-actions-centered { flex-direction: row; }
   .modal-actions-centered .admin-button { width: auto; flex: 1; }
   .admin-toast { right: 16px; bottom: 16px; }
+  .applications-total { width: 100%; }
+  .application-admin-card { padding: 19px; }
+  .application-card-heading { grid-template-columns: auto 1fr; }
+  .application-actions { grid-column: 1 / -1; width: 100%; }
+  .application-download { flex: 1; }
+  .application-data-grid { grid-template-columns: 1fr; }
+  .application-resume { grid-template-columns: 1fr; }
+  .application-file-meta { min-width: 0; }
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -1,8 +1,14 @@
 package com.alphabetz.webalphabetz.controller;
 
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.http.ContentDisposition;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,10 +20,12 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.alphabetz.webalphabetz.model.Blog;
+import com.alphabetz.webalphabetz.model.CareerApplication;
 import com.alphabetz.webalphabetz.model.Slides;
 import com.alphabetz.webalphabetz.service.AdminService;
 import com.alphabetz.webalphabetz.service.BlogCategoryService;
 import com.alphabetz.webalphabetz.service.BlogService;
+import com.alphabetz.webalphabetz.service.CareerApplicationService;
 import com.alphabetz.webalphabetz.service.DashboardService;
 import com.alphabetz.webalphabetz.service.SlidesService;
 
@@ -29,15 +37,17 @@ public class AdminPagesController {
     private final BlogCategoryService blogCategoryService;
     private final AdminService adminService;
     private final DashboardService dashboardService;
+    private final CareerApplicationService careerApplicationService;
 
     public AdminPagesController(SlidesService slidesService, BlogService blogService,
             BlogCategoryService blogCategoryService, AdminService adminService,
-            DashboardService dashboardService) {
+            DashboardService dashboardService, CareerApplicationService careerApplicationService) {
         this.slidesService = slidesService;
         this.blogService = blogService;
         this.blogCategoryService = blogCategoryService;
         this.adminService = adminService;
         this.dashboardService = dashboardService;
+        this.careerApplicationService = careerApplicationService;
     }
 
     @GetMapping("/login")
@@ -189,6 +199,41 @@ public class AdminPagesController {
         return "admin/seguranca";
     }
 
+    @GetMapping("/admin/candidaturas")
+    public String applications(Model model) {
+        model.addAttribute("applications", careerApplicationService.getAllApplications());
+        return "admin/candidaturas";
+    }
+
+    @GetMapping("/admin/candidaturas/{id}/curriculo")
+    public ResponseEntity<ByteArrayResource> downloadResume(@PathVariable UUID id) {
+        try {
+            CareerApplication application = careerApplicationService.getApplication(id);
+            MediaType contentType = resumeContentType(application.getCurriculoTipo());
+            ContentDisposition disposition = ContentDisposition.attachment()
+                    .filename(application.getCurriculoNome(), StandardCharsets.UTF_8)
+                    .build();
+            return ResponseEntity.ok()
+                    .contentType(contentType)
+                    .contentLength(application.getCurriculoTamanho())
+                    .header(HttpHeaders.CONTENT_DISPOSITION, disposition.toString())
+                    .body(new ByteArrayResource(application.getCurriculoConteudo()));
+        } catch (IllegalArgumentException exception) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @PostMapping("/admin/candidaturas/{id}/excluir")
+    public String deleteApplication(@PathVariable UUID id, RedirectAttributes redirectAttributes) {
+        try {
+            careerApplicationService.deleteApplication(id);
+            redirectAttributes.addFlashAttribute("successMessage", "Candidatura excluída com sucesso.");
+        } catch (RuntimeException exception) {
+            redirectAttributes.addFlashAttribute("errorMessage", errorMessage(exception));
+        }
+        return "redirect:/admin/candidaturas";
+    }
+
     @PostMapping("/admin/seguranca/senha")
     public String changePassword(Authentication authentication,
             @RequestParam String currentPassword,
@@ -209,5 +254,13 @@ public class AdminPagesController {
         return exception.getMessage() == null || exception.getMessage().isBlank()
                 ? "Não foi possível concluir a operação."
                 : exception.getMessage();
+    }
+
+    private MediaType resumeContentType(String contentType) {
+        try {
+            return MediaType.parseMediaType(contentType);
+        } catch (RuntimeException exception) {
+            return MediaType.APPLICATION_OCTET_STREAM;
+        }
     }
 }

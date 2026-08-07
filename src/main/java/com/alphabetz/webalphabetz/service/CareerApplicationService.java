@@ -1,21 +1,20 @@
 package com.alphabetz.webalphabetz.service;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Locale;
 import java.util.Set;
+import java.util.UUID;
 import java.util.regex.Pattern;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.ByteArrayResource;
-import org.springframework.mail.MailException;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import jakarta.mail.MessagingException;
-import jakarta.mail.internet.MimeMessage;
+import com.alphabetz.webalphabetz.model.CareerApplication;
+import com.alphabetz.webalphabetz.repository.CareerApplicationRepository;
 
 @Service
 public class CareerApplicationService {
@@ -27,19 +26,13 @@ public class CareerApplicationService {
             Pattern.CASE_INSENSITIVE);
     private static final Set<String> ALLOWED_EXTENSIONS = Set.of("pdf", "doc", "docx");
 
-    private final JavaMailSender mailSender;
-    private final String senderEmail;
-    private final String recipientEmail;
+    private final CareerApplicationRepository repository;
 
-    public CareerApplicationService(JavaMailSender mailSender,
-            @Value("${spring.mail.username:}") String senderEmail,
-            @Value("${app.career.recipient-email}") String recipientEmail) {
-        this.mailSender = mailSender;
-        this.senderEmail = senderEmail;
-        this.recipientEmail = recipientEmail;
+    public CareerApplicationService(CareerApplicationRepository repository) {
+        this.repository = repository;
     }
 
-    public void sendApplication(String nome, String email, String telefone, String area,
+    public CareerApplication registerApplication(String nome, String email, String telefone, String area,
             String formacao, String disponibilidade, String experiencia, String linkedin,
             boolean consentimento, MultipartFile curriculo) {
         String safeName = required(nome, "nome");
@@ -55,28 +48,47 @@ public class CareerApplicationService {
         }
 
         String attachmentName = validateAttachment(curriculo);
-        if (!StringUtils.hasText(senderEmail)) {
-            throw new IllegalStateException("O remetente SMTP não está configurado.");
-        }
 
         try {
-            MimeMessage message = mailSender.createMimeMessage();
-            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
-            helper.setFrom(senderEmail);
-            helper.setTo(recipientEmail);
-            helper.setReplyTo(safeEmail);
-            helper.setSubject("Nova candidatura Alphabetz - " + safeName);
-            helper.setText(buildMessage(safeName, safeEmail, safePhone, safeArea,
-                    optional(formacao, false), optional(disponibilidade, false),
-                    optional(experiencia, true), optional(linkedin, false)), false);
-            helper.addAttachment(attachmentName, new ByteArrayResource(curriculo.getBytes()),
-                    StringUtils.hasText(curriculo.getContentType())
-                            ? curriculo.getContentType()
-                            : "application/octet-stream");
-            mailSender.send(message);
-        } catch (MessagingException | IOException | MailException exception) {
-            throw new IllegalStateException("Não foi possível enviar a candidatura agora.", exception);
+            CareerApplication application = new CareerApplication();
+            application.setId(UUID.randomUUID());
+            application.setNome(safeName);
+            application.setEmail(safeEmail);
+            application.setTelefone(safePhone);
+            application.setArea(safeArea);
+            application.setFormacao(optional(formacao, false));
+            application.setDisponibilidade(optional(disponibilidade, false));
+            application.setExperiencia(optional(experiencia, true));
+            application.setLinkedin(optional(linkedin, false));
+            application.setConsentimento(true);
+            application.setEnviadoEm(LocalDateTime.now());
+            application.setCurriculoNome(attachmentName);
+            application.setCurriculoTipo(StringUtils.hasText(curriculo.getContentType())
+                    ? curriculo.getContentType()
+                    : "application/octet-stream");
+            application.setCurriculoTamanho(curriculo.getSize());
+            application.setCurriculoConteudo(curriculo.getBytes());
+            application.setNew(true);
+            return repository.save(application);
+        } catch (IOException | DataAccessException exception) {
+            throw new IllegalStateException("Não foi possível registrar a candidatura agora.", exception);
         }
+    }
+
+    public List<CareerApplication> getAllApplications() {
+        return repository.findAllNewestFirst();
+    }
+
+    public CareerApplication getApplication(UUID id) {
+        return repository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Candidatura não encontrada."));
+    }
+
+    public void deleteApplication(UUID id) {
+        if (!repository.existsById(id)) {
+            throw new IllegalArgumentException("Candidatura não encontrada.");
+        }
+        repository.deleteById(id);
     }
 
     private String required(String value, String fieldName) {
@@ -120,35 +132,4 @@ public class CareerApplicationService {
         return fileName;
     }
 
-    private String buildMessage(String nome, String email, String telefone, String area,
-            String formacao, String disponibilidade, String experiencia, String linkedin) {
-        return """
-                Nova candidatura recebida pelo site da Alphabetz
-
-                Nome: %s
-                E-mail: %s
-                Telefone/WhatsApp: %s
-                Área de interesse: %s
-                Formação: %s
-                Disponibilidade: %s
-                LinkedIn ou portfólio: %s
-
-                Resumo da experiência:
-                %s
-
-                O candidato autorizou o uso dos dados para participação em processos seletivos.
-                """.formatted(
-                nome,
-                email,
-                telefone,
-                area,
-                displayValue(formacao),
-                displayValue(disponibilidade),
-                displayValue(linkedin),
-                displayValue(experiencia));
-    }
-
-    private String displayValue(String value) {
-        return value.isBlank() ? "Não informado" : value;
-    }
 }

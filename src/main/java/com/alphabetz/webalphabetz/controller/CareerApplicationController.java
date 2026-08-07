@@ -36,15 +36,15 @@ public class CareerApplicationController {
             @RequestParam(name = "consentimento", defaultValue = "false") boolean consentimento,
             @RequestParam("curriculo") MultipartFile curriculo) {
         try {
-            careerApplicationService.sendApplication(nome, email, telefone, area,
+            careerApplicationService.registerApplication(nome, email, telefone, area,
                     formacao, disponibilidade, experiencia, linkedin, consentimento, curriculo);
             return ResponseEntity.ok(Map.of(
-                    "message", "Candidatura enviada com sucesso."));
+                    "message", "Candidatura registrada com sucesso."));
         } catch (IllegalArgumentException exception) {
             return ResponseEntity.badRequest().body(Map.of("message", exception.getMessage()));
         } catch (IllegalStateException exception) {
             return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(Map.of(
-                    "message", "Não foi possível enviar a candidatura agora. Tente novamente mais tarde."));
+                    "message", "Não foi possível registrar a candidatura agora. Tente novamente mais tarde."));
         }
     }
 }

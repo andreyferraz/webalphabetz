@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org"
+    th:replace="~{admin/layout :: layout('Candidaturas | Painel Alphabetz', 'applications', ~{::content})}">
+
+<div th:fragment="content" class="admin-page-content">
+    <section class="page-intro page-intro-with-action">
+        <div>
+            <span class="eyebrow eyebrow-mint">Trabalhe conosco</span>
+            <h1>Candidaturas</h1>
+            <p>Consulte os dados e currículos recebidos pelo formulário do site.</p>
+        </div>
+        <div class="applications-total">
+            <strong th:text="${#lists.size(applications)}">0</strong>
+            <span>candidaturas</span>
+        </div>
+    </section>
+
+    <div class="form-message form-message-success" th:if="${successMessage}">
+        <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
+        <span th:text="${successMessage}">Operação realizada com sucesso.</span>
+    </div>
+    <div class="form-message form-message-error" th:if="${errorMessage}">
+        <i class="fa-solid fa-circle-exclamation" aria-hidden="true"></i>
+        <span th:text="${errorMessage}">Não foi possível concluir a operação.</span>
+    </div>
+
+    <section class="applications-admin-list" aria-label="Candidaturas recebidas"
+        th:if="${!#lists.isEmpty(applications)}">
+        <article class="application-admin-card" th:each="candidate : ${applications}">
+            <header class="application-card-heading">
+                <div class="application-avatar" aria-hidden="true">
+                    <i class="fa-solid fa-user" aria-hidden="true"></i>
+                </div>
+                <div>
+                    <span class="content-status content-status-active">Recebida</span>
+                    <h2 th:text="${candidate.nome}">Nome do candidato</h2>
+                    <p th:text="${candidate.enviadoEmFormatado}">01/01/2026 às 10:00</p>
+                </div>
+                <div class="application-actions">
+                    <a class="admin-button admin-button-primary application-download"
+                        th:href="@{/admin/candidaturas/{id}/curriculo(id=${candidate.id})}">
+                        <i class="fa-solid fa-download" aria-hidden="true"></i>
+                        Baixar currículo
+                    </a>
+                    <button class="icon-button icon-button-danger" type="button" title="Excluir candidatura"
+                        th:attr="aria-label=|Excluir candidatura de ${candidate.nome}|,data-modal-open=|application-delete-${candidate.id}|">
+                        <i class="fa-regular fa-trash-can" aria-hidden="true"></i>
+                    </button>
+                </div>
+            </header>
+
+            <div class="application-data-grid">
+                <div>
+                    <span>E-mail</span>
+                    <a th:href="|mailto:${candidate.email}|" th:text="${candidate.email}">email@exemplo.com</a>
+                </div>
+                <div>
+                    <span>Telefone/WhatsApp</span>
+                    <strong th:text="${candidate.telefone}">(27) 99999-9999</strong>
+                </div>
+                <div>
+                    <span>Área de interesse</span>
+                    <strong th:text="${candidate.area}">Pedagógica</strong>
+                </div>
+                <div>
+                    <span>Formação</span>
+                    <strong th:text="${#strings.isEmpty(candidate.formacao) ? 'Não informado' : candidate.formacao}">Formação</strong>
+                </div>
+                <div>
+                    <span>Disponibilidade</span>
+                    <strong th:text="${#strings.isEmpty(candidate.disponibilidade) ? 'Não informado' : candidate.disponibilidade}">Disponibilidade</strong>
+                </div>
+                <div>
+                    <span>LinkedIn ou portfólio</span>
+                    <strong th:if="${!#strings.isEmpty(candidate.linkedin)}"
+                        th:text="${candidate.linkedin}">Link</strong>
+                    <strong th:if="${#strings.isEmpty(candidate.linkedin)}">Não informado</strong>
+                </div>
+            </div>
+
+            <div class="application-resume">
+                <div>
+                    <span>Resumo da experiência</span>
+                    <p th:text="${#strings.isEmpty(candidate.experiencia) ? 'Não informado' : candidate.experiencia}">
+                        Experiência profissional.
+                    </p>
+                </div>
+                <div class="application-file-meta">
+                    <i class="fa-regular fa-file-lines" aria-hidden="true"></i>
+                    <div>
+                        <strong th:text="${candidate.curriculoNome}">curriculo.pdf</strong>
+                        <span th:text="|${#numbers.formatDecimal(candidate.curriculoTamanho / 1024.0, 1, 1)} KB|">0 KB</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="admin-modal" th:attr="data-modal=|application-delete-${candidate.id}|" hidden aria-hidden="true">
+                <div class="modal-backdrop" data-modal-close></div>
+                <section class="modal-dialog modal-dialog-small" role="dialog" aria-modal="true"
+                    th:attr="aria-labelledby=|application-delete-title-${candidate.id}|">
+                    <button class="modal-close" type="button" data-modal-close aria-label="Fechar">
+                        <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+                    </button>
+                    <span class="modal-alert-icon"><i class="fa-regular fa-trash-can" aria-hidden="true"></i></span>
+                    <div class="modal-centered-copy">
+                        <span class="eyebrow eyebrow-coral">Confirmar exclusão</span>
+                        <h2 th:id="|application-delete-title-${candidate.id}|">Excluir candidatura?</h2>
+                        <p>A candidatura de <strong th:text="${candidate.nome}">candidato</strong> e o currículo anexado serão excluídos definitivamente.</p>
+                    </div>
+                    <form class="modal-actions modal-actions-centered"
+                        th:action="@{/admin/candidaturas/{id}/excluir(id=${candidate.id})}" method="post">
+                        <button class="admin-button admin-button-muted" type="button" data-modal-close>Cancelar</button>
+                        <button class="admin-button admin-button-danger" type="submit">
+                            <i class="fa-regular fa-trash-can" aria-hidden="true"></i> Excluir
+                        </button>
+                    </form>
+                </section>
+            </div>
+        </article>
+    </section>
+
+    <div class="empty-filter-state" th:if="${#lists.isEmpty(applications)}">
+        <span><i class="fa-regular fa-folder-open" aria-hidden="true"></i></span>
+        <h2>Nenhuma candidatura recebida</h2>
+        <p>As candidaturas enviadas pelo site aparecerão aqui.</p>
+    </div>
+</div>
+
+</html>

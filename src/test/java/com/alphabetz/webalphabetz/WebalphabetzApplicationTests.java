@@ -43,10 +43,10 @@ class WebalphabetzApplicationTests {
 
 		assertThat(template)
 				.contains("<section class=\"page-hero page-hero-blog\">")
-				.contains("<div class=\"blog-hero-card reveal\" aria-hidden=\"true\">")
+				.contains("<a class=\"blog-hero-card reveal\" th:if=\"${latestPost != null}\"")
 				.contains("<div class=\"editorial-card\">")
-				.contains("Ver destaques")
-				.contains("Acessar blog oficial");
+				.contains("Ver publicações")
+				.contains("th:text=\"${latestPost.titulo}\"");
 		assertThat(styles)
 				.contains(".page-hero-blog {\n  background:")
 				.contains("3013153_1_054758958225.jpg")
@@ -64,7 +64,7 @@ class WebalphabetzApplicationTests {
 				.getContentAsString(StandardCharsets.UTF_8);
 
 		assertThat(index).contains("<span class=\"kicker\">Próximo passo</span>");
-		assertThat(blog).contains("<span class=\"kicker\">Estratégia de conteúdo</span>");
+		assertThat(blog).contains("<span class=\"kicker\">Conheça a Alphabetz</span>");
 		assertThat(styles).contains(".cta-box .kicker {\n  color: #fff;\n}");
 	}
 
@@ -80,7 +80,8 @@ class WebalphabetzApplicationTests {
 				.contains("<div class=\"career-visual reveal\" aria-hidden=\"true\">")
 				.contains("<div class=\"career-badge\">APZ</div>")
 				.contains("Escuta ativa", "Afeto e rotina", "Educação infantil")
-				.contains("Enviar currículo", "curriculo.alphabetz@alphabetz.com.br");
+				.contains("Envie seu currículo")
+				.doesNotContain("curriculo.alphabetz@alphabetz.com.br");
 		assertThat(styles)
 				.contains(".page-hero-career {\n  background:")
 				.contains("3013153_1_054759271173.jpg")
