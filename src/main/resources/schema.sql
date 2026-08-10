@@ -10,6 +10,13 @@ CREATE TABLE IF NOT EXISTS slides (
 	imagem_url TEXT NOT NULL
 );
 
+CREATE TABLE IF NOT EXISTS depoimentos (
+	id TEXT PRIMARY KEY,
+	nome TEXT NOT NULL,
+	depoimento TEXT NOT NULL,
+	imagem_url TEXT NOT NULL
+);
+
 CREATE TABLE IF NOT EXISTS slide_images (
 	id TEXT PRIMARY KEY,
 	slide_id TEXT NOT NULL,
