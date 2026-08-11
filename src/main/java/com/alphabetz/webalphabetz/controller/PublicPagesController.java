@@ -40,6 +40,7 @@ public class PublicPagesController {
 
     @GetMapping("/")
     public String home(Model model) {
+        model.addAttribute("classesByName", getClassesByName());
         model.addAttribute("testimonials", depoimentosService.getAllDepoimentos());
         return "index";
     }
@@ -67,17 +68,20 @@ public class PublicPagesController {
 
     @GetMapping("/turmas")
     public String turmas(Model model) {
-        Map<String, TurmasImagens> classesByName = new LinkedHashMap<>();
-        turmasImagensService.getAll().forEach(classItem ->
-                classesByName.putIfAbsent(normalizeClassName(classItem.getNome()), classItem));
-
         Slides turmasSlide = slidesService.getAllSlides().stream()
                 .filter(slide -> slide.getTitulo().trim().toLowerCase(Locale.ROOT).contains("turmas"))
                 .findFirst()
                 .orElse(null);
-        model.addAttribute("classesByName", classesByName);
+        model.addAttribute("classesByName", getClassesByName());
         model.addAttribute("turmasSlide", turmasSlide);
         return "turmas";
+    }
+
+    private Map<String, TurmasImagens> getClassesByName() {
+        Map<String, TurmasImagens> classesByName = new LinkedHashMap<>();
+        turmasImagensService.getAll().forEach(classItem ->
+                classesByName.putIfAbsent(normalizeClassName(classItem.getNome()), classItem));
+        return classesByName;
     }
 
     private String normalizeClassName(String name) {

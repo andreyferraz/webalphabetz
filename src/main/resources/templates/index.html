@@ -156,36 +156,46 @@
             </div>
             <div class="program-grid">
                 <article class="program-card reveal" data-number="01">
-                    <div class="program-visual"><img th:src="@{/assets/bercario_baby.png}"
-                            alt="Criança do programa Berçário Baby" loading="lazy" decoding="async" /></div>
+                    <div class="program-visual" th:if="${classesByName['bercario baby'] != null}">
+                        <img th:src="@{/uploads/{filename}(filename=${classesByName['bercario baby'].imagemUrl})}"
+                            alt="Criança do programa Berçário Baby" loading="lazy" decoding="async" />
+                    </div>
                     <span class="program-age">6m a 1a11m</span>
                     <h3>Berçário | Baby</h3>
                     <p>Ambiente seguro, alimentação inclusa e estímulos afetivos para as primeiras descobertas.</p>
                 </article>
                 <article class="program-card reveal" data-number="02">
-                    <div class="program-visual"><img th:src="@{/assets/apz_start.png}"
-                            alt="Criança do programa APZ Start" loading="lazy" decoding="async" /></div>
+                    <div class="program-visual" th:if="${classesByName['apz start'] != null}">
+                        <img th:src="@{/uploads/{filename}(filename=${classesByName['apz start'].imagemUrl})}"
+                            alt="Criança do programa APZ Start" loading="lazy" decoding="async" />
+                    </div>
                     <span class="program-age">2 anos</span>
                     <h3>APZ Start</h3>
                     <p>Rotina acolhedora para linguagem, movimento, socialização e autonomia inicial.</p>
                 </article>
                 <article class="program-card reveal" data-number="03">
-                    <div class="program-visual"><img th:src="@{/assets/apz_move.png}" alt="Criança do programa APZ Move"
-                            loading="lazy" decoding="async" /></div>
+                    <div class="program-visual" th:if="${classesByName['apz move'] != null}">
+                        <img th:src="@{/uploads/{filename}(filename=${classesByName['apz move'].imagemUrl})}"
+                            alt="Criança do programa APZ Move" loading="lazy" decoding="async" />
+                    </div>
                     <span class="program-age">3 anos</span>
                     <h3>APZ Move</h3>
                     <p>Exploração corporal, brincadeiras estruturadas e projetos que estimulam a curiosidade.</p>
                 </article>
                 <article class="program-card reveal" data-number="04">
-                    <div class="program-visual"><img th:src="@{/assets/apz_jump.png}" alt="Criança do programa APZ Jump"
-                            loading="lazy" decoding="async" /></div>
+                    <div class="program-visual" th:if="${classesByName['apz jump'] != null}">
+                        <img th:src="@{/uploads/{filename}(filename=${classesByName['apz jump'].imagemUrl})}"
+                            alt="Criança do programa APZ Jump" loading="lazy" decoding="async" />
+                    </div>
                     <span class="program-age">4 anos</span>
                     <h3>APZ Jump</h3>
                     <p>Experiências colaborativas para ampliar repertório, expressão e criatividade.</p>
                 </article>
                 <article class="program-card reveal" data-number="05">
-                    <div class="program-visual"><img th:src="@{/assets/apz_fly.png}" alt="Criança do programa APZ Fly"
-                            loading="lazy" decoding="async" /></div>
+                    <div class="program-visual" th:if="${classesByName['apz fly'] != null}">
+                        <img th:src="@{/uploads/{filename}(filename=${classesByName['apz fly'].imagemUrl})}"
+                            alt="Criança do programa APZ Fly" loading="lazy" decoding="async" />
+                    </div>
                     <span class="program-age">5 anos</span>
                     <h3>APZ Fly</h3>
                     <p>Preparação leve para novos desafios, com confiança, autonomia e encantamento.</p>
