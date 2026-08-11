@@ -14,6 +14,7 @@ import org.springframework.web.server.ResponseStatusException;
 import com.alphabetz.webalphabetz.model.Blog;
 import com.alphabetz.webalphabetz.model.Slides;
 import com.alphabetz.webalphabetz.service.BlogService;
+import com.alphabetz.webalphabetz.service.DepoimentosService;
 import com.alphabetz.webalphabetz.service.SlidesService;
 
 @Controller
@@ -23,14 +24,18 @@ public class PublicPagesController {
 
     private final SlidesService slidesService;
     private final BlogService blogService;
+    private final DepoimentosService depoimentosService;
 
-    public PublicPagesController(SlidesService slidesService, BlogService blogService) {
+    public PublicPagesController(SlidesService slidesService, BlogService blogService,
+            DepoimentosService depoimentosService) {
         this.slidesService = slidesService;
         this.blogService = blogService;
+        this.depoimentosService = depoimentosService;
     }
 
     @GetMapping("/")
-    public String home() {
+    public String home(Model model) {
+        model.addAttribute("testimonials", depoimentosService.getAllDepoimentos());
         return "index";
     }
 

@@ -318,6 +318,52 @@
         </div>
     </section>
 
+    <section class="section home-testimonials-section" aria-labelledby="home-testimonials-title"
+        th:if="${!#lists.isEmpty(testimonials)}">
+        <div class="container">
+            <div class="section-header reveal">
+                <div>
+                    <span class="kicker">Quem vive a Alphabetz</span>
+                    <h2 id="home-testimonials-title">Histórias compartilhadas por nossas famílias.</h2>
+                </div>
+                <p>Experiências reais de quem acompanha de perto o cuidado, o acolhimento e o desenvolvimento das crianças.</p>
+            </div>
+
+            <div class="home-testimonials-carousel reveal" data-home-testimonials-carousel
+                aria-label="Carrossel de depoimentos">
+                <div class="home-testimonials-viewport" data-home-testimonials-viewport>
+                    <div class="home-testimonials-track" data-home-testimonials-track>
+                        <article class="home-testimonial-card" data-home-testimonial-card
+                            th:each="testimonial : ${testimonials}">
+                            <span class="home-testimonial-quote" aria-hidden="true">
+                                <i class="fa-solid fa-quote-left"></i>
+                            </span>
+                            <blockquote th:text="${testimonial.depoimento}">Depoimento de uma família Alphabetz.</blockquote>
+                            <footer class="home-testimonial-author">
+                                <img th:src="@{/uploads/{filename}(filename=${testimonial.imagemUrl})}"
+                                    th:alt="|Foto de ${testimonial.nome}|" loading="lazy" decoding="async" />
+                                <strong th:text="${testimonial.nome}">Nome</strong>
+                            </footer>
+                        </article>
+                    </div>
+                </div>
+
+                <div class="home-testimonials-controls" data-home-testimonials-controls>
+                    <button class="home-testimonial-arrow" type="button" data-home-testimonials-prev
+                        aria-label="Depoimentos anteriores">
+                        <i class="fa-solid fa-arrow-left" aria-hidden="true"></i>
+                    </button>
+                    <div class="home-testimonials-dots" data-home-testimonials-dots
+                        aria-label="Selecionar grupo de depoimentos"></div>
+                    <button class="home-testimonial-arrow" type="button" data-home-testimonials-next
+                        aria-label="Próximos depoimentos">
+                        <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <section class="cta-section">
         <div class="container">
             <div class="cta-box reveal">

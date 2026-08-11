@@ -205,6 +205,126 @@
     element.addEventListener('click', closeLightbox);
   });
 
+  const homeTestimonialsCarousel = $('[data-home-testimonials-carousel]');
+
+  if (homeTestimonialsCarousel) {
+    const viewport = $('[data-home-testimonials-viewport]', homeTestimonialsCarousel);
+    const track = $('[data-home-testimonials-track]', homeTestimonialsCarousel);
+    const cards = $$('[data-home-testimonial-card]', homeTestimonialsCarousel);
+    const controls = $('[data-home-testimonials-controls]', homeTestimonialsCarousel);
+    const dots = $('[data-home-testimonials-dots]', homeTestimonialsCarousel);
+    const previousButton = $('[data-home-testimonials-prev]', homeTestimonialsCarousel);
+    const nextButton = $('[data-home-testimonials-next]', homeTestimonialsCarousel);
+    let positions = [0];
+    let currentPage = 0;
+    let autoplayTimer = null;
+
+    const visibleCards = () => {
+      const value = window.getComputedStyle(homeTestimonialsCarousel)
+        .getPropertyValue('--testimonials-visible');
+      return Math.max(1, Number.parseInt(value, 10) || 3);
+    };
+
+    const buildPositions = visible => {
+      const maxPosition = Math.max(0, cards.length - visible);
+      const nextPositions = [0];
+      while (nextPositions[nextPositions.length - 1] < maxPosition) {
+        nextPositions.push(Math.min(nextPositions[nextPositions.length - 1] + visible, maxPosition));
+      }
+      return nextPositions;
+    };
+
+    const updateDots = () => {
+      if (!dots) return;
+      dots.innerHTML = '';
+      positions.forEach((position, pageIndex) => {
+        const dot = document.createElement('button');
+        dot.type = 'button';
+        dot.setAttribute('aria-label', `Exibir grupo ${pageIndex + 1} de depoimentos`);
+        dot.classList.toggle('is-active', pageIndex === currentPage);
+        dot.addEventListener('click', () => {
+          currentPage = pageIndex;
+          renderHomeTestimonials();
+          restartAutoplay();
+        });
+        dots.append(dot);
+      });
+    };
+
+    const renderHomeTestimonials = () => {
+      if (!viewport || !track || !cards.length) return;
+      const visible = visibleCards();
+      const gap = Number.parseFloat(window.getComputedStyle(track).columnGap) || 0;
+      const cardWidth = cards[0].getBoundingClientRect().width;
+      const firstVisibleCard = positions[currentPage] || 0;
+      track.style.transform = `translate3d(-${firstVisibleCard * (cardWidth + gap)}px, 0, 0)`;
+      cards.forEach((card, index) => {
+        const isVisible = index >= firstVisibleCard && index < firstVisibleCard + visible;
+        card.setAttribute('aria-hidden', String(!isVisible));
+      });
+      $$('button', dots).forEach((dot, index) => {
+        dot.classList.toggle('is-active', index === currentPage);
+        dot.setAttribute('aria-current', index === currentPage ? 'true' : 'false');
+      });
+    };
+
+    const rebuildHomeTestimonials = () => {
+      positions = buildPositions(visibleCards());
+      currentPage = Math.min(currentPage, positions.length - 1);
+      if (controls) controls.hidden = positions.length <= 1;
+      updateDots();
+      renderHomeTestimonials();
+    };
+
+    const changePage = direction => {
+      currentPage = (currentPage + direction + positions.length) % positions.length;
+      renderHomeTestimonials();
+    };
+
+    const stopAutoplay = () => {
+      window.clearInterval(autoplayTimer);
+      autoplayTimer = null;
+    };
+
+    const startAutoplay = () => {
+      stopAutoplay();
+      if (!prefersReducedMotion && positions.length > 1) {
+        autoplayTimer = window.setInterval(() => changePage(1), 6500);
+      }
+    };
+
+    function restartAutoplay() {
+      startAutoplay();
+    }
+
+    previousButton?.addEventListener('click', () => {
+      changePage(-1);
+      restartAutoplay();
+    });
+    nextButton?.addEventListener('click', () => {
+      changePage(1);
+      restartAutoplay();
+    });
+    homeTestimonialsCarousel.addEventListener('mouseenter', stopAutoplay);
+    homeTestimonialsCarousel.addEventListener('mouseleave', startAutoplay);
+    homeTestimonialsCarousel.addEventListener('focusin', stopAutoplay);
+    homeTestimonialsCarousel.addEventListener('focusout', event => {
+      if (!homeTestimonialsCarousel.contains(event.relatedTarget)) startAutoplay();
+    });
+
+    let carouselResizeTimer = null;
+    window.addEventListener('resize', () => {
+      window.clearTimeout(carouselResizeTimer);
+      carouselResizeTimer = window.setTimeout(() => {
+        rebuildHomeTestimonials();
+        startAutoplay();
+      }, 120);
+    });
+
+    rebuildHomeTestimonials();
+    startAutoplay();
+  }
+
   document.addEventListener('keydown', event => {
     if (event.key === 'Escape' && lightbox && !lightbox.hidden) {
       closeLightbox();
