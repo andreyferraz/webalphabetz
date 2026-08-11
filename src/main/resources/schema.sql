@@ -17,6 +17,12 @@ CREATE TABLE IF NOT EXISTS depoimentos (
 	imagem_url TEXT NOT NULL
 );
 
+CREATE TABLE IF NOT EXISTS fundo_topo (
+	id TEXT PRIMARY KEY,
+	nome_pagina TEXT NOT NULL,
+	imagem_url TEXT NOT NULL
+);
+
 CREATE TABLE IF NOT EXISTS turmas_imagens (
 	id TEXT PRIMARY KEY,
 	nome TEXT NOT NULL,
