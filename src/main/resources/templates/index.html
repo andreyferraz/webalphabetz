@@ -6,7 +6,8 @@
 </header>
 <div th:fragment="content">
 
-    <section class="hero" aria-labelledby="hero-title">
+    <section class="hero" aria-labelledby="hero-title"
+        th:style="${heroBackground != null ? '--hero-background-image: url(/uploads/' + heroBackground.imagemUrl + ')' : null}">
         <div class="container hero-grid">
             <div class="hero-content reveal">
                 <span class="kicker">Educação infantil em Vitória/ES</span>

@@ -6,7 +6,8 @@
 </header>
 <div th:fragment="content">
 
-    <section class="page-hero public-blog-post-hero">
+    <section class="page-hero public-blog-post-hero"
+        th:style="${heroBackground != null ? '--hero-background-image: url(/uploads/' + heroBackground.imagemUrl + ')' : null}">
         <div class="container public-blog-post-heading reveal">
             <a class="public-blog-back" th:href="@{/blog}"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Voltar para o blog</a>
             <span class="kicker" th:text="${post.categoria}">Categoria</span>

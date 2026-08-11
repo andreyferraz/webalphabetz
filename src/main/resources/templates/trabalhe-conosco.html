@@ -6,7 +6,8 @@
 </header>
 <div th:fragment="content">
 
-        <section class="page-hero page-hero-career">
+        <section class="page-hero page-hero-career"
+          th:style="${heroBackground != null ? '--hero-background-image: url(/uploads/' + heroBackground.imagemUrl + ')' : null}">
       <div class="container page-hero-grid">
         <div class="reveal">
           <span class="kicker">Trabalhe conosco</span>

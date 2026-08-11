@@ -4,7 +4,8 @@
 <header><title th:text="${title}"></title></header>
 <div th:fragment="content">
 
-    <section class="page-hero page-hero-contact">
+    <section class="page-hero page-hero-contact"
+        th:style="${heroBackground != null ? '--hero-background-image: url(/uploads/' + heroBackground.imagemUrl + ')' : null}">
         <div class="container page-hero-grid">
             <div class="reveal">
                 <span class="kicker">Ouvidoria Alphabetz</span>
