@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -110,6 +111,13 @@ class DepoimentosServiceTests {
         @Override
         public Iterable<Depoimentos> findAll() {
             return storage.values();
+        }
+
+        @Override
+        public List<Depoimentos> findAllByOrderByNomeAsc() {
+            return storage.values().stream()
+                    .sorted(Comparator.comparing(Depoimentos::getNome))
+                    .toList();
         }
 
         @Override
