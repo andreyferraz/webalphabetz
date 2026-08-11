@@ -41,9 +41,17 @@
                 <p>Conteúdos produzidos pela Alphabetz para compartilhar conhecimento, experiências e orientações.</p>
             </div>
 
-            <div class="blog-grid" th:if="${!#lists.isEmpty(posts)}">
-                <article class="blog-card reveal" th:each="post : ${posts}"
-                    th:attr="data-category=${post.categoria}">
+            <div class="blog-listing" th:if="${!#lists.isEmpty(posts)}" data-blog-listing>
+                <div class="blog-search">
+                    <label class="sr-only" for="blog-search-input">Buscar publicações</label>
+                    <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+                    <input id="blog-search-input" type="search" placeholder="Buscar por título, resumo ou categoria..."
+                        autocomplete="off" data-blog-search />
+                </div>
+
+                <div class="blog-grid" data-blog-grid>
+                    <article class="blog-card reveal" th:each="post : ${posts}"
+                        th:attr="data-category=${post.categoria}" data-blog-card>
                     <a class="blog-thumb blog-thumb-image" th:href="@{/blog/{slug}(slug=${post.slug})}"
                         th:attr="aria-label=|Ler ${post.titulo}|">
                         <img th:src="@{/uploads/{filename}(filename=${post.imagemUrl})}"
@@ -59,7 +67,15 @@
                         </div>
                         <a th:href="@{/blog/{slug}(slug=${post.slug})}">Ler notícia →</a>
                     </div>
-                </article>
+                    </article>
+                </div>
+
+                <div class="blog-empty-state" data-blog-search-empty hidden>
+                    <h2>Nenhuma publicação encontrada.</h2>
+                    <p>Tente buscar usando outro termo.</p>
+                </div>
+
+                <nav class="blog-pagination" aria-label="Paginação das publicações" data-blog-pagination></nav>
             </div>
 
             <div class="blog-empty-state reveal" th:if="${#lists.isEmpty(posts)}">

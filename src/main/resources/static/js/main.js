@@ -360,6 +360,84 @@
     });
   });
 
+  const blogListing = $('[data-blog-listing]');
+  if (blogListing) {
+    const searchInput = $('[data-blog-search]', blogListing);
+    const blogGrid = $('[data-blog-grid]', blogListing);
+    const blogCards = $$('[data-blog-card]', blogListing);
+    const emptyState = $('[data-blog-search-empty]', blogListing);
+    const pagination = $('[data-blog-pagination]', blogListing);
+    const postsPerPage = 4;
+    let currentPage = 1;
+
+    const normalizeSearchText = value => String(value || '')
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .toLocaleLowerCase('pt-BR')
+      .trim();
+
+    const createPageButton = (label, page, options = {}) => {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.textContent = label;
+      button.disabled = Boolean(options.disabled);
+      button.classList.toggle('is-active', Boolean(options.active));
+      if (options.active) button.setAttribute('aria-current', 'page');
+      button.setAttribute('aria-label', options.ariaLabel || `Ir para a página ${page}`);
+      button.addEventListener('click', () => {
+        currentPage = page;
+        renderBlogPosts();
+        blogListing.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+      return button;
+    };
+
+    const renderBlogPosts = () => {
+      const term = normalizeSearchText(searchInput?.value);
+      const filteredCards = blogCards.filter(card => normalizeSearchText(card.textContent).includes(term));
+      const totalPages = Math.ceil(filteredCards.length / postsPerPage);
+      currentPage = Math.min(currentPage, Math.max(totalPages, 1));
+      const firstPost = (currentPage - 1) * postsPerPage;
+      const visibleCards = new Set(filteredCards.slice(firstPost, firstPost + postsPerPage));
+
+      blogCards.forEach(card => {
+        card.hidden = !visibleCards.has(card);
+        if (!card.hidden) card.classList.add('is-visible');
+      });
+
+      if (blogGrid) blogGrid.hidden = filteredCards.length === 0;
+      if (emptyState) emptyState.hidden = filteredCards.length !== 0;
+      if (!pagination) return;
+
+      pagination.innerHTML = '';
+      pagination.hidden = totalPages <= 1;
+      if (totalPages <= 1) return;
+
+      pagination.append(createPageButton('Anterior', currentPage - 1, {
+        disabled: currentPage === 1,
+        ariaLabel: 'Ir para a página anterior'
+      }));
+
+      for (let page = 1; page <= totalPages; page += 1) {
+        pagination.append(createPageButton(String(page), page, {
+          active: page === currentPage
+        }));
+      }
+
+      pagination.append(createPageButton('Próxima', currentPage + 1, {
+        disabled: currentPage === totalPages,
+        ariaLabel: 'Ir para a próxima página'
+      }));
+    };
+
+    searchInput?.addEventListener('input', () => {
+      currentPage = 1;
+      renderBlogPosts();
+    });
+
+    renderBlogPosts();
+  }
+
   const formatPhone = input => {
     const digits = input.value.replace(/\D/g, '').slice(0, 11);
     if (digits.length <= 2) {
