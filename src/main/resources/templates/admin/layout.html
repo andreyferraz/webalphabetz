@@ -52,6 +52,10 @@
                     <span class="nav-icon nav-icon-mint"><i class="fa-solid fa-quote-left" aria-hidden="true"></i></span>
                     <span>Depoimentos</span>
                 </a>
+                <a th:href="@{/admin/turmas}" th:classappend="${activePage == 'classes'} ? ' is-active' : ''">
+                    <span class="nav-icon nav-icon-blue"><i class="fa-solid fa-children" aria-hidden="true"></i></span>
+                    <span>Turmas</span>
+                </a>
                 <a th:href="@{/admin/candidaturas}" th:classappend="${activePage == 'applications'} ? ' is-active' : ''">
                     <span class="nav-icon nav-icon-blue"><i class="fa-solid fa-user-group" aria-hidden="true"></i></span>
                     <span>Candidaturas</span>
@@ -104,6 +108,7 @@
                         <span th:case="'slides'">Slides</span>
                         <span th:case="'blog'">Blog</span>
                         <span th:case="'testimonials'">Depoimentos</span>
+                        <span th:case="'classes'">Turmas</span>
                         <span th:case="'applications'">Candidaturas</span>
                         <span th:case="'ouvidoria'">Ouvidoria</span>
                         <span th:case="'security'">Segurança</span>

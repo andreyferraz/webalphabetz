@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org"
+    th:replace="~{admin/layout :: layout('Turmas | Painel Alphabetz', 'classes', ~{::content})}">
+
+<div th:fragment="content" class="admin-page-content">
+    <section class="page-intro page-intro-with-action">
+        <div>
+            <span class="eyebrow eyebrow-mint">Turmas da escola</span>
+            <h1>Turmas</h1>
+            <p>Gerencie os nomes e as imagens das turmas.</p>
+        </div>
+        <button class="admin-button admin-button-primary" type="button" data-modal-open="class-create">
+            <i class="fa-solid fa-plus" aria-hidden="true"></i>
+            Nova turma
+        </button>
+    </section>
+
+    <div class="form-message form-message-success" th:if="${successMessage}">
+        <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
+        <span th:text="${successMessage}">Operação realizada com sucesso.</span>
+    </div>
+    <div class="form-message form-message-error" th:if="${errorMessage}">
+        <i class="fa-solid fa-circle-exclamation" aria-hidden="true"></i>
+        <span th:text="${errorMessage}">Não foi possível concluir a operação.</span>
+    </div>
+
+    <section class="content-toolbar" aria-label="Ferramentas de turmas">
+        <label class="admin-search">
+            <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+            <span class="sr-only">Buscar turmas</span>
+            <input type="search" placeholder="Buscar por nome..." data-filter-input="classes" />
+        </label>
+        <div class="toolbar-summary toolbar-summary-end">
+            <span><strong data-visible-count th:text="${#lists.size(classes)}">0</strong> turmas</span>
+        </div>
+    </section>
+
+    <section class="testimonials-admin-list" data-filter-list="classes"
+        aria-label="Turmas cadastradas" th:if="${!#lists.isEmpty(classes)}">
+        <article class="testimonial-admin-card" data-filter-item th:each="classItem : ${classes}"
+            th:attr="data-filter-text=${classItem.nome}">
+            <img class="testimonial-admin-avatar"
+                th:src="@{/uploads/{filename}(filename=${classItem.imagemUrl})}"
+                th:alt="|Imagem da turma ${classItem.nome}|" />
+            <div class="testimonial-admin-copy">
+                <strong th:text="${classItem.nome}">Nome da turma</strong>
+                <div class="content-meta">
+                    <span><i class="fa-solid fa-image" aria-hidden="true"></i> Imagem associada</span>
+                </div>
+            </div>
+            <div class="testimonial-admin-actions">
+                <button class="admin-button admin-button-outline admin-button-small" type="button"
+                    th:attr="data-modal-open=|class-edit-${classItem.id}|">
+                    <i class="fa-regular fa-pen-to-square" aria-hidden="true"></i> Editar
+                </button>
+                <button class="icon-button icon-button-danger" type="button" title="Excluir"
+                    th:attr="aria-label=|Excluir turma ${classItem.nome}|,data-modal-open=|class-delete-${classItem.id}|">
+                    <i class="fa-regular fa-trash-can" aria-hidden="true"></i>
+                </button>
+            </div>
+        </article>
+    </section>
+
+    <div class="empty-filter-state" th:if="${#lists.isEmpty(classes)}">
+        <span><i class="fa-solid fa-children" aria-hidden="true"></i></span>
+        <h2>Nenhuma turma cadastrada</h2>
+        <p>Crie a primeira turma para começar.</p>
+    </div>
+
+    <div class="empty-filter-state" data-empty-state="classes" hidden
+        th:if="${!#lists.isEmpty(classes)}">
+        <span><i class="fa-solid fa-children" aria-hidden="true"></i></span>
+        <h2>Nenhuma turma encontrada</h2>
+        <p>Tente buscar por outro termo.</p>
+    </div>
+
+    <div class="admin-modal" data-modal="class-create" hidden aria-hidden="true">
+        <div class="modal-backdrop" data-modal-close></div>
+        <section class="modal-dialog modal-dialog-form" role="dialog" aria-modal="true"
+            aria-labelledby="class-create-title">
+            <header class="modal-heading">
+                <div>
+                    <span class="eyebrow eyebrow-mint">Nova turma</span>
+                    <h2 id="class-create-title">Cadastrar turma</h2>
+                </div>
+                <button class="modal-close" type="button" data-modal-close aria-label="Fechar">
+                    <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+                </button>
+            </header>
+
+            <form class="admin-form" th:action="@{/admin/turmas}" method="post"
+                enctype="multipart/form-data">
+                <div class="form-field">
+                    <label for="class-create-name">Nome <span>*</span></label>
+                    <input id="class-create-name" name="nome" type="text" maxlength="120"
+                        placeholder="Nome da turma" required />
+                </div>
+
+                <div class="form-field">
+                    <span class="form-label">Imagem <span>*</span></span>
+                    <label class="upload-zone upload-zone-compact" for="class-create-image" data-drop-zone>
+                        <span class="upload-icon"><i class="fa-solid fa-cloud-arrow-up" aria-hidden="true"></i></span>
+                        <span>
+                            <strong>Selecione uma imagem</strong>
+                            <small>JPG, PNG ou WebP</small>
+                        </span>
+                        <input id="class-create-image" name="imagem" type="file"
+                            accept="image/jpeg,image/png,image/webp" required data-image-input />
+                    </label>
+                    <div class="image-preview-grid image-preview-single" data-image-preview aria-live="polite"></div>
+                </div>
+
+                <div class="modal-actions">
+                    <button class="admin-button admin-button-muted" type="button" data-modal-close>Cancelar</button>
+                    <button class="admin-button admin-button-primary" type="submit">
+                        <i class="fa-regular fa-floppy-disk" aria-hidden="true"></i> Salvar turma
+                    </button>
+                </div>
+            </form>
+        </section>
+    </div>
+
+    <th:block th:each="classItem : ${classes}">
+        <div class="admin-modal" th:attr="data-modal=|class-edit-${classItem.id}|" hidden
+            aria-hidden="true">
+            <div class="modal-backdrop" data-modal-close></div>
+            <section class="modal-dialog modal-dialog-form" role="dialog" aria-modal="true"
+                th:attr="aria-labelledby=|class-edit-title-${classItem.id}|">
+                <header class="modal-heading">
+                    <div>
+                        <span class="eyebrow eyebrow-mint">Editar turma</span>
+                        <h2 th:id="|class-edit-title-${classItem.id}|">Editar turma</h2>
+                    </div>
+                    <button class="modal-close" type="button" data-modal-close aria-label="Fechar">
+                        <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+                    </button>
+                </header>
+
+                <form class="admin-form" th:action="@{/admin/turmas/{id}(id=${classItem.id})}"
+                    method="post" enctype="multipart/form-data">
+                    <div class="form-field">
+                        <label th:for="|class-name-${classItem.id}|">Nome <span>*</span></label>
+                        <input th:id="|class-name-${classItem.id}|" name="nome" type="text"
+                            maxlength="120" th:value="${classItem.nome}" required />
+                    </div>
+
+                    <div class="form-field">
+                        <span class="form-label">Imagem</span>
+                        <div class="testimonial-current-image">
+                            <img th:src="@{/uploads/{filename}(filename=${classItem.imagemUrl})}"
+                                th:alt="|Imagem atual da turma ${classItem.nome}|" />
+                            <span>Imagem atual</span>
+                        </div>
+                        <label class="upload-zone upload-zone-compact"
+                            th:for="|class-image-${classItem.id}|" data-drop-zone>
+                            <span class="upload-icon"><i class="fa-solid fa-cloud-arrow-up" aria-hidden="true"></i></span>
+                            <span>
+                                <strong>Substituir imagem</strong>
+                                <small>Opcional · JPG, PNG ou WebP</small>
+                            </span>
+                            <input th:id="|class-image-${classItem.id}|" name="imagem" type="file"
+                                accept="image/jpeg,image/png,image/webp" data-image-input />
+                        </label>
+                        <div class="image-preview-grid image-preview-single" data-image-preview aria-live="polite"></div>
+                    </div>
+
+                    <div class="modal-actions">
+                        <button class="admin-button admin-button-muted" type="button" data-modal-close>Cancelar</button>
+                        <button class="admin-button admin-button-primary" type="submit">
+                            <i class="fa-regular fa-floppy-disk" aria-hidden="true"></i> Salvar alterações
+                        </button>
+                    </div>
+                </form>
+            </section>
+        </div>
+
+        <div class="admin-modal" th:attr="data-modal=|class-delete-${classItem.id}|" hidden
+            aria-hidden="true">
+            <div class="modal-backdrop" data-modal-close></div>
+            <section class="modal-dialog modal-dialog-small" role="dialog" aria-modal="true"
+                th:attr="aria-labelledby=|class-delete-title-${classItem.id}|">
+                <button class="modal-close" type="button" data-modal-close aria-label="Fechar">
+                    <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+                </button>
+                <span class="modal-alert-icon"><i class="fa-regular fa-trash-can" aria-hidden="true"></i></span>
+                <div class="modal-centered-copy">
+                    <span class="eyebrow eyebrow-coral">Confirmar exclusão</span>
+                    <h2 th:id="|class-delete-title-${classItem.id}|">Excluir turma?</h2>
+                    <p>A turma <strong th:text="${classItem.nome}">selecionada</strong> será excluída.</p>
+                </div>
+                <form class="modal-actions modal-actions-centered"
+                    th:action="@{/admin/turmas/{id}/excluir(id=${classItem.id})}" method="post">
+                    <button class="admin-button admin-button-muted" type="button" data-modal-close>Cancelar</button>
+                    <button class="admin-button admin-button-danger" type="submit">
+                        <i class="fa-regular fa-trash-can" aria-hidden="true"></i> Excluir
+                    </button>
+                </form>
+            </section>
+        </div>
+    </th:block>
+</div>
+
+</html>

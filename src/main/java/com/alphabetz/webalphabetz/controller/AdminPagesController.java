@@ -32,6 +32,7 @@ import com.alphabetz.webalphabetz.service.DashboardService;
 import com.alphabetz.webalphabetz.service.DepoimentosService;
 import com.alphabetz.webalphabetz.service.OuvidoriaService;
 import com.alphabetz.webalphabetz.service.SlidesService;
+import com.alphabetz.webalphabetz.service.TurmasImagensService;
 
 @Controller
 public class AdminPagesController {
@@ -44,11 +45,13 @@ public class AdminPagesController {
     private final CareerApplicationService careerApplicationService;
     private final OuvidoriaService ouvidoriaService;
     private final DepoimentosService depoimentosService;
+    private final TurmasImagensService turmasImagensService;
 
     public AdminPagesController(SlidesService slidesService, BlogService blogService,
             BlogCategoryService blogCategoryService, AdminService adminService,
             DashboardService dashboardService, CareerApplicationService careerApplicationService,
-            OuvidoriaService ouvidoriaService, DepoimentosService depoimentosService) {
+            OuvidoriaService ouvidoriaService, DepoimentosService depoimentosService,
+            TurmasImagensService turmasImagensService) {
         this.slidesService = slidesService;
         this.blogService = blogService;
         this.blogCategoryService = blogCategoryService;
@@ -57,6 +60,7 @@ public class AdminPagesController {
         this.careerApplicationService = careerApplicationService;
         this.ouvidoriaService = ouvidoriaService;
         this.depoimentosService = depoimentosService;
+        this.turmasImagensService = turmasImagensService;
     }
 
     @GetMapping("/login")
@@ -247,6 +251,50 @@ public class AdminPagesController {
             redirectAttributes.addFlashAttribute("errorMessage", errorMessage(exception));
         }
         return "redirect:/admin/depoimentos";
+    }
+
+    @GetMapping("/admin/turmas")
+    public String classes(Model model) {
+        model.addAttribute("classes", turmasImagensService.getAll());
+        return "admin/turmas";
+    }
+
+    @PostMapping("/admin/turmas")
+    public String createClass(@RequestParam String nome,
+            @RequestParam(name = "imagem", required = false) MultipartFile image,
+            RedirectAttributes redirectAttributes) {
+        try {
+            turmasImagensService.create(nome, image);
+            redirectAttributes.addFlashAttribute("successMessage", "Turma criada com sucesso.");
+        } catch (RuntimeException exception) {
+            redirectAttributes.addFlashAttribute("errorMessage", errorMessage(exception));
+        }
+        return "redirect:/admin/turmas";
+    }
+
+    @PostMapping("/admin/turmas/{id}")
+    public String updateClass(@PathVariable UUID id,
+            @RequestParam String nome,
+            @RequestParam(name = "imagem", required = false) MultipartFile image,
+            RedirectAttributes redirectAttributes) {
+        try {
+            turmasImagensService.update(id, nome, image);
+            redirectAttributes.addFlashAttribute("successMessage", "Turma atualizada com sucesso.");
+        } catch (RuntimeException exception) {
+            redirectAttributes.addFlashAttribute("errorMessage", errorMessage(exception));
+        }
+        return "redirect:/admin/turmas";
+    }
+
+    @PostMapping("/admin/turmas/{id}/excluir")
+    public String deleteClass(@PathVariable UUID id, RedirectAttributes redirectAttributes) {
+        try {
+            turmasImagensService.delete(id);
+            redirectAttributes.addFlashAttribute("successMessage", "Turma excluída com sucesso.");
+        } catch (RuntimeException exception) {
+            redirectAttributes.addFlashAttribute("errorMessage", errorMessage(exception));
+        }
+        return "redirect:/admin/turmas";
     }
 
     @GetMapping("/admin/seguranca")

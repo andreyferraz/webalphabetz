@@ -1,5 +1,6 @@
 package com.alphabetz.webalphabetz.repository;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.data.repository.CrudRepository;
@@ -9,5 +10,7 @@ import com.alphabetz.webalphabetz.model.TurmasImagens;
 
 @Repository
 public interface TurmasImagensRepository extends CrudRepository<TurmasImagens, UUID> {
+
+    List<TurmasImagens> findAllByOrderByNomeAsc();
 
 }
