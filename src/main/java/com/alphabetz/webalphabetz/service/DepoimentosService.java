@@ -23,7 +23,7 @@ public class DepoimentosService {
 
     @Transactional
     public Depoimentos createDepoimento(Depoimentos depoimento, MultipartFile imageFile) {
-        ValidationUtils.validarCampoObrigatorio(depoimento,  "depoimento");
+        ValidationUtils.validarCampoObrigatorio(depoimento, "depoimento");
         ValidationUtils.validarCampoStringObrigatorio(depoimento.getNome(), "nome");
         ValidationUtils.validarCampoStringObrigatorio(depoimento.getDepoimento(), "depoimento");
         ValidationUtils.validarCampoObrigatorio(imageFile, "imagem");
@@ -39,6 +39,57 @@ public class DepoimentosService {
             fileUploadService.removerImagem(imageUrl);
             throw exception;
         }
+    }
+
+    @Transactional
+    public Depoimentos updateDepoimento(UUID id, Depoimentos depoimento, MultipartFile imageFile) {
+        ValidationUtils.validarCampoObrigatorio(depoimento, "depoimento");
+        ValidationUtils.validarCampoStringObrigatorio(depoimento.getNome(), "nome");
+        ValidationUtils.validarCampoStringObrigatorio(depoimento.getDepoimento(), "depoimento");
+
+        Depoimentos existingDepoimento = depoimentosRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Depoimento não encontrado"));
+
+        existingDepoimento.setNome(depoimento.getNome());
+        existingDepoimento.setDepoimento(depoimento.getDepoimento());
+
+        if (imageFile != null && !imageFile.isEmpty()) {
+            String oldImageUrl = existingDepoimento.getImagemUrl();
+            String newImageUrl = fileUploadService.salvarImagem(imageFile);
+            try {
+                existingDepoimento.setImagemUrl(newImageUrl);
+                return depoimentosRepository.save(existingDepoimento);
+            } catch (RuntimeException exception) {
+                fileUploadService.removerImagem(newImageUrl);
+                throw exception;
+            } finally {
+                if (oldImageUrl != null) {
+                    fileUploadService.removerImagem(oldImageUrl);
+                }
+            }
+        } else {
+            return depoimentosRepository.save(existingDepoimento);
+        }
+    }
+
+    @Transactional
+    public void deleteDepoimento(UUID id) {
+        Depoimentos existingDepoimento = depoimentosRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Depoimento não encontrado"));
+        String imageUrl = existingDepoimento.getImagemUrl();
+        depoimentosRepository.delete(existingDepoimento);
+        if (imageUrl != null) {
+            fileUploadService.removerImagem(imageUrl);
+        }
+    }
+
+    public Depoimentos getDepoimentoById(UUID id) {
+        return depoimentosRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Depoimento não encontrado"));
+    }
+
+    public Iterable<Depoimentos> getAllDepoimentos() {
+        return depoimentosRepository.findAll();
     }
 
 }
