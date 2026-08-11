@@ -30,7 +30,10 @@
                             <li>Vínculo e adaptação</li>
                         </ul>
                     </div>
-                    <div class="class-visual"><img th:src="@{/assets/bercario_baby.png}" alt="Criança do Berçário Baby" loading="lazy" decoding="async" /></div>
+                    <div class="class-visual" th:if="${classesByName['bercario baby'] != null}">
+                        <img th:src="@{/uploads/{filename}(filename=${classesByName['bercario baby'].imagemUrl})}"
+                            alt="Criança do Berçário Baby" loading="lazy" decoding="async" />
+                    </div>
                 </article>
                 <article class="class-card reveal" data-category="creche" data-color="mint">
                     <div class="class-meta"><span class="program-age">2 anos</span>
@@ -42,7 +45,10 @@
                             <li>Convivência</li>
                         </ul>
                     </div>
-                    <div class="class-visual"><img th:src="@{/assets/apz_start.png}" alt="Criança do APZ Start" loading="lazy" decoding="async" /></div>
+                    <div class="class-visual" th:if="${classesByName['apz start'] != null}">
+                        <img th:src="@{/uploads/{filename}(filename=${classesByName['apz start'].imagemUrl})}"
+                            alt="Criança do APZ Start" loading="lazy" decoding="async" />
+                    </div>
                 </article>
                 <article class="class-card reveal" data-category="creche" data-color="yellow">
                     <div class="class-meta"><span class="program-age">3 anos</span>
@@ -54,7 +60,10 @@
                             <li>Expressão criativa</li>
                         </ul>
                     </div>
-                    <div class="class-visual"><img th:src="@{/assets/apz_move.png}" alt="Criança do APZ Move" loading="lazy" decoding="async" /></div>
+                    <div class="class-visual" th:if="${classesByName['apz move'] != null}">
+                        <img th:src="@{/uploads/{filename}(filename=${classesByName['apz move'].imagemUrl})}"
+                            alt="Criança do APZ Move" loading="lazy" decoding="async" />
+                    </div>
                 </article>
                 <article class="class-card reveal" data-category="pre" data-color="sky">
                     <div class="class-meta"><span class="program-age">4 anos</span>
@@ -66,7 +75,10 @@
                             <li>Comunicação</li>
                         </ul>
                     </div>
-                    <div class="class-visual"><img th:src="@{/assets/apz_jump.png}" alt="Criança do APZ Jump" loading="lazy" decoding="async" /></div>
+                    <div class="class-visual" th:if="${classesByName['apz jump'] != null}">
+                        <img th:src="@{/uploads/{filename}(filename=${classesByName['apz jump'].imagemUrl})}"
+                            alt="Criança do APZ Jump" loading="lazy" decoding="async" />
+                    </div>
                 </article>
                 <article class="class-card reveal" data-category="pre" data-color="orange">
                     <div class="class-meta"><span class="program-age">5 anos</span>
@@ -78,7 +90,10 @@
                             <li>Confiança emocional</li>
                         </ul>
                     </div>
-                    <div class="class-visual"><img th:src="@{/assets/apz_fly.png}" alt="Criança do APZ Fly" loading="lazy" decoding="async" /></div>
+                    <div class="class-visual" th:if="${classesByName['apz fly'] != null}">
+                        <img th:src="@{/uploads/{filename}(filename=${classesByName['apz fly'].imagemUrl})}"
+                            alt="Criança do APZ Fly" loading="lazy" decoding="async" />
+                    </div>
                 </article>
             </div>
         </div>
