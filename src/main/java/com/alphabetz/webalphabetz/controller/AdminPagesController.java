@@ -21,6 +21,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.alphabetz.webalphabetz.model.Blog;
 import com.alphabetz.webalphabetz.model.CareerApplication;
+import com.alphabetz.webalphabetz.model.Depoimentos;
 import com.alphabetz.webalphabetz.model.OuvidoriaManifestacao;
 import com.alphabetz.webalphabetz.model.Slides;
 import com.alphabetz.webalphabetz.service.AdminService;
@@ -28,6 +29,7 @@ import com.alphabetz.webalphabetz.service.BlogCategoryService;
 import com.alphabetz.webalphabetz.service.BlogService;
 import com.alphabetz.webalphabetz.service.CareerApplicationService;
 import com.alphabetz.webalphabetz.service.DashboardService;
+import com.alphabetz.webalphabetz.service.DepoimentosService;
 import com.alphabetz.webalphabetz.service.OuvidoriaService;
 import com.alphabetz.webalphabetz.service.SlidesService;
 
@@ -41,11 +43,12 @@ public class AdminPagesController {
     private final DashboardService dashboardService;
     private final CareerApplicationService careerApplicationService;
     private final OuvidoriaService ouvidoriaService;
+    private final DepoimentosService depoimentosService;
 
     public AdminPagesController(SlidesService slidesService, BlogService blogService,
             BlogCategoryService blogCategoryService, AdminService adminService,
             DashboardService dashboardService, CareerApplicationService careerApplicationService,
-            OuvidoriaService ouvidoriaService) {
+            OuvidoriaService ouvidoriaService, DepoimentosService depoimentosService) {
         this.slidesService = slidesService;
         this.blogService = blogService;
         this.blogCategoryService = blogCategoryService;
@@ -53,6 +56,7 @@ public class AdminPagesController {
         this.dashboardService = dashboardService;
         this.careerApplicationService = careerApplicationService;
         this.ouvidoriaService = ouvidoriaService;
+        this.depoimentosService = depoimentosService;
     }
 
     @GetMapping("/login")
@@ -199,6 +203,52 @@ public class AdminPagesController {
         return "redirect:/admin/blog";
     }
 
+    @GetMapping("/admin/depoimentos")
+    public String testimonials(Model model) {
+        model.addAttribute("testimonials", depoimentosService.getAllDepoimentos());
+        return "admin/depoimentos";
+    }
+
+    @PostMapping("/admin/depoimentos")
+    public String createTestimonial(@RequestParam String nome,
+            @RequestParam String depoimento,
+            @RequestParam(name = "imagem", required = false) MultipartFile image,
+            RedirectAttributes redirectAttributes) {
+        try {
+            depoimentosService.createDepoimento(testimonial(nome, depoimento), image);
+            redirectAttributes.addFlashAttribute("successMessage", "Depoimento criado com sucesso.");
+        } catch (RuntimeException exception) {
+            redirectAttributes.addFlashAttribute("errorMessage", errorMessage(exception));
+        }
+        return "redirect:/admin/depoimentos";
+    }
+
+    @PostMapping("/admin/depoimentos/{id}")
+    public String updateTestimonial(@PathVariable UUID id,
+            @RequestParam String nome,
+            @RequestParam String depoimento,
+            @RequestParam(name = "imagem", required = false) MultipartFile image,
+            RedirectAttributes redirectAttributes) {
+        try {
+            depoimentosService.updateDepoimento(id, testimonial(nome, depoimento), image);
+            redirectAttributes.addFlashAttribute("successMessage", "Depoimento atualizado com sucesso.");
+        } catch (RuntimeException exception) {
+            redirectAttributes.addFlashAttribute("errorMessage", errorMessage(exception));
+        }
+        return "redirect:/admin/depoimentos";
+    }
+
+    @PostMapping("/admin/depoimentos/{id}/excluir")
+    public String deleteTestimonial(@PathVariable UUID id, RedirectAttributes redirectAttributes) {
+        try {
+            depoimentosService.deleteDepoimento(id);
+            redirectAttributes.addFlashAttribute("successMessage", "Depoimento excluído com sucesso.");
+        } catch (RuntimeException exception) {
+            redirectAttributes.addFlashAttribute("errorMessage", errorMessage(exception));
+        }
+        return "redirect:/admin/depoimentos";
+    }
+
     @GetMapping("/admin/seguranca")
     public String security() {
         return "admin/seguranca";
@@ -299,6 +349,13 @@ public class AdminPagesController {
         return exception.getMessage() == null || exception.getMessage().isBlank()
                 ? "Não foi possível concluir a operação."
                 : exception.getMessage();
+    }
+
+    private Depoimentos testimonial(String name, String content) {
+        Depoimentos testimonial = new Depoimentos();
+        testimonial.setNome(name);
+        testimonial.setDepoimento(content);
+        return testimonial;
     }
 
     private MediaType resumeContentType(String contentType) {

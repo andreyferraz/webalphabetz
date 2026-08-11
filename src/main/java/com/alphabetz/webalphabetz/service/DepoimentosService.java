@@ -1,5 +1,6 @@
 package com.alphabetz.webalphabetz.service;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
@@ -26,9 +27,13 @@ public class DepoimentosService {
         ValidationUtils.validarCampoObrigatorio(depoimento, "depoimento");
         ValidationUtils.validarCampoStringObrigatorio(depoimento.getNome(), "nome");
         ValidationUtils.validarCampoStringObrigatorio(depoimento.getDepoimento(), "depoimento");
-        ValidationUtils.validarCampoObrigatorio(imageFile, "imagem");
+        if (imageFile == null || imageFile.isEmpty()) {
+            throw new IllegalArgumentException("A imagem é obrigatória.");
+        }
 
         depoimento.setId(UUID.randomUUID());
+        depoimento.setNome(depoimento.getNome().trim());
+        depoimento.setDepoimento(depoimento.getDepoimento().trim());
         depoimento.setNew(true);
 
         String imageUrl = fileUploadService.salvarImagem(imageFile);
@@ -50,22 +55,22 @@ public class DepoimentosService {
         Depoimentos existingDepoimento = depoimentosRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Depoimento não encontrado"));
 
-        existingDepoimento.setNome(depoimento.getNome());
-        existingDepoimento.setDepoimento(depoimento.getDepoimento());
+        existingDepoimento.setNome(depoimento.getNome().trim());
+        existingDepoimento.setDepoimento(depoimento.getDepoimento().trim());
 
         if (imageFile != null && !imageFile.isEmpty()) {
             String oldImageUrl = existingDepoimento.getImagemUrl();
             String newImageUrl = fileUploadService.salvarImagem(imageFile);
             try {
                 existingDepoimento.setImagemUrl(newImageUrl);
-                return depoimentosRepository.save(existingDepoimento);
+                Depoimentos updatedDepoimento = depoimentosRepository.save(existingDepoimento);
+                if (oldImageUrl != null && !oldImageUrl.isBlank()) {
+                    fileUploadService.removerImagem(oldImageUrl);
+                }
+                return updatedDepoimento;
             } catch (RuntimeException exception) {
                 fileUploadService.removerImagem(newImageUrl);
                 throw exception;
-            } finally {
-                if (oldImageUrl != null) {
-                    fileUploadService.removerImagem(oldImageUrl);
-                }
             }
         } else {
             return depoimentosRepository.save(existingDepoimento);
@@ -88,8 +93,8 @@ public class DepoimentosService {
                 .orElseThrow(() -> new RuntimeException("Depoimento não encontrado"));
     }
 
-    public Iterable<Depoimentos> getAllDepoimentos() {
-        return depoimentosRepository.findAll();
+    public List<Depoimentos> getAllDepoimentos() {
+        return depoimentosRepository.findAllByOrderByNomeAsc();
     }
 
 }

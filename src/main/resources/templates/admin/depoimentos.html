@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org"
+    th:replace="~{admin/layout :: layout('Depoimentos | Painel Alphabetz', 'testimonials', ~{::content})}">
+
+<div th:fragment="content" class="admin-page-content">
+    <section class="page-intro page-intro-with-action">
+        <div>
+            <span class="eyebrow eyebrow-mint">Experiências compartilhadas</span>
+            <h1>Depoimentos</h1>
+            <p>Gerencie os relatos apresentados pela Alphabetz.</p>
+        </div>
+        <button class="admin-button admin-button-primary" type="button" data-modal-open="testimonial-create">
+            <i class="fa-solid fa-plus" aria-hidden="true"></i>
+            Novo depoimento
+        </button>
+    </section>
+
+    <div class="form-message form-message-success" th:if="${successMessage}">
+        <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
+        <span th:text="${successMessage}">Operação realizada com sucesso.</span>
+    </div>
+    <div class="form-message form-message-error" th:if="${errorMessage}">
+        <i class="fa-solid fa-circle-exclamation" aria-hidden="true"></i>
+        <span th:text="${errorMessage}">Não foi possível concluir a operação.</span>
+    </div>
+
+    <section class="content-toolbar" aria-label="Ferramentas de depoimentos">
+        <label class="admin-search">
+            <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+            <span class="sr-only">Buscar depoimentos</span>
+            <input type="search" placeholder="Buscar por nome ou depoimento..."
+                data-filter-input="testimonials" />
+        </label>
+        <div class="toolbar-summary toolbar-summary-end">
+            <span><strong data-visible-count th:text="${#lists.size(testimonials)}">0</strong> depoimentos</span>
+        </div>
+    </section>
+
+    <section class="testimonials-admin-list" data-filter-list="testimonials"
+        aria-label="Depoimentos cadastrados" th:if="${!#lists.isEmpty(testimonials)}">
+        <article class="testimonial-admin-card" data-filter-item th:each="testimonial : ${testimonials}"
+            th:attr="data-filter-text=|${testimonial.nome} ${testimonial.depoimento}|">
+            <img class="testimonial-admin-avatar"
+                th:src="@{/uploads/{filename}(filename=${testimonial.imagemUrl})}"
+                th:alt="|Foto de ${testimonial.nome}|" />
+            <div class="testimonial-admin-copy">
+                <span class="testimonial-quote-icon" aria-hidden="true">
+                    <i class="fa-solid fa-quote-left"></i>
+                </span>
+                <blockquote th:text="${testimonial.depoimento}">Relato cadastrado.</blockquote>
+                <strong th:text="${testimonial.nome}">Nome</strong>
+                <div class="content-meta">
+                    <span><i class="fa-solid fa-database" aria-hidden="true"></i> Conteúdo persistido</span>
+                </div>
+            </div>
+            <div class="testimonial-admin-actions">
+                <button class="admin-button admin-button-outline admin-button-small" type="button"
+                    th:attr="data-modal-open=|testimonial-edit-${testimonial.id}|">
+                    <i class="fa-regular fa-pen-to-square" aria-hidden="true"></i> Editar
+                </button>
+                <button class="icon-button icon-button-danger" type="button" title="Excluir"
+                    th:attr="aria-label=|Excluir depoimento de ${testimonial.nome}|,data-modal-open=|testimonial-delete-${testimonial.id}|">
+                    <i class="fa-regular fa-trash-can" aria-hidden="true"></i>
+                </button>
+            </div>
+        </article>
+    </section>
+
+    <div class="empty-filter-state" th:if="${#lists.isEmpty(testimonials)}">
+        <span><i class="fa-regular fa-comment-dots" aria-hidden="true"></i></span>
+        <h2>Nenhum depoimento cadastrado</h2>
+        <p>Crie o primeiro depoimento para começar.</p>
+    </div>
+
+    <div class="empty-filter-state" data-empty-state="testimonials" hidden
+        th:if="${!#lists.isEmpty(testimonials)}">
+        <span><i class="fa-regular fa-comment-dots" aria-hidden="true"></i></span>
+        <h2>Nenhum depoimento encontrado</h2>
+        <p>Tente buscar por outro termo.</p>
+    </div>
+
+    <div class="admin-modal" data-modal="testimonial-create" hidden aria-hidden="true">
+        <div class="modal-backdrop" data-modal-close></div>
+        <section class="modal-dialog modal-dialog-form" role="dialog" aria-modal="true"
+            aria-labelledby="testimonial-create-title">
+            <header class="modal-heading">
+                <div>
+                    <span class="eyebrow eyebrow-mint">Novo relato</span>
+                    <h2 id="testimonial-create-title">Novo depoimento</h2>
+                </div>
+                <button class="modal-close" type="button" data-modal-close aria-label="Fechar">
+                    <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+                </button>
+            </header>
+
+            <form class="admin-form" th:action="@{/admin/depoimentos}" method="post"
+                enctype="multipart/form-data">
+                <div class="form-field">
+                    <label for="testimonial-create-name">Nome <span>*</span></label>
+                    <input id="testimonial-create-name" name="nome" type="text" maxlength="120"
+                        placeholder="Nome da pessoa" required />
+                </div>
+
+                <div class="form-field">
+                    <label for="testimonial-create-content">Depoimento <span>*</span></label>
+                    <textarea id="testimonial-create-content" name="depoimento" rows="6" maxlength="1200"
+                        placeholder="Escreva o depoimento" required></textarea>
+                </div>
+
+                <div class="form-field">
+                    <span class="form-label">Foto <span>*</span></span>
+                    <label class="upload-zone upload-zone-compact" for="testimonial-create-image" data-drop-zone>
+                        <span class="upload-icon"><i class="fa-solid fa-cloud-arrow-up" aria-hidden="true"></i></span>
+                        <span>
+                            <strong>Selecione uma foto</strong>
+                            <small>JPG, PNG ou WebP</small>
+                        </span>
+                        <input id="testimonial-create-image" name="imagem" type="file"
+                            accept="image/jpeg,image/png,image/webp" required data-image-input />
+                    </label>
+                    <div class="image-preview-grid image-preview-single" data-image-preview aria-live="polite"></div>
+                </div>
+
+                <div class="modal-actions">
+                    <button class="admin-button admin-button-muted" type="button" data-modal-close>Cancelar</button>
+                    <button class="admin-button admin-button-primary" type="submit">
+                        <i class="fa-regular fa-floppy-disk" aria-hidden="true"></i> Salvar depoimento
+                    </button>
+                </div>
+            </form>
+        </section>
+    </div>
+
+    <th:block th:each="testimonial : ${testimonials}">
+        <div class="admin-modal" th:attr="data-modal=|testimonial-edit-${testimonial.id}|" hidden
+            aria-hidden="true">
+            <div class="modal-backdrop" data-modal-close></div>
+            <section class="modal-dialog modal-dialog-form" role="dialog" aria-modal="true"
+                th:attr="aria-labelledby=|testimonial-edit-title-${testimonial.id}|">
+                <header class="modal-heading">
+                    <div>
+                        <span class="eyebrow eyebrow-mint">Editar relato</span>
+                        <h2 th:id="|testimonial-edit-title-${testimonial.id}|">Editar depoimento</h2>
+                    </div>
+                    <button class="modal-close" type="button" data-modal-close aria-label="Fechar">
+                        <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+                    </button>
+                </header>
+
+                <form class="admin-form" th:action="@{/admin/depoimentos/{id}(id=${testimonial.id})}"
+                    method="post" enctype="multipart/form-data">
+                    <div class="form-field">
+                        <label th:for="|testimonial-name-${testimonial.id}|">Nome <span>*</span></label>
+                        <input th:id="|testimonial-name-${testimonial.id}|" name="nome" type="text"
+                            maxlength="120" th:value="${testimonial.nome}" required />
+                    </div>
+
+                    <div class="form-field">
+                        <label th:for="|testimonial-content-${testimonial.id}|">Depoimento <span>*</span></label>
+                        <textarea th:id="|testimonial-content-${testimonial.id}|" name="depoimento" rows="6"
+                            maxlength="1200" th:text="${testimonial.depoimento}" required></textarea>
+                    </div>
+
+                    <div class="form-field">
+                        <span class="form-label">Foto</span>
+                        <div class="testimonial-current-image">
+                            <img th:src="@{/uploads/{filename}(filename=${testimonial.imagemUrl})}"
+                                th:alt="|Foto atual de ${testimonial.nome}|" />
+                            <span>Foto atual</span>
+                        </div>
+                        <label class="upload-zone upload-zone-compact"
+                            th:for="|testimonial-image-${testimonial.id}|" data-drop-zone>
+                            <span class="upload-icon"><i class="fa-solid fa-cloud-arrow-up" aria-hidden="true"></i></span>
+                            <span>
+                                <strong>Substituir foto</strong>
+                                <small>Opcional · JPG, PNG ou WebP</small>
+                            </span>
+                            <input th:id="|testimonial-image-${testimonial.id}|" name="imagem" type="file"
+                                accept="image/jpeg,image/png,image/webp" data-image-input />
+                        </label>
+                        <div class="image-preview-grid image-preview-single" data-image-preview aria-live="polite"></div>
+                    </div>
+
+                    <div class="modal-actions">
+                        <button class="admin-button admin-button-muted" type="button" data-modal-close>Cancelar</button>
+                        <button class="admin-button admin-button-primary" type="submit">
+                            <i class="fa-regular fa-floppy-disk" aria-hidden="true"></i> Salvar alterações
+                        </button>
+                    </div>
+                </form>
+            </section>
+        </div>
+
+        <div class="admin-modal" th:attr="data-modal=|testimonial-delete-${testimonial.id}|" hidden
+            aria-hidden="true">
+            <div class="modal-backdrop" data-modal-close></div>
+            <section class="modal-dialog modal-dialog-small" role="dialog" aria-modal="true"
+                th:attr="aria-labelledby=|testimonial-delete-title-${testimonial.id}|">
+                <button class="modal-close" type="button" data-modal-close aria-label="Fechar">
+                    <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+                </button>
+                <span class="modal-alert-icon"><i class="fa-regular fa-trash-can" aria-hidden="true"></i></span>
+                <div class="modal-centered-copy">
+                    <span class="eyebrow eyebrow-coral">Confirmar exclusão</span>
+                    <h2 th:id="|testimonial-delete-title-${testimonial.id}|">Excluir depoimento?</h2>
+                    <p>O depoimento de <strong th:text="${testimonial.nome}">selecionado</strong> será excluído.</p>
+                </div>
+                <form class="modal-actions modal-actions-centered"
+                    th:action="@{/admin/depoimentos/{id}/excluir(id=${testimonial.id})}" method="post">
+                    <button class="admin-button admin-button-muted" type="button" data-modal-close>Cancelar</button>
+                    <button class="admin-button admin-button-danger" type="submit">
+                        <i class="fa-regular fa-trash-can" aria-hidden="true"></i> Excluir
+                    </button>
+                </form>
+            </section>
+        </div>
+    </th:block>
+</div>
+
+</html>
