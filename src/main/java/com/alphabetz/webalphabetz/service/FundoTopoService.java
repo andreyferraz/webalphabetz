@@ -85,7 +85,7 @@ public class FundoTopoService {
     }
 
     public List<FundoTopo> getAll() {
-        return fundoTopoRepository.findAllByOrderByNomeAsc();
+        return fundoTopoRepository.findAllByOrderByNomePaginaAsc();
     }
 
 }

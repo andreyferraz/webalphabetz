@@ -232,7 +232,7 @@ class FundoTopoServiceTests {
         }
 
         @Override
-        public List<FundoTopo> findAllByOrderByNomeAsc() {
+        public List<FundoTopo> findAllByOrderByNomePaginaAsc() {
             return storage.values().stream()
                     .sorted(Comparator.comparing(FundoTopo::getNomePagina))
                     .toList();

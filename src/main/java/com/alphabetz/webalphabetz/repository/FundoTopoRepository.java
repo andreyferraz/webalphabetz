@@ -11,6 +11,6 @@ import com.alphabetz.webalphabetz.model.FundoTopo;
 @Repository
 public interface FundoTopoRepository extends CrudRepository<FundoTopo, UUID> {
 
-    List<FundoTopo> findAllByOrderByNomeAsc();
+    List<FundoTopo> findAllByOrderByNomePaginaAsc();
 
 }
