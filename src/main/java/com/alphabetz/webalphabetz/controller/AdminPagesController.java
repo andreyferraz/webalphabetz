@@ -30,6 +30,7 @@ import com.alphabetz.webalphabetz.service.BlogService;
 import com.alphabetz.webalphabetz.service.CareerApplicationService;
 import com.alphabetz.webalphabetz.service.DashboardService;
 import com.alphabetz.webalphabetz.service.DepoimentosService;
+import com.alphabetz.webalphabetz.service.FundoTopoService;
 import com.alphabetz.webalphabetz.service.OuvidoriaService;
 import com.alphabetz.webalphabetz.service.SlidesService;
 import com.alphabetz.webalphabetz.service.TurmasImagensService;
@@ -46,12 +47,13 @@ public class AdminPagesController {
     private final OuvidoriaService ouvidoriaService;
     private final DepoimentosService depoimentosService;
     private final TurmasImagensService turmasImagensService;
+    private final FundoTopoService fundoTopoService;
 
     public AdminPagesController(SlidesService slidesService, BlogService blogService,
             BlogCategoryService blogCategoryService, AdminService adminService,
             DashboardService dashboardService, CareerApplicationService careerApplicationService,
             OuvidoriaService ouvidoriaService, DepoimentosService depoimentosService,
-            TurmasImagensService turmasImagensService) {
+            TurmasImagensService turmasImagensService, FundoTopoService fundoTopoService) {
         this.slidesService = slidesService;
         this.blogService = blogService;
         this.blogCategoryService = blogCategoryService;
@@ -61,6 +63,7 @@ public class AdminPagesController {
         this.ouvidoriaService = ouvidoriaService;
         this.depoimentosService = depoimentosService;
         this.turmasImagensService = turmasImagensService;
+        this.fundoTopoService = fundoTopoService;
     }
 
     @GetMapping("/login")
@@ -295,6 +298,50 @@ public class AdminPagesController {
             redirectAttributes.addFlashAttribute("errorMessage", errorMessage(exception));
         }
         return "redirect:/admin/turmas";
+    }
+
+    @GetMapping("/admin/abas")
+    public String tabs(Model model) {
+        model.addAttribute("backgrounds", fundoTopoService.getAll());
+        return "admin/abas";
+    }
+
+    @PostMapping("/admin/abas")
+    public String createTabBackground(@RequestParam String nomePagina,
+            @RequestParam(name = "imagem", required = false) MultipartFile image,
+            RedirectAttributes redirectAttributes) {
+        try {
+            fundoTopoService.createFundoTopo(nomePagina, image);
+            redirectAttributes.addFlashAttribute("successMessage", "Fundo criado com sucesso.");
+        } catch (RuntimeException exception) {
+            redirectAttributes.addFlashAttribute("errorMessage", errorMessage(exception));
+        }
+        return "redirect:/admin/abas";
+    }
+
+    @PostMapping("/admin/abas/{id}")
+    public String updateTabBackground(@PathVariable UUID id,
+            @RequestParam String nomePagina,
+            @RequestParam(name = "imagem", required = false) MultipartFile image,
+            RedirectAttributes redirectAttributes) {
+        try {
+            fundoTopoService.updateFundoTopo(id, nomePagina, image);
+            redirectAttributes.addFlashAttribute("successMessage", "Fundo atualizado com sucesso.");
+        } catch (RuntimeException exception) {
+            redirectAttributes.addFlashAttribute("errorMessage", errorMessage(exception));
+        }
+        return "redirect:/admin/abas";
+    }
+
+    @PostMapping("/admin/abas/{id}/excluir")
+    public String deleteTabBackground(@PathVariable UUID id, RedirectAttributes redirectAttributes) {
+        try {
+            fundoTopoService.deleteFundoTopo(id);
+            redirectAttributes.addFlashAttribute("successMessage", "Fundo excluído com sucesso.");
+        } catch (RuntimeException exception) {
+            redirectAttributes.addFlashAttribute("errorMessage", errorMessage(exception));
+        }
+        return "redirect:/admin/abas";
     }
 
     @GetMapping("/admin/seguranca")
