@@ -359,6 +359,16 @@ h1, h2, h3, p { margin-top: 0; }
 .testimonial-admin-card { display: grid; grid-template-columns: 150px minmax(0, 1fr) auto; align-items: stretch; min-height: 170px; overflow: hidden; border: 1px solid var(--admin-border); border-radius: 21px; background: white; box-shadow: 0 14px 36px rgba(1,39,62,.065); transition: transform .2s ease, box-shadow .2s ease; }
 .testimonial-admin-card:hover { transform: translateY(-2px); box-shadow: 0 19px 42px rgba(1,39,62,.1); }
 .testimonial-admin-avatar { width: 100%; height: 100%; min-height: 170px; object-fit: cover; }
+.tabs-background-placeholder {
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 9px;
+  color: #8495a3;
+  background: linear-gradient(145deg, #eef3f6, #f8fafc);
+}
+.tabs-background-placeholder i { font-size: 1.6rem; }
+.tabs-background-placeholder span { font-size: .64rem; font-weight: 800; text-transform: uppercase; }
 .testimonial-admin-copy { position: relative; align-self: center; min-width: 0; padding: 22px 26px; }
 .testimonial-quote-icon { position: absolute; top: 18px; right: 22px; color: var(--admin-mint); font-size: 1.25rem; opacity: .7; }
 .testimonial-admin-copy blockquote { max-width: 850px; margin: 0 38px 12px 0; color: var(--admin-muted); font-size: .74rem; line-height: 1.7; white-space: pre-line; }

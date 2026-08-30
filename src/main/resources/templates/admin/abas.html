@@ -31,44 +31,51 @@
             <input type="search" placeholder="Buscar por página..." data-filter-input="backgrounds" />
         </label>
         <div class="toolbar-summary toolbar-summary-end">
-            <span><strong data-visible-count th:text="${#lists.size(backgrounds)}">0</strong> fundos</span>
+            <span><strong data-visible-count th:text="${#lists.size(heroPageOptions)}">0</strong> páginas</span>
         </div>
     </section>
 
     <section class="testimonials-admin-list" data-filter-list="backgrounds"
-        aria-label="Fundos cadastrados" th:if="${!#lists.isEmpty(backgrounds)}">
-        <article class="testimonial-admin-card" data-filter-item th:each="background : ${backgrounds}"
-            th:attr="data-filter-text=${background.nomePagina}">
-            <img class="testimonial-admin-avatar"
+        aria-label="Fundos das páginas">
+        <article class="testimonial-admin-card" data-filter-item
+            th:each="pageOption, pageStatus : ${heroPageOptions}"
+            th:with="background=${backgroundsByPage[pageOption]}"
+            th:attr="data-filter-text=${pageOption}">
+            <img class="testimonial-admin-avatar" th:if="${background != null}"
                 th:src="@{/uploads/{filename}(filename=${background.imagemUrl})}"
-                th:alt="|Fundo do topo da página ${background.nomePagina}|" />
+                th:alt="|Fundo do topo da página ${pageOption}|" />
+            <div class="testimonial-admin-avatar tabs-background-placeholder" th:unless="${background != null}">
+                <i class="fa-regular fa-image" aria-hidden="true"></i>
+                <span>Sem imagem</span>
+            </div>
             <div class="testimonial-admin-copy">
-                <strong th:text="${background.nomePagina}">Nome da página</strong>
+                <strong th:text="${pageOption == 'inicio' ? 'Página inicial' : pageOption}">Nome da página</strong>
                 <div class="content-meta">
-                    <span><i class="fa-solid fa-image" aria-hidden="true"></i> Fundo do topo</span>
+                    <span th:if="${background != null}"><i class="fa-solid fa-image" aria-hidden="true"></i> Fundo configurado</span>
+                    <span th:unless="${background != null}"><i class="fa-regular fa-circle" aria-hidden="true"></i> Aguardando imagem</span>
                 </div>
             </div>
             <div class="testimonial-admin-actions">
                 <button class="admin-button admin-button-outline admin-button-small" type="button"
+                    th:if="${background != null}"
                     th:attr="data-modal-open=|background-edit-${background.id}|">
                     <i class="fa-regular fa-pen-to-square" aria-hidden="true"></i> Editar
                 </button>
                 <button class="icon-button icon-button-danger" type="button" title="Excluir"
+                    th:if="${background != null}"
                     th:attr="aria-label=|Excluir fundo da página ${background.nomePagina}|,data-modal-open=|background-delete-${background.id}|">
                     <i class="fa-regular fa-trash-can" aria-hidden="true"></i>
+                </button>
+                <button class="admin-button admin-button-primary admin-button-small" type="button"
+                    th:unless="${background != null}"
+                    th:attr="data-modal-open=|background-create-${pageStatus.index}|">
+                    <i class="fa-solid fa-plus" aria-hidden="true"></i> Adicionar imagem
                 </button>
             </div>
         </article>
     </section>
 
-    <div class="empty-filter-state" th:if="${#lists.isEmpty(backgrounds)}">
-        <span><i class="fa-regular fa-window-maximize" aria-hidden="true"></i></span>
-        <h2>Nenhum fundo cadastrado</h2>
-        <p>Cadastre o primeiro fundo de página para começar.</p>
-    </div>
-
-    <div class="empty-filter-state" data-empty-state="backgrounds" hidden
-        th:if="${!#lists.isEmpty(backgrounds)}">
+    <div class="empty-filter-state" data-empty-state="backgrounds" hidden>
         <span><i class="fa-regular fa-window-maximize" aria-hidden="true"></i></span>
         <h2>Nenhum fundo encontrado</h2>
         <p>Tente buscar por outro termo.</p>
@@ -92,8 +99,11 @@
                 enctype="multipart/form-data">
                 <div class="form-field">
                     <label for="background-create-page">Página <span>*</span></label>
-                    <input id="background-create-page" name="nomePagina" type="text" maxlength="120"
-                        placeholder="Nome da página" required />
+                    <select id="background-create-page" name="nomePagina" required>
+                        <option value="" selected disabled>Selecione uma página</option>
+                        <option th:each="pageOption : ${heroPageOptions}" th:value="${pageOption}"
+                            th:text="${pageOption == 'inicio' ? 'Página inicial' : pageOption}">Página</option>
+                    </select>
                 </div>
 
                 <div class="form-field">
@@ -120,6 +130,55 @@
         </section>
     </div>
 
+    <th:block th:each="pageOption, pageStatus : ${heroPageOptions}"
+        th:if="${backgroundsByPage[pageOption] == null}">
+        <div class="admin-modal" th:attr="data-modal=|background-create-${pageStatus.index}|" hidden
+            aria-hidden="true">
+            <div class="modal-backdrop" data-modal-close></div>
+            <section class="modal-dialog modal-dialog-form" role="dialog" aria-modal="true"
+                th:attr="aria-labelledby=|background-create-title-${pageStatus.index}|">
+                <header class="modal-heading">
+                    <div>
+                        <span class="eyebrow eyebrow-mint">Novo fundo</span>
+                        <h2 th:id="|background-create-title-${pageStatus.index}|"
+                            th:text="|Adicionar imagem — ${pageOption == 'inicio' ? 'Página inicial' : pageOption}|">
+                            Adicionar imagem
+                        </h2>
+                    </div>
+                    <button class="modal-close" type="button" data-modal-close aria-label="Fechar">
+                        <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+                    </button>
+                </header>
+
+                <form class="admin-form" th:action="@{/admin/abas}" method="post"
+                    enctype="multipart/form-data">
+                    <input name="nomePagina" type="hidden" th:value="${pageOption}" />
+                    <div class="form-field">
+                        <span class="form-label">Imagem de fundo <span>*</span></span>
+                        <label class="upload-zone upload-zone-compact"
+                            th:for="|background-create-image-${pageStatus.index}|" data-drop-zone>
+                            <span class="upload-icon"><i class="fa-solid fa-cloud-arrow-up" aria-hidden="true"></i></span>
+                            <span>
+                                <strong>Selecione uma imagem</strong>
+                                <small>JPG, PNG ou WebP</small>
+                            </span>
+                            <input th:id="|background-create-image-${pageStatus.index}|" name="imagem" type="file"
+                                accept="image/jpeg,image/png,image/webp" required data-image-input />
+                        </label>
+                        <div class="image-preview-grid image-preview-single" data-image-preview aria-live="polite"></div>
+                    </div>
+
+                    <div class="modal-actions">
+                        <button class="admin-button admin-button-muted" type="button" data-modal-close>Cancelar</button>
+                        <button class="admin-button admin-button-primary" type="submit">
+                            <i class="fa-regular fa-floppy-disk" aria-hidden="true"></i> Salvar fundo
+                        </button>
+                    </div>
+                </form>
+            </section>
+        </div>
+    </th:block>
+
     <th:block th:each="background : ${backgrounds}">
         <div class="admin-modal" th:attr="data-modal=|background-edit-${background.id}|" hidden
             aria-hidden="true">
@@ -140,8 +199,11 @@
                     method="post" enctype="multipart/form-data">
                     <div class="form-field">
                         <label th:for="|background-page-${background.id}|">Página <span>*</span></label>
-                        <input th:id="|background-page-${background.id}|" name="nomePagina" type="text"
-                            maxlength="120" th:value="${background.nomePagina}" required />
+                        <select th:id="|background-page-${background.id}|" name="nomePagina" required>
+                            <option th:each="pageOption : ${heroPageOptions}" th:value="${pageOption}"
+                                th:text="${pageOption == 'inicio' ? 'Página inicial' : pageOption}"
+                                th:selected="${pageOption == background.nomePagina}">Página</option>
+                        </select>
                     </div>
 
                     <div class="form-field">

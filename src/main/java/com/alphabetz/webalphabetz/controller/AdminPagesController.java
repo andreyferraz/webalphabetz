@@ -1,7 +1,9 @@
 package com.alphabetz.webalphabetz.controller;
 
 import java.nio.charset.StandardCharsets;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.core.io.ByteArrayResource;
@@ -23,6 +25,7 @@ import com.alphabetz.webalphabetz.model.Blog;
 import com.alphabetz.webalphabetz.model.CargoEquipe;
 import com.alphabetz.webalphabetz.model.CareerApplication;
 import com.alphabetz.webalphabetz.model.Depoimentos;
+import com.alphabetz.webalphabetz.model.FundoTopo;
 import com.alphabetz.webalphabetz.model.OuvidoriaManifestacao;
 import com.alphabetz.webalphabetz.model.Slides;
 import com.alphabetz.webalphabetz.service.AdminService;
@@ -41,6 +44,18 @@ import com.alphabetz.webalphabetz.service.TurmasImagensService;
 
 @Controller
 public class AdminPagesController {
+
+    private static final List<String> HERO_PAGE_OPTIONS = List.of(
+            "inicio",
+            "A Escola",
+            "Abordagem",
+            "Turmas",
+            "Matrícula",
+            "Equipe",
+            "Documentos Institucionais",
+            "Blog",
+            "Trabalhe Conosco",
+            "Ouvidoria");
 
     private final SlidesService slidesService;
     private final BlogService blogService;
@@ -405,7 +420,12 @@ public class AdminPagesController {
 
     @GetMapping("/admin/abas")
     public String tabs(Model model) {
-        model.addAttribute("backgrounds", fundoTopoService.getAll());
+        List<FundoTopo> backgrounds = fundoTopoService.getAll();
+        Map<String, FundoTopo> backgroundsByPage = new LinkedHashMap<>();
+        backgrounds.forEach(background -> backgroundsByPage.putIfAbsent(background.getNomePagina(), background));
+        model.addAttribute("backgrounds", backgrounds);
+        model.addAttribute("backgroundsByPage", backgroundsByPage);
+        model.addAttribute("heroPageOptions", HERO_PAGE_OPTIONS);
         return "admin/abas";
     }
 
