@@ -50,6 +50,15 @@ CREATE TABLE IF NOT EXISTS app_settings (
 	valor TEXT NOT NULL
 );
 
+CREATE TABLE IF NOT EXISTS matricula_documentos (
+	id TEXT PRIMARY KEY,
+	tipo TEXT NOT NULL UNIQUE,
+	nome_arquivo TEXT NOT NULL,
+	tipo_conteudo TEXT NOT NULL,
+	tamanho INTEGER NOT NULL,
+	conteudo BLOB NOT NULL
+);
+
 CREATE TABLE IF NOT EXISTS career_applications (
 	id TEXT PRIMARY KEY,
 	nome TEXT NOT NULL,

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org"
+    th:replace="~{admin/layout :: layout('Matrícula | Painel Alphabetz', 'enrollment', ~{::content})}">
+
+<div th:fragment="content" class="admin-page-content">
+    <section class="page-intro">
+        <span class="eyebrow eyebrow-mint">Escola</span>
+        <h1>Matrícula</h1>
+        <p>Carregue os PDFs disponibilizados para as famílias na página de matrícula.</p>
+    </section>
+
+    <div class="form-message form-message-success" th:if="${successMessage}">
+        <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
+        <span th:text="${successMessage}">Operação realizada com sucesso.</span>
+    </div>
+    <div class="form-message form-message-error" th:if="${errorMessage}">
+        <i class="fa-solid fa-circle-exclamation" aria-hidden="true"></i>
+        <span th:text="${errorMessage}">Não foi possível concluir a operação.</span>
+    </div>
+
+    <form class="admin-form enrollment-admin-form" th:action="@{/admin/matricula}" method="post"
+        enctype="multipart/form-data">
+        <section class="enrollment-admin-grid" aria-label="Documentos de matrícula">
+            <article class="admin-card enrollment-admin-card">
+                <header>
+                    <span class="enrollment-admin-icon"><i class="fa-solid fa-file-invoice-dollar" aria-hidden="true"></i></span>
+                    <div>
+                        <span class="eyebrow eyebrow-coral">Valores</span>
+                        <h2>Valor da anuidade</h2>
+                    </div>
+                </header>
+                <div class="enrollment-current-file" th:if="${documentos['valor-anuidade'] != null}">
+                    <i class="fa-regular fa-file-pdf" aria-hidden="true"></i>
+                    <div>
+                        <strong th:text="${documentos['valor-anuidade'].nomeArquivo}">arquivo.pdf</strong>
+                        <span th:text="|${#numbers.formatDecimal(documentos['valor-anuidade'].tamanho / 1024.0, 1, 1)} KB|">0 KB</span>
+                    </div>
+                    <a th:href="@{/matricula/documentos/{tipo}(tipo='valor-anuidade')}" target="_blank" aria-label="Baixar PDF atual do valor da anuidade">
+                        <i class="fa-solid fa-download" aria-hidden="true"></i>
+                    </a>
+                </div>
+                <div class="enrollment-current-file enrollment-current-file-empty"
+                    th:unless="${documentos['valor-anuidade'] != null}">Nenhum PDF enviado.</div>
+                <label class="upload-zone upload-zone-compact" for="enrollment-annual-value">
+                    <span class="upload-icon"><i class="fa-solid fa-cloud-arrow-up" aria-hidden="true"></i></span>
+                    <span><strong>Selecionar PDF</strong><small>Até 10 MB</small></span>
+                    <input id="enrollment-annual-value" name="valorAnuidade" type="file" accept="application/pdf,.pdf" />
+                </label>
+            </article>
+
+            <article class="admin-card enrollment-admin-card">
+                <header>
+                    <span class="enrollment-admin-icon"><i class="fa-solid fa-file-signature" aria-hidden="true"></i></span>
+                    <div>
+                        <span class="eyebrow eyebrow-mint">Contrato</span>
+                        <h2>Contrato educacional</h2>
+                    </div>
+                </header>
+                <div class="enrollment-current-file" th:if="${documentos['contrato-educacional'] != null}">
+                    <i class="fa-regular fa-file-pdf" aria-hidden="true"></i>
+                    <div>
+                        <strong th:text="${documentos['contrato-educacional'].nomeArquivo}">arquivo.pdf</strong>
+                        <span th:text="|${#numbers.formatDecimal(documentos['contrato-educacional'].tamanho / 1024.0, 1, 1)} KB|">0 KB</span>
+                    </div>
+                    <a th:href="@{/matricula/documentos/{tipo}(tipo='contrato-educacional')}" target="_blank" aria-label="Baixar contrato educacional atual">
+                        <i class="fa-solid fa-download" aria-hidden="true"></i>
+                    </a>
+                </div>
+                <div class="enrollment-current-file enrollment-current-file-empty"
+                    th:unless="${documentos['contrato-educacional'] != null}">Nenhum PDF enviado.</div>
+                <label class="upload-zone upload-zone-compact" for="enrollment-contract">
+                    <span class="upload-icon"><i class="fa-solid fa-cloud-arrow-up" aria-hidden="true"></i></span>
+                    <span><strong>Selecionar PDF</strong><small>Até 10 MB</small></span>
+                    <input id="enrollment-contract" name="contratoEducacional" type="file" accept="application/pdf,.pdf" />
+                </label>
+            </article>
+
+            <article class="admin-card enrollment-admin-card">
+                <header>
+                    <span class="enrollment-admin-icon"><i class="fa-solid fa-clock" aria-hidden="true"></i></span>
+                    <div>
+                        <span class="eyebrow eyebrow-light">Rotina</span>
+                        <h2>Horário personalizado</h2>
+                    </div>
+                </header>
+                <div class="enrollment-current-file" th:if="${documentos['horario-personalizado'] != null}">
+                    <i class="fa-regular fa-file-pdf" aria-hidden="true"></i>
+                    <div>
+                        <strong th:text="${documentos['horario-personalizado'].nomeArquivo}">arquivo.pdf</strong>
+                        <span th:text="|${#numbers.formatDecimal(documentos['horario-personalizado'].tamanho / 1024.0, 1, 1)} KB|">0 KB</span>
+                    </div>
+                    <a th:href="@{/matricula/documentos/{tipo}(tipo='horario-personalizado')}" target="_blank" aria-label="Baixar PDF atual do horário personalizado">
+                        <i class="fa-solid fa-download" aria-hidden="true"></i>
+                    </a>
+                </div>
+                <div class="enrollment-current-file enrollment-current-file-empty"
+                    th:unless="${documentos['horario-personalizado'] != null}">Nenhum PDF enviado.</div>
+                <label class="upload-zone upload-zone-compact" for="enrollment-schedule">
+                    <span class="upload-icon"><i class="fa-solid fa-cloud-arrow-up" aria-hidden="true"></i></span>
+                    <span><strong>Selecionar PDF</strong><small>Até 10 MB</small></span>
+                    <input id="enrollment-schedule" name="horarioPersonalizado" type="file" accept="application/pdf,.pdf" />
+                </label>
+            </article>
+        </section>
+
+        <div class="enrollment-admin-actions">
+            <p>Envie somente os documentos que deseja incluir ou substituir.</p>
+            <button class="admin-button admin-button-primary" type="submit">
+                <i class="fa-regular fa-floppy-disk" aria-hidden="true"></i>
+                Salvar documentos
+            </button>
+        </div>
+    </form>
+</div>
+
+</html>

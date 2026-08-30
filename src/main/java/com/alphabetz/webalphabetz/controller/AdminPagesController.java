@@ -31,6 +31,7 @@ import com.alphabetz.webalphabetz.service.CareerApplicationService;
 import com.alphabetz.webalphabetz.service.DashboardService;
 import com.alphabetz.webalphabetz.service.DepoimentosService;
 import com.alphabetz.webalphabetz.service.FundoTopoService;
+import com.alphabetz.webalphabetz.service.MatriculaDocumentoService;
 import com.alphabetz.webalphabetz.service.OuvidoriaService;
 import com.alphabetz.webalphabetz.service.SlidesService;
 import com.alphabetz.webalphabetz.service.TurmasImagensService;
@@ -48,12 +49,14 @@ public class AdminPagesController {
     private final DepoimentosService depoimentosService;
     private final TurmasImagensService turmasImagensService;
     private final FundoTopoService fundoTopoService;
+    private final MatriculaDocumentoService matriculaDocumentoService;
 
     public AdminPagesController(SlidesService slidesService, BlogService blogService,
             BlogCategoryService blogCategoryService, AdminService adminService,
             DashboardService dashboardService, CareerApplicationService careerApplicationService,
             OuvidoriaService ouvidoriaService, DepoimentosService depoimentosService,
-            TurmasImagensService turmasImagensService, FundoTopoService fundoTopoService) {
+            TurmasImagensService turmasImagensService, FundoTopoService fundoTopoService,
+            MatriculaDocumentoService matriculaDocumentoService) {
         this.slidesService = slidesService;
         this.blogService = blogService;
         this.blogCategoryService = blogCategoryService;
@@ -64,6 +67,7 @@ public class AdminPagesController {
         this.depoimentosService = depoimentosService;
         this.turmasImagensService = turmasImagensService;
         this.fundoTopoService = fundoTopoService;
+        this.matriculaDocumentoService = matriculaDocumentoService;
     }
 
     @GetMapping("/login")
@@ -342,6 +346,31 @@ public class AdminPagesController {
             redirectAttributes.addFlashAttribute("errorMessage", errorMessage(exception));
         }
         return "redirect:/admin/abas";
+    }
+
+    @GetMapping("/admin/matricula")
+    public String enrollment(Model model) {
+        model.addAttribute("documentos", matriculaDocumentoService.getDocumentosMetadata());
+        return "admin/matricula";
+    }
+
+    @PostMapping("/admin/matricula")
+    public String updateEnrollmentDocuments(
+            @RequestParam(name = "valorAnuidade", required = false) MultipartFile valorAnuidade,
+            @RequestParam(name = "contratoEducacional", required = false) MultipartFile contratoEducacional,
+            @RequestParam(name = "horarioPersonalizado", required = false) MultipartFile horarioPersonalizado,
+            RedirectAttributes redirectAttributes) {
+
+        try {
+            matriculaDocumentoService.atualizarDocumentos(
+                    valorAnuidade,
+                    contratoEducacional,
+                    horarioPersonalizado);
+            redirectAttributes.addFlashAttribute("successMessage", "Documentos de matrícula atualizados com sucesso.");
+        } catch (RuntimeException exception) {
+            redirectAttributes.addFlashAttribute("errorMessage", errorMessage(exception));
+        }
+        return "redirect:/admin/matricula";
     }
 
     @GetMapping("/admin/seguranca")

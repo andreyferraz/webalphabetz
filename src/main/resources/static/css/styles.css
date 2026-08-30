@@ -4148,3 +4148,211 @@ body[data-page="index.html"] .bubble:nth-of-type(6) {
     width: fit-content;
   }
 }
+
+/* Matrícula */
+.page-hero-enrollment {
+  background:
+    linear-gradient(90deg, rgba(1, 39, 62, .95) 0%, rgba(1, 39, 62, .8) 48%, rgba(1, 39, 62, .44) 100%),
+    var(--hero-background-image, url("../assets/escola_interacao.jpg")) center 48% / cover no-repeat;
+}
+
+.page-hero-enrollment .kicker,
+.page-hero-enrollment h1,
+.page-hero-enrollment p {
+  color: #fff;
+}
+
+.enrollment-hero-visual {
+  display: grid;
+  place-items: center;
+}
+
+.enrollment-hero-card {
+  width: min(100%, 330px);
+  padding: 34px;
+  border: 1px solid rgba(255, 255, 255, .28);
+  border-radius: 36px;
+  color: #fff;
+  background: rgba(255, 255, 255, .14);
+  box-shadow: 0 28px 70px rgba(1, 39, 62, .28);
+  backdrop-filter: blur(16px);
+  transform: rotate(2deg);
+}
+
+.enrollment-hero-card > span {
+  width: 58px;
+  height: 58px;
+  display: grid;
+  place-items: center;
+  margin-bottom: 24px;
+  border-radius: 19px;
+  color: var(--navy);
+  font-size: 1.35rem;
+  background: var(--yellow);
+}
+
+.enrollment-hero-card strong,
+.enrollment-hero-card small {
+  display: block;
+}
+
+.enrollment-hero-card strong {
+  font: 800 1.45rem/1.25 "Sora", Verdana, sans-serif;
+}
+
+.enrollment-hero-card small {
+  margin-top: 10px;
+  color: rgba(255, 255, 255, .8);
+  font-size: .82rem;
+  line-height: 1.65;
+}
+
+.enrollment-visit-section {
+  padding-bottom: 0;
+}
+
+.enrollment-visit-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 36px;
+  padding: clamp(30px, 5vw, 52px);
+  overflow: hidden;
+  border-radius: 42px;
+  color: #fff;
+  background:
+    radial-gradient(circle at 90% 15%, rgba(255, 221, 0, .22), transparent 30%),
+    linear-gradient(125deg, var(--navy), #075e58);
+  box-shadow: var(--shadow);
+}
+
+.enrollment-visit-card .kicker,
+.enrollment-visit-card h2,
+.enrollment-visit-card p {
+  color: #fff;
+}
+
+.enrollment-visit-card h2 {
+  margin-top: 12px;
+}
+
+.enrollment-visit-card p {
+  max-width: 660px;
+  margin-top: 12px;
+  opacity: .8;
+}
+
+.enrollment-visit-card .btn {
+  flex: 0 0 auto;
+}
+
+.enrollment-documents-section {
+  padding-top: 84px;
+}
+
+.enrollment-documents-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
+}
+
+.enrollment-document-card {
+  min-height: 345px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 24px;
+  padding: 32px;
+  border: 1px solid rgba(1, 39, 62, .08);
+  border-radius: 32px;
+  background: #fff;
+  box-shadow: var(--soft-shadow);
+  transition: transform .24s ease, box-shadow .24s ease;
+}
+
+.enrollment-document-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow);
+}
+
+.enrollment-document-card > div {
+  flex: 1;
+}
+
+.enrollment-document-card h3 {
+  margin-bottom: 12px;
+}
+
+.enrollment-document-icon {
+  width: 62px;
+  height: 62px;
+  display: grid;
+  place-items: center;
+  border-radius: 20px;
+  color: var(--blue);
+  font-size: 1.35rem;
+  background: rgba(100, 160, 238, .16);
+}
+
+.enrollment-document-card:nth-child(2) .enrollment-document-icon {
+  color: var(--red);
+  background: rgba(235, 89, 62, .13);
+}
+
+.enrollment-document-card:nth-child(3) .enrollment-document-icon {
+  color: var(--green);
+  background: rgba(122, 198, 186, .22);
+}
+
+.enrollment-document-pending {
+  min-height: 48px;
+  display: inline-flex;
+  align-items: center;
+  color: var(--muted);
+  font-size: .78rem;
+  font-weight: 800;
+}
+
+@media (max-width: 980px) {
+  .page-hero-enrollment {
+    background:
+      linear-gradient(90deg, rgba(1, 39, 62, .95) 0%, rgba(1, 39, 62, .82) 62%, rgba(1, 39, 62, .62) 100%),
+      var(--hero-background-image, url("../assets/escola_interacao.jpg")) center / cover no-repeat;
+  }
+
+  .enrollment-documents-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 680px) {
+  .page-hero-enrollment {
+    background:
+      linear-gradient(180deg, rgba(1, 39, 62, .94) 0%, rgba(1, 39, 62, .82) 100%),
+      var(--hero-background-image, url("../assets/escola_interacao.jpg")) center / cover no-repeat;
+  }
+
+  .enrollment-hero-visual {
+    min-height: 250px;
+  }
+
+  .enrollment-visit-card {
+    align-items: flex-start;
+    flex-direction: column;
+    border-radius: 30px;
+  }
+
+  .enrollment-visit-card .btn {
+    width: 100%;
+  }
+
+  .enrollment-documents-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .enrollment-document-card {
+    min-height: 0;
+    padding: 27px;
+    border-radius: 26px;
+  }
+}

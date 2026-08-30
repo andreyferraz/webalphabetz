@@ -1,11 +1,17 @@
 package com.alphabetz.webalphabetz.controller;
 
+import java.nio.charset.StandardCharsets;
 import java.text.Normalizer;
 import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.Map;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.http.ContentDisposition;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,11 +20,13 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.alphabetz.webalphabetz.model.Blog;
 import com.alphabetz.webalphabetz.model.FundoTopo;
+import com.alphabetz.webalphabetz.model.MatriculaDocumento;
 import com.alphabetz.webalphabetz.model.Slides;
 import com.alphabetz.webalphabetz.model.TurmasImagens;
 import com.alphabetz.webalphabetz.service.BlogService;
 import com.alphabetz.webalphabetz.service.DepoimentosService;
 import com.alphabetz.webalphabetz.service.FundoTopoService;
+import com.alphabetz.webalphabetz.service.MatriculaDocumentoService;
 import com.alphabetz.webalphabetz.service.SlidesService;
 import com.alphabetz.webalphabetz.service.TurmasImagensService;
 
@@ -32,15 +40,17 @@ public class PublicPagesController {
     private final DepoimentosService depoimentosService;
     private final TurmasImagensService turmasImagensService;
     private final FundoTopoService fundoTopoService;
+    private final MatriculaDocumentoService matriculaDocumentoService;
 
     public PublicPagesController(SlidesService slidesService, BlogService blogService,
             DepoimentosService depoimentosService, TurmasImagensService turmasImagensService,
-            FundoTopoService fundoTopoService) {
+            FundoTopoService fundoTopoService, MatriculaDocumentoService matriculaDocumentoService) {
         this.slidesService = slidesService;
         this.blogService = blogService;
         this.depoimentosService = depoimentosService;
         this.turmasImagensService = turmasImagensService;
         this.fundoTopoService = fundoTopoService;
+        this.matriculaDocumentoService = matriculaDocumentoService;
     }
 
     @GetMapping("/")
@@ -55,6 +65,30 @@ public class PublicPagesController {
     public String escola(Model model) {
         addHeroBackground(model, "A Escola", "Escola");
         return "escola";
+    }
+
+    @GetMapping("/matricula")
+    public String matricula(Model model) {
+        addHeroBackground(model, "Matrícula", "Matricula");
+        model.addAttribute("documentos", matriculaDocumentoService.getDocumentosMetadata());
+        return "matricula";
+    }
+
+    @GetMapping("/matricula/documentos/{tipo}")
+    public ResponseEntity<ByteArrayResource> downloadDocumentoMatricula(@PathVariable String tipo) {
+        try {
+            MatriculaDocumento documento = matriculaDocumentoService.getDocumento(tipo);
+            ContentDisposition disposition = ContentDisposition.attachment()
+                    .filename(documento.getNomeArquivo(), StandardCharsets.UTF_8)
+                    .build();
+            return ResponseEntity.ok()
+                    .contentType(MediaType.APPLICATION_PDF)
+                    .contentLength(documento.getTamanho())
+                    .header(HttpHeaders.CONTENT_DISPOSITION, disposition.toString())
+                    .body(new ByteArrayResource(documento.getConteudo()));
+        } catch (IllegalArgumentException exception) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @GetMapping("/abordagem")

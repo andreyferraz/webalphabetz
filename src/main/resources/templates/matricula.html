@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pt-BR"
+    th:replace="~{layout :: layout('Matrícula | Alphabetz', ~{::content})}">
+<header>
+    <title th:text="${title}"></title>
+</header>
+<div th:fragment="content">
+
+    <section class="page-hero page-hero-enrollment"
+        th:style="${heroBackground != null ? '--hero-background-image: url(/uploads/' + heroBackground.imagemUrl + ')' : null}">
+        <div class="container page-hero-grid">
+            <div class="reveal">
+                <span class="kicker">Matrícula Alphabetz</span>
+                <h1>Um começo cheio de descobertas.</h1>
+                <p>Encontre as informações necessárias para a matrícula e prepare-se para viver uma infância acolhida com cuidado, brincadeira e desenvolvimento.</p>
+            </div>
+            <div class="page-hero-visual enrollment-hero-visual reveal" aria-hidden="true">
+                <div class="enrollment-hero-card">
+                    <span><i class="fa-solid fa-heart"></i></span>
+                    <strong>Aprender com afeto</strong>
+                    <small>Uma rotina construída para cada fase da infância.</small>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section section-tight enrollment-visit-section">
+        <div class="container">
+            <div class="enrollment-visit-card reveal">
+                <div>
+                    <span class="kicker">Venha nos conhecer</span>
+                    <h2>Agende sua visita</h2>
+                    <p>Conheça nossos espaços, converse com a equipe e tire suas dúvidas sobre a matrícula.</p>
+                </div>
+                <a class="btn btn-yellow"
+                    href="https://wa.me/552730291110?text=Ol%C3%A1%2C%20gostaria%20de%20agendar%20uma%20visita%20%C3%A0%20Alphabetz."
+                    target="_blank" rel="noopener">
+                    <i class="fa-brands fa-whatsapp" aria-hidden="true"></i>
+                    Agende sua visita
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section class="section enrollment-documents-section">
+        <div class="container">
+            <div class="section-header reveal">
+                <div>
+                    <span class="kicker">Valores e documentos</span>
+                    <h2>Informações para matrícula.</h2>
+                    <p>Baixe os documentos atualizados e consulte os detalhes para organizar a matrícula.</p>
+                </div>
+            </div>
+
+            <div class="enrollment-documents-grid">
+                <article class="enrollment-document-card reveal">
+                    <span class="enrollment-document-icon"><i class="fa-solid fa-file-invoice-dollar" aria-hidden="true"></i></span>
+                    <div>
+                        <h3>Valor da anuidade</h3>
+                        <p>Consulte os valores e condições referentes à anuidade escolar.</p>
+                    </div>
+                    <a class="btn btn-outline"
+                        th:if="${documentos['valor-anuidade'] != null}"
+                        th:href="@{/matricula/documentos/{tipo}(tipo='valor-anuidade')}">
+                        <i class="fa-solid fa-download" aria-hidden="true"></i> Baixar PDF
+                    </a>
+                    <span class="enrollment-document-pending"
+                        th:unless="${documentos['valor-anuidade'] != null}">Documento em atualização</span>
+                </article>
+
+                <article class="enrollment-document-card reveal">
+                    <span class="enrollment-document-icon"><i class="fa-solid fa-file-signature" aria-hidden="true"></i></span>
+                    <div>
+                        <h3>Contrato educacional</h3>
+                        <p>Acesse as condições e responsabilidades do contrato educacional.</p>
+                    </div>
+                    <a class="btn btn-outline"
+                        th:if="${documentos['contrato-educacional'] != null}"
+                        th:href="@{/matricula/documentos/{tipo}(tipo='contrato-educacional')}">
+                        <i class="fa-solid fa-download" aria-hidden="true"></i> Baixar PDF
+                    </a>
+                    <span class="enrollment-document-pending"
+                        th:unless="${documentos['contrato-educacional'] != null}">Documento em atualização</span>
+                </article>
+
+                <article class="enrollment-document-card reveal">
+                    <span class="enrollment-document-icon"><i class="fa-solid fa-clock" aria-hidden="true"></i></span>
+                    <div>
+                        <h3>Horário personalizado</h3>
+                        <p>Confira as possibilidades para organizar o horário da criança.</p>
+                    </div>
+                    <a class="btn btn-outline"
+                        th:if="${documentos['horario-personalizado'] != null}"
+                        th:href="@{/matricula/documentos/{tipo}(tipo='horario-personalizado')}">
+                        <i class="fa-solid fa-download" aria-hidden="true"></i> Baixar PDF
+                    </a>
+                    <span class="enrollment-document-pending"
+                        th:unless="${documentos['horario-personalizado'] != null}">Documento em atualização</span>
+                </article>
+            </div>
+        </div>
+    </section>
+
+</div>
+</html>
