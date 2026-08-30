@@ -768,3 +768,93 @@ h1, h2, h3, p { margin-top: 0; }
     width: 100%;
   }
 }
+
+/* Documentos institucionais */
+.institutional-documents-admin-list {
+  display: grid;
+  gap: 14px;
+}
+
+.institutional-document-admin-card {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 22px;
+  padding: 22px;
+  border: 1px solid var(--admin-border);
+  border-radius: 21px;
+  background: #fff;
+  box-shadow: 0 14px 36px rgba(1, 39, 62, .065);
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+
+.institutional-document-admin-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 19px 42px rgba(1, 39, 62, .1);
+}
+
+.institutional-document-admin-icon {
+  width: 68px;
+  height: 68px;
+  display: grid;
+  place-items: center;
+  border-radius: 20px;
+  color: var(--admin-coral);
+  font-size: 1.65rem;
+  background: var(--admin-coral-soft);
+}
+
+.institutional-document-admin-copy {
+  min-width: 0;
+}
+
+.institutional-document-admin-copy > strong {
+  display: block;
+  margin-bottom: 12px;
+  font: 800 .9rem/1.4 "Sora", sans-serif;
+}
+
+.institutional-document-admin-copy .content-meta span span {
+  max-width: 320px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.institutional-document-admin-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+@media (max-width: 760px) {
+  .institutional-document-admin-card {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  .institutional-document-admin-actions {
+    grid-column: 1 / -1;
+    justify-content: flex-end;
+  }
+}
+
+@media (max-width: 520px) {
+  .institutional-document-admin-card {
+    grid-template-columns: 1fr;
+  }
+
+  .institutional-document-admin-icon {
+    width: 58px;
+    height: 58px;
+  }
+
+  .institutional-document-admin-actions {
+    grid-column: auto;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .institutional-document-admin-actions .admin-button {
+    flex: 1;
+  }
+}

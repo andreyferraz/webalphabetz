@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pt-BR"
+    th:replace="~{layout :: layout('Documentos Institucionais | Alphabetz', ~{::content})}">
+
+<div th:fragment="content">
+    <section class="page-hero page-hero-institutional-documents"
+        th:style="${heroBackground != null ? '--hero-background-image: url(/uploads/' + heroBackground.imagemUrl + ')' : null}">
+        <div class="container page-hero-grid">
+            <div class="reveal">
+                <span class="kicker">Transparência</span>
+                <h1>Documentos Institucionais</h1>
+                <p>Acesse de forma simples os documentos oficiais disponibilizados pela Alphabetz.</p>
+            </div>
+            <div class="institutional-documents-hero-visual reveal" aria-hidden="true">
+                <div class="institutional-documents-hero-card">
+                    <span><i class="fa-regular fa-folder-open"></i></span>
+                    <strong>Informação sempre acessível.</strong>
+                    <small>Documentos organizados e disponíveis para download.</small>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section institutional-documents-section">
+        <div class="container">
+            <div class="section-header reveal">
+                <div>
+                    <span class="kicker">Arquivos oficiais</span>
+                    <h2>Consulte e baixe os documentos.</h2>
+                </div>
+            </div>
+
+            <div class="institutional-documents-grid" th:if="${!#lists.isEmpty(documentos)}">
+                <article class="institutional-document-card reveal" th:each="documento, status : ${documentos}">
+                    <div class="institutional-document-icon">
+                        <i class="fa-regular fa-file-pdf" aria-hidden="true"></i>
+                    </div>
+                    <div class="institutional-document-copy">
+                        <span th:text="|Documento ${#numbers.formatInteger(status.count, 2)}|">Documento 01</span>
+                        <h3 th:text="${documento.nome}">Nome do documento</h3>
+                        <small th:text="|PDF · ${#numbers.formatDecimal(documento.tamanho / 1024.0, 1, 1)} KB|">PDF</small>
+                    </div>
+                    <a class="btn btn-primary" th:href="@{/documentos-institucionais/{id}/download(id=${documento.id})}">
+                        <i class="fa-solid fa-download" aria-hidden="true"></i>
+                        Baixar documento
+                    </a>
+                </article>
+            </div>
+
+            <div class="institutional-documents-empty reveal" th:if="${#lists.isEmpty(documentos)}">
+                <i class="fa-regular fa-folder-open" aria-hidden="true"></i>
+                <h2>Documentos em atualização</h2>
+                <p>Os documentos institucionais serão disponibilizados em breve.</p>
+            </div>
+        </div>
+    </section>
+</div>
+
+</html>

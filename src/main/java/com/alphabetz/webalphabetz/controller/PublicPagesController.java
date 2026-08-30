@@ -19,12 +19,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.alphabetz.webalphabetz.model.Blog;
+import com.alphabetz.webalphabetz.model.DocumentoInstitucional;
 import com.alphabetz.webalphabetz.model.FundoTopo;
 import com.alphabetz.webalphabetz.model.MatriculaDocumento;
 import com.alphabetz.webalphabetz.model.Slides;
 import com.alphabetz.webalphabetz.model.TurmasImagens;
 import com.alphabetz.webalphabetz.service.BlogService;
 import com.alphabetz.webalphabetz.service.DepoimentosService;
+import com.alphabetz.webalphabetz.service.DocumentoInstitucionalService;
 import com.alphabetz.webalphabetz.service.EquipeService;
 import com.alphabetz.webalphabetz.service.FundoTopoService;
 import com.alphabetz.webalphabetz.service.MatriculaDocumentoService;
@@ -43,11 +45,12 @@ public class PublicPagesController {
     private final FundoTopoService fundoTopoService;
     private final MatriculaDocumentoService matriculaDocumentoService;
     private final EquipeService equipeService;
+    private final DocumentoInstitucionalService documentoInstitucionalService;
 
     public PublicPagesController(SlidesService slidesService, BlogService blogService,
             DepoimentosService depoimentosService, TurmasImagensService turmasImagensService,
             FundoTopoService fundoTopoService, MatriculaDocumentoService matriculaDocumentoService,
-            EquipeService equipeService) {
+            EquipeService equipeService, DocumentoInstitucionalService documentoInstitucionalService) {
         this.slidesService = slidesService;
         this.blogService = blogService;
         this.depoimentosService = depoimentosService;
@@ -55,6 +58,7 @@ public class PublicPagesController {
         this.fundoTopoService = fundoTopoService;
         this.matriculaDocumentoService = matriculaDocumentoService;
         this.equipeService = equipeService;
+        this.documentoInstitucionalService = documentoInstitucionalService;
     }
 
     @GetMapping("/")
@@ -76,6 +80,30 @@ public class PublicPagesController {
         addHeroBackground(model, "Equipe");
         model.addAttribute("equipePorCargo", equipeService.getGroupedByCargo());
         return "equipe";
+    }
+
+    @GetMapping("/documentos-institucionais")
+    public String documentosInstitucionais(Model model) {
+        addHeroBackground(model, "Documentos Institucionais");
+        model.addAttribute("documentos", documentoInstitucionalService.getAllMetadata());
+        return "documentos-institucionais";
+    }
+
+    @GetMapping("/documentos-institucionais/{id}/download")
+    public ResponseEntity<ByteArrayResource> downloadDocumentoInstitucional(@PathVariable java.util.UUID id) {
+        try {
+            DocumentoInstitucional documento = documentoInstitucionalService.getById(id);
+            ContentDisposition disposition = ContentDisposition.attachment()
+                    .filename(documento.getNomeArquivo(), StandardCharsets.UTF_8)
+                    .build();
+            return ResponseEntity.ok()
+                    .contentType(MediaType.APPLICATION_PDF)
+                    .contentLength(documento.getTamanho())
+                    .header(HttpHeaders.CONTENT_DISPOSITION, disposition.toString())
+                    .body(new ByteArrayResource(documento.getConteudo()));
+        } catch (IllegalArgumentException exception) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @GetMapping("/matricula")

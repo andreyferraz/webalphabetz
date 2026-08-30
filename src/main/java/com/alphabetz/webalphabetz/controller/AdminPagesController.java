@@ -31,6 +31,7 @@ import com.alphabetz.webalphabetz.service.BlogService;
 import com.alphabetz.webalphabetz.service.CareerApplicationService;
 import com.alphabetz.webalphabetz.service.DashboardService;
 import com.alphabetz.webalphabetz.service.DepoimentosService;
+import com.alphabetz.webalphabetz.service.DocumentoInstitucionalService;
 import com.alphabetz.webalphabetz.service.EquipeService;
 import com.alphabetz.webalphabetz.service.FundoTopoService;
 import com.alphabetz.webalphabetz.service.MatriculaDocumentoService;
@@ -53,13 +54,15 @@ public class AdminPagesController {
     private final FundoTopoService fundoTopoService;
     private final MatriculaDocumentoService matriculaDocumentoService;
     private final EquipeService equipeService;
+    private final DocumentoInstitucionalService documentoInstitucionalService;
 
     public AdminPagesController(SlidesService slidesService, BlogService blogService,
             BlogCategoryService blogCategoryService, AdminService adminService,
             DashboardService dashboardService, CareerApplicationService careerApplicationService,
             OuvidoriaService ouvidoriaService, DepoimentosService depoimentosService,
             TurmasImagensService turmasImagensService, FundoTopoService fundoTopoService,
-            MatriculaDocumentoService matriculaDocumentoService, EquipeService equipeService) {
+            MatriculaDocumentoService matriculaDocumentoService, EquipeService equipeService,
+            DocumentoInstitucionalService documentoInstitucionalService) {
         this.slidesService = slidesService;
         this.blogService = blogService;
         this.blogCategoryService = blogCategoryService;
@@ -72,6 +75,7 @@ public class AdminPagesController {
         this.fundoTopoService = fundoTopoService;
         this.matriculaDocumentoService = matriculaDocumentoService;
         this.equipeService = equipeService;
+        this.documentoInstitucionalService = documentoInstitucionalService;
     }
 
     @GetMapping("/login")
@@ -353,6 +357,50 @@ public class AdminPagesController {
             redirectAttributes.addFlashAttribute("errorMessage", errorMessage(exception));
         }
         return "redirect:/admin/equipe";
+    }
+
+    @GetMapping("/admin/documentos-institucionais")
+    public String institutionalDocuments(Model model) {
+        model.addAttribute("documentos", documentoInstitucionalService.getAllMetadata());
+        return "admin/documentos-institucionais";
+    }
+
+    @PostMapping("/admin/documentos-institucionais")
+    public String createInstitutionalDocument(@RequestParam String nome,
+            @RequestParam(name = "arquivo", required = false) MultipartFile arquivo,
+            RedirectAttributes redirectAttributes) {
+        try {
+            documentoInstitucionalService.create(nome, arquivo);
+            redirectAttributes.addFlashAttribute("successMessage", "Documento cadastrado com sucesso.");
+        } catch (RuntimeException exception) {
+            redirectAttributes.addFlashAttribute("errorMessage", errorMessage(exception));
+        }
+        return "redirect:/admin/documentos-institucionais";
+    }
+
+    @PostMapping("/admin/documentos-institucionais/{id}")
+    public String updateInstitutionalDocument(@PathVariable UUID id,
+            @RequestParam String nome,
+            @RequestParam(name = "arquivo", required = false) MultipartFile arquivo,
+            RedirectAttributes redirectAttributes) {
+        try {
+            documentoInstitucionalService.update(id, nome, arquivo);
+            redirectAttributes.addFlashAttribute("successMessage", "Documento atualizado com sucesso.");
+        } catch (RuntimeException exception) {
+            redirectAttributes.addFlashAttribute("errorMessage", errorMessage(exception));
+        }
+        return "redirect:/admin/documentos-institucionais";
+    }
+
+    @PostMapping("/admin/documentos-institucionais/{id}/excluir")
+    public String deleteInstitutionalDocument(@PathVariable UUID id, RedirectAttributes redirectAttributes) {
+        try {
+            documentoInstitucionalService.delete(id);
+            redirectAttributes.addFlashAttribute("successMessage", "Documento excluído com sucesso.");
+        } catch (RuntimeException exception) {
+            redirectAttributes.addFlashAttribute("errorMessage", errorMessage(exception));
+        }
+        return "redirect:/admin/documentos-institucionais";
     }
 
     @GetMapping("/admin/abas")

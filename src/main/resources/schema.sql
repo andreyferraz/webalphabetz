@@ -39,6 +39,18 @@ CREATE TABLE IF NOT EXISTS equipe_membros (
 CREATE INDEX IF NOT EXISTS idx_equipe_membros_cargo_nome
 	ON equipe_membros(cargo, nome);
 
+CREATE TABLE IF NOT EXISTS documentos_institucionais (
+	id TEXT PRIMARY KEY,
+	nome TEXT NOT NULL,
+	nome_arquivo TEXT NOT NULL,
+	tipo_conteudo TEXT NOT NULL,
+	tamanho INTEGER NOT NULL,
+	conteudo BLOB NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS idx_documentos_institucionais_nome
+	ON documentos_institucionais(nome COLLATE NOCASE);
+
 CREATE TABLE IF NOT EXISTS slide_images (
 	id TEXT PRIMARY KEY,
 	slide_id TEXT NOT NULL,

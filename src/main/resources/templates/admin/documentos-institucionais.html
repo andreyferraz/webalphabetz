@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org"
+    th:replace="~{admin/layout :: layout('Documentos Institucionais | Painel Alphabetz', 'institutional-documents', ~{::content})}">
+
+<div th:fragment="content" class="admin-page-content">
+    <section class="page-intro page-intro-with-action">
+        <div>
+            <span class="eyebrow eyebrow-mint">Arquivos oficiais</span>
+            <h1>Documentos Institucionais</h1>
+            <p>Gerencie os documentos disponibilizados para download no site.</p>
+        </div>
+        <button class="admin-button admin-button-primary" type="button" data-modal-open="institutional-document-create">
+            <i class="fa-solid fa-plus" aria-hidden="true"></i>
+            Novo documento
+        </button>
+    </section>
+
+    <div class="form-message form-message-success" th:if="${successMessage}">
+        <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
+        <span th:text="${successMessage}">Operação realizada com sucesso.</span>
+    </div>
+    <div class="form-message form-message-error" th:if="${errorMessage}">
+        <i class="fa-solid fa-circle-exclamation" aria-hidden="true"></i>
+        <span th:text="${errorMessage}">Não foi possível concluir a operação.</span>
+    </div>
+
+    <section class="content-toolbar" aria-label="Ferramentas de documentos institucionais">
+        <label class="admin-search">
+            <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+            <span class="sr-only">Buscar documentos</span>
+            <input type="search" placeholder="Buscar por nome..." data-filter-input="institutional-documents" />
+        </label>
+        <div class="toolbar-summary toolbar-summary-end">
+            <span><strong data-visible-count th:text="${#lists.size(documentos)}">0</strong> documentos</span>
+        </div>
+    </section>
+
+    <section class="institutional-documents-admin-list" data-filter-list="institutional-documents"
+        aria-label="Documentos cadastrados" th:if="${!#lists.isEmpty(documentos)}">
+        <article class="institutional-document-admin-card" data-filter-item th:each="documento : ${documentos}"
+            th:attr="data-filter-text=${documento.nome}">
+            <span class="institutional-document-admin-icon">
+                <i class="fa-regular fa-file-pdf" aria-hidden="true"></i>
+            </span>
+            <div class="institutional-document-admin-copy">
+                <strong th:text="${documento.nome}">Nome do documento</strong>
+                <div class="content-meta">
+                    <span><i class="fa-solid fa-file" aria-hidden="true"></i>
+                        <span th:text="${documento.nomeArquivo}">arquivo.pdf</span>
+                    </span>
+                    <span><i class="fa-solid fa-hard-drive" aria-hidden="true"></i>
+                        <span th:text="|${#numbers.formatDecimal(documento.tamanho / 1024.0, 1, 1)} KB|">0 KB</span>
+                    </span>
+                </div>
+            </div>
+            <div class="institutional-document-admin-actions">
+                <a class="icon-button" th:href="@{/documentos-institucionais/{id}/download(id=${documento.id})}"
+                    title="Baixar" th:attr="aria-label=|Baixar ${documento.nome}|">
+                    <i class="fa-solid fa-download" aria-hidden="true"></i>
+                </a>
+                <button class="admin-button admin-button-outline admin-button-small" type="button"
+                    th:attr="data-modal-open=|institutional-document-edit-${documento.id}|">
+                    <i class="fa-regular fa-pen-to-square" aria-hidden="true"></i> Editar
+                </button>
+                <button class="icon-button icon-button-danger" type="button" title="Excluir"
+                    th:attr="aria-label=|Excluir documento ${documento.nome}|,data-modal-open=|institutional-document-delete-${documento.id}|">
+                    <i class="fa-regular fa-trash-can" aria-hidden="true"></i>
+                </button>
+            </div>
+        </article>
+    </section>
+
+    <div class="empty-filter-state" th:if="${#lists.isEmpty(documentos)}">
+        <span><i class="fa-regular fa-folder-open" aria-hidden="true"></i></span>
+        <h2>Nenhum documento cadastrado</h2>
+        <p>Cadastre o primeiro documento institucional.</p>
+    </div>
+
+    <div class="empty-filter-state" data-empty-state="institutional-documents" hidden
+        th:if="${!#lists.isEmpty(documentos)}">
+        <span><i class="fa-regular fa-folder-open" aria-hidden="true"></i></span>
+        <h2>Nenhum documento encontrado</h2>
+        <p>Tente buscar por outro nome.</p>
+    </div>
+
+    <div class="admin-modal" data-modal="institutional-document-create" hidden aria-hidden="true">
+        <div class="modal-backdrop" data-modal-close></div>
+        <section class="modal-dialog modal-dialog-form" role="dialog" aria-modal="true"
+            aria-labelledby="institutional-document-create-title">
+            <header class="modal-heading">
+                <div>
+                    <span class="eyebrow eyebrow-mint">Novo documento</span>
+                    <h2 id="institutional-document-create-title">Cadastrar documento</h2>
+                </div>
+                <button class="modal-close" type="button" data-modal-close aria-label="Fechar">
+                    <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+                </button>
+            </header>
+
+            <form class="admin-form" th:action="@{/admin/documentos-institucionais}" method="post"
+                enctype="multipart/form-data">
+                <div class="form-field">
+                    <label for="institutional-document-create-name">Nome <span>*</span></label>
+                    <input id="institutional-document-create-name" name="nome" type="text" maxlength="160"
+                        placeholder="Nome exibido no site" required />
+                </div>
+                <div class="form-field">
+                    <span class="form-label">Arquivo PDF <span>*</span></span>
+                    <label class="upload-zone upload-zone-compact" for="institutional-document-create-file">
+                        <span class="upload-icon"><i class="fa-solid fa-cloud-arrow-up" aria-hidden="true"></i></span>
+                        <span><strong>Selecionar PDF</strong><small>Até 10 MB</small></span>
+                        <input id="institutional-document-create-file" name="arquivo" type="file"
+                            accept="application/pdf,.pdf" required />
+                    </label>
+                </div>
+                <div class="modal-actions">
+                    <button class="admin-button admin-button-muted" type="button" data-modal-close>Cancelar</button>
+                    <button class="admin-button admin-button-primary" type="submit">
+                        <i class="fa-regular fa-floppy-disk" aria-hidden="true"></i> Salvar documento
+                    </button>
+                </div>
+            </form>
+        </section>
+    </div>
+
+    <th:block th:each="documento : ${documentos}">
+        <div class="admin-modal" th:attr="data-modal=|institutional-document-edit-${documento.id}|" hidden
+            aria-hidden="true">
+            <div class="modal-backdrop" data-modal-close></div>
+            <section class="modal-dialog modal-dialog-form" role="dialog" aria-modal="true"
+                th:attr="aria-labelledby=|institutional-document-edit-title-${documento.id}|">
+                <header class="modal-heading">
+                    <div>
+                        <span class="eyebrow eyebrow-mint">Editar documento</span>
+                        <h2 th:id="|institutional-document-edit-title-${documento.id}|">Editar documento</h2>
+                    </div>
+                    <button class="modal-close" type="button" data-modal-close aria-label="Fechar">
+                        <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+                    </button>
+                </header>
+
+                <form class="admin-form" th:action="@{/admin/documentos-institucionais/{id}(id=${documento.id})}"
+                    method="post" enctype="multipart/form-data">
+                    <div class="form-field">
+                        <label th:for="|institutional-document-name-${documento.id}|">Nome <span>*</span></label>
+                        <input th:id="|institutional-document-name-${documento.id}|" name="nome" type="text"
+                            maxlength="160" th:value="${documento.nome}" required />
+                    </div>
+                    <div class="form-field">
+                        <span class="form-label">Arquivo PDF</span>
+                        <div class="enrollment-current-file">
+                            <i class="fa-regular fa-file-pdf" aria-hidden="true"></i>
+                            <div>
+                                <strong th:text="${documento.nomeArquivo}">arquivo.pdf</strong>
+                                <span th:text="|${#numbers.formatDecimal(documento.tamanho / 1024.0, 1, 1)} KB|">0 KB</span>
+                            </div>
+                            <a th:href="@{/documentos-institucionais/{id}/download(id=${documento.id})}"
+                                aria-label="Baixar PDF atual">
+                                <i class="fa-solid fa-download" aria-hidden="true"></i>
+                            </a>
+                        </div>
+                        <label class="upload-zone upload-zone-compact" th:for="|institutional-document-file-${documento.id}|">
+                            <span class="upload-icon"><i class="fa-solid fa-cloud-arrow-up" aria-hidden="true"></i></span>
+                            <span><strong>Substituir PDF</strong><small>Opcional · Até 10 MB</small></span>
+                            <input th:id="|institutional-document-file-${documento.id}|" name="arquivo" type="file"
+                                accept="application/pdf,.pdf" />
+                        </label>
+                    </div>
+                    <div class="modal-actions">
+                        <button class="admin-button admin-button-muted" type="button" data-modal-close>Cancelar</button>
+                        <button class="admin-button admin-button-primary" type="submit">
+                            <i class="fa-regular fa-floppy-disk" aria-hidden="true"></i> Salvar alterações
+                        </button>
+                    </div>
+                </form>
+            </section>
+        </div>
+
+        <div class="admin-modal" th:attr="data-modal=|institutional-document-delete-${documento.id}|" hidden
+            aria-hidden="true">
+            <div class="modal-backdrop" data-modal-close></div>
+            <section class="modal-dialog modal-dialog-small" role="dialog" aria-modal="true"
+                th:attr="aria-labelledby=|institutional-document-delete-title-${documento.id}|">
+                <button class="modal-close" type="button" data-modal-close aria-label="Fechar">
+                    <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+                </button>
+                <span class="modal-alert-icon"><i class="fa-regular fa-trash-can" aria-hidden="true"></i></span>
+                <div class="modal-centered-copy">
+                    <span class="eyebrow eyebrow-coral">Confirmar exclusão</span>
+                    <h2 th:id="|institutional-document-delete-title-${documento.id}|">Excluir documento?</h2>
+                    <p><strong th:text="${documento.nome}">Documento</strong> será excluído permanentemente.</p>
+                </div>
+                <form class="modal-actions modal-actions-centered"
+                    th:action="@{/admin/documentos-institucionais/{id}/excluir(id=${documento.id})}" method="post">
+                    <button class="admin-button admin-button-muted" type="button" data-modal-close>Cancelar</button>
+                    <button class="admin-button admin-button-danger" type="submit">
+                        <i class="fa-regular fa-trash-can" aria-hidden="true"></i> Excluir
+                    </button>
+                </form>
+            </section>
+        </div>
+    </th:block>
+</div>
+
+</html>
