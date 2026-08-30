@@ -29,6 +29,16 @@ CREATE TABLE IF NOT EXISTS turmas_imagens (
 	imagem_url TEXT NOT NULL
 );
 
+CREATE TABLE IF NOT EXISTS equipe_membros (
+	id TEXT PRIMARY KEY,
+	nome TEXT NOT NULL,
+	cargo TEXT NOT NULL,
+	imagem_url TEXT NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS idx_equipe_membros_cargo_nome
+	ON equipe_membros(cargo, nome);
+
 CREATE TABLE IF NOT EXISTS slide_images (
 	id TEXT PRIMARY KEY,
 	slide_id TEXT NOT NULL,

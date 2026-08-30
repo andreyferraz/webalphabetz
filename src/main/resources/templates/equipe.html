@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pt-BR"
+    th:replace="~{layout :: layout('Equipe | Alphabetz', ~{::content})}">
+
+<div th:fragment="content">
+    <section class="page-hero page-hero-team"
+        th:style="${heroBackground != null ? '--hero-background-image: url(/uploads/' + heroBackground.imagemUrl + ')' : null}">
+        <div class="container page-hero-grid">
+            <div class="reveal">
+                <span class="kicker">Nossa equipe</span>
+                <h1>Pessoas que cuidam, ensinam e transformam.</h1>
+                <p>Conheça os profissionais que tornam a experiência Alphabetz acolhedora, segura e inspiradora todos os dias.</p>
+            </div>
+            <div class="team-hero-visual reveal" aria-hidden="true">
+                <div class="team-hero-card">
+                    <span><i class="fa-solid fa-people-group"></i></span>
+                    <strong>Uma equipe dedicada à infância.</strong>
+                    <small>Competência, cuidado e colaboração em cada etapa.</small>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section team-section">
+        <div class="container">
+            <div class="section-header reveal">
+                <div>
+                    <span class="kicker">Equipe Alphabetz</span>
+                    <h2>Quem faz parte da nossa história.</h2>
+                </div>
+            </div>
+
+            <div class="team-hierarchy" th:if="${!equipePorCargo.isEmpty()}">
+                <section class="team-role-group reveal" th:each="group : ${equipePorCargo}">
+                    <h3 th:text="${group.key.descricao}">Cargo</h3>
+                    <div class="team-members-grid">
+                        <article class="team-member-card" th:each="member : ${group.value}">
+                            <div class="team-member-photo">
+                                <img th:src="@{/uploads/{filename}(filename=${member.imagemUrl})}"
+                                    th:alt="|Foto de ${member.nome}|" />
+                            </div>
+                            <div class="team-member-copy">
+                                <strong th:text="${member.nome}">Nome do profissional</strong>
+                                <span th:text="${member.cargo.descricao}">Cargo</span>
+                            </div>
+                        </article>
+                    </div>
+                </section>
+            </div>
+
+            <div class="team-empty-state reveal" th:if="${equipePorCargo.isEmpty()}">
+                <i class="fa-solid fa-people-group" aria-hidden="true"></i>
+                <h2>Equipe em atualização</h2>
+                <p>Em breve você poderá conhecer todos os profissionais da Alphabetz.</p>
+            </div>
+        </div>
+    </section>
+</div>
+
+</html>

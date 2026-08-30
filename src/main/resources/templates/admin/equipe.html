@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org"
+    th:replace="~{admin/layout :: layout('Equipe | Painel Alphabetz', 'team', ~{::content})}">
+
+<div th:fragment="content" class="admin-page-content">
+    <section class="page-intro page-intro-with-action">
+        <div>
+            <span class="eyebrow eyebrow-mint">Equipe da escola</span>
+            <h1>Equipe</h1>
+            <p>Gerencie os profissionais, seus cargos e suas fotos.</p>
+        </div>
+        <button class="admin-button admin-button-primary" type="button" data-modal-open="team-create">
+            <i class="fa-solid fa-plus" aria-hidden="true"></i>
+            Novo profissional
+        </button>
+    </section>
+
+    <div class="form-message form-message-success" th:if="${successMessage}">
+        <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
+        <span th:text="${successMessage}">Operação realizada com sucesso.</span>
+    </div>
+    <div class="form-message form-message-error" th:if="${errorMessage}">
+        <i class="fa-solid fa-circle-exclamation" aria-hidden="true"></i>
+        <span th:text="${errorMessage}">Não foi possível concluir a operação.</span>
+    </div>
+
+    <section class="content-toolbar" aria-label="Ferramentas da equipe">
+        <label class="admin-search">
+            <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+            <span class="sr-only">Buscar profissionais</span>
+            <input type="search" placeholder="Buscar por nome ou cargo..." data-filter-input="team" />
+        </label>
+        <div class="toolbar-summary toolbar-summary-end">
+            <span><strong data-visible-count th:text="${#lists.size(team)}">0</strong> profissionais</span>
+        </div>
+    </section>
+
+    <section class="testimonials-admin-list" data-filter-list="team"
+        aria-label="Profissionais cadastrados" th:if="${!#lists.isEmpty(team)}">
+        <article class="testimonial-admin-card" data-filter-item th:each="member : ${team}"
+            th:attr="data-filter-text=|${member.nome} ${member.cargo.descricao}|">
+            <img class="testimonial-admin-avatar"
+                th:src="@{/uploads/{filename}(filename=${member.imagemUrl})}"
+                th:alt="|Foto de ${member.nome}|" />
+            <div class="testimonial-admin-copy">
+                <strong th:text="${member.nome}">Nome do profissional</strong>
+                <div class="content-meta">
+                    <span><i class="fa-solid fa-id-badge" aria-hidden="true"></i>
+                        <span th:text="${member.cargo.descricao}">Cargo</span>
+                    </span>
+                </div>
+            </div>
+            <div class="testimonial-admin-actions">
+                <button class="admin-button admin-button-outline admin-button-small" type="button"
+                    th:attr="data-modal-open=|team-edit-${member.id}|">
+                    <i class="fa-regular fa-pen-to-square" aria-hidden="true"></i> Editar
+                </button>
+                <button class="icon-button icon-button-danger" type="button" title="Excluir"
+                    th:attr="aria-label=|Excluir profissional ${member.nome}|,data-modal-open=|team-delete-${member.id}|">
+                    <i class="fa-regular fa-trash-can" aria-hidden="true"></i>
+                </button>
+            </div>
+        </article>
+    </section>
+
+    <div class="empty-filter-state" th:if="${#lists.isEmpty(team)}">
+        <span><i class="fa-solid fa-people-group" aria-hidden="true"></i></span>
+        <h2>Nenhum profissional cadastrado</h2>
+        <p>Cadastre o primeiro profissional da equipe.</p>
+    </div>
+
+    <div class="empty-filter-state" data-empty-state="team" hidden th:if="${!#lists.isEmpty(team)}">
+        <span><i class="fa-solid fa-people-group" aria-hidden="true"></i></span>
+        <h2>Nenhum profissional encontrado</h2>
+        <p>Tente buscar por outro nome ou cargo.</p>
+    </div>
+
+    <div class="admin-modal" data-modal="team-create" hidden aria-hidden="true">
+        <div class="modal-backdrop" data-modal-close></div>
+        <section class="modal-dialog modal-dialog-form" role="dialog" aria-modal="true"
+            aria-labelledby="team-create-title">
+            <header class="modal-heading">
+                <div>
+                    <span class="eyebrow eyebrow-mint">Novo profissional</span>
+                    <h2 id="team-create-title">Cadastrar profissional</h2>
+                </div>
+                <button class="modal-close" type="button" data-modal-close aria-label="Fechar">
+                    <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+                </button>
+            </header>
+
+            <form class="admin-form" th:action="@{/admin/equipe}" method="post" enctype="multipart/form-data">
+                <div class="form-field">
+                    <label for="team-create-name">Nome <span>*</span></label>
+                    <input id="team-create-name" name="nome" type="text" maxlength="120"
+                        placeholder="Nome do profissional" required />
+                </div>
+
+                <div class="form-field">
+                    <label for="team-create-role">Cargo <span>*</span></label>
+                    <select id="team-create-role" name="cargo" required>
+                        <option value="" selected disabled>Selecione um cargo</option>
+                        <option th:each="role : ${roles}" th:value="${role}"
+                            th:text="${role.descricao}">Cargo</option>
+                    </select>
+                </div>
+
+                <div class="form-field">
+                    <span class="form-label">Foto <span>*</span></span>
+                    <label class="upload-zone upload-zone-compact" for="team-create-image" data-drop-zone>
+                        <span class="upload-icon"><i class="fa-solid fa-cloud-arrow-up" aria-hidden="true"></i></span>
+                        <span>
+                            <strong>Selecione uma foto</strong>
+                            <small>JPG, PNG ou WebP</small>
+                        </span>
+                        <input id="team-create-image" name="imagem" type="file"
+                            accept="image/jpeg,image/png,image/webp" required data-image-input />
+                    </label>
+                    <div class="image-preview-grid image-preview-single" data-image-preview aria-live="polite"></div>
+                </div>
+
+                <div class="modal-actions">
+                    <button class="admin-button admin-button-muted" type="button" data-modal-close>Cancelar</button>
+                    <button class="admin-button admin-button-primary" type="submit">
+                        <i class="fa-regular fa-floppy-disk" aria-hidden="true"></i> Salvar profissional
+                    </button>
+                </div>
+            </form>
+        </section>
+    </div>
+
+    <th:block th:each="member : ${team}">
+        <div class="admin-modal" th:attr="data-modal=|team-edit-${member.id}|" hidden aria-hidden="true">
+            <div class="modal-backdrop" data-modal-close></div>
+            <section class="modal-dialog modal-dialog-form" role="dialog" aria-modal="true"
+                th:attr="aria-labelledby=|team-edit-title-${member.id}|">
+                <header class="modal-heading">
+                    <div>
+                        <span class="eyebrow eyebrow-mint">Editar profissional</span>
+                        <h2 th:id="|team-edit-title-${member.id}|">Editar profissional</h2>
+                    </div>
+                    <button class="modal-close" type="button" data-modal-close aria-label="Fechar">
+                        <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+                    </button>
+                </header>
+
+                <form class="admin-form" th:action="@{/admin/equipe/{id}(id=${member.id})}"
+                    method="post" enctype="multipart/form-data">
+                    <div class="form-field">
+                        <label th:for="|team-name-${member.id}|">Nome <span>*</span></label>
+                        <input th:id="|team-name-${member.id}|" name="nome" type="text" maxlength="120"
+                            th:value="${member.nome}" required />
+                    </div>
+
+                    <div class="form-field">
+                        <label th:for="|team-role-${member.id}|">Cargo <span>*</span></label>
+                        <select th:id="|team-role-${member.id}|" name="cargo" required>
+                            <option th:each="role : ${roles}" th:value="${role}"
+                                th:text="${role.descricao}" th:selected="${role == member.cargo}">Cargo</option>
+                        </select>
+                    </div>
+
+                    <div class="form-field">
+                        <span class="form-label">Foto</span>
+                        <div class="testimonial-current-image">
+                            <img th:src="@{/uploads/{filename}(filename=${member.imagemUrl})}"
+                                th:alt="|Foto atual de ${member.nome}|" />
+                            <span>Foto atual</span>
+                        </div>
+                        <label class="upload-zone upload-zone-compact" th:for="|team-image-${member.id}|" data-drop-zone>
+                            <span class="upload-icon"><i class="fa-solid fa-cloud-arrow-up" aria-hidden="true"></i></span>
+                            <span>
+                                <strong>Substituir foto</strong>
+                                <small>Opcional · JPG, PNG ou WebP</small>
+                            </span>
+                            <input th:id="|team-image-${member.id}|" name="imagem" type="file"
+                                accept="image/jpeg,image/png,image/webp" data-image-input />
+                        </label>
+                        <div class="image-preview-grid image-preview-single" data-image-preview aria-live="polite"></div>
+                    </div>
+
+                    <div class="modal-actions">
+                        <button class="admin-button admin-button-muted" type="button" data-modal-close>Cancelar</button>
+                        <button class="admin-button admin-button-primary" type="submit">
+                            <i class="fa-regular fa-floppy-disk" aria-hidden="true"></i> Salvar alterações
+                        </button>
+                    </div>
+                </form>
+            </section>
+        </div>
+
+        <div class="admin-modal" th:attr="data-modal=|team-delete-${member.id}|" hidden aria-hidden="true">
+            <div class="modal-backdrop" data-modal-close></div>
+            <section class="modal-dialog modal-dialog-small" role="dialog" aria-modal="true"
+                th:attr="aria-labelledby=|team-delete-title-${member.id}|">
+                <button class="modal-close" type="button" data-modal-close aria-label="Fechar">
+                    <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+                </button>
+                <span class="modal-alert-icon"><i class="fa-regular fa-trash-can" aria-hidden="true"></i></span>
+                <div class="modal-centered-copy">
+                    <span class="eyebrow eyebrow-coral">Confirmar exclusão</span>
+                    <h2 th:id="|team-delete-title-${member.id}|">Excluir profissional?</h2>
+                    <p><strong th:text="${member.nome}">Profissional</strong> será removido da equipe.</p>
+                </div>
+                <form class="modal-actions modal-actions-centered"
+                    th:action="@{/admin/equipe/{id}/excluir(id=${member.id})}" method="post">
+                    <button class="admin-button admin-button-muted" type="button" data-modal-close>Cancelar</button>
+                    <button class="admin-button admin-button-danger" type="submit">
+                        <i class="fa-regular fa-trash-can" aria-hidden="true"></i> Excluir
+                    </button>
+                </form>
+            </section>
+        </div>
+    </th:block>
+</div>
+
+</html>

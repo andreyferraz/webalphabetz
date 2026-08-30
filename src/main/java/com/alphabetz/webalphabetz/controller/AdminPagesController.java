@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.alphabetz.webalphabetz.model.Blog;
+import com.alphabetz.webalphabetz.model.CargoEquipe;
 import com.alphabetz.webalphabetz.model.CareerApplication;
 import com.alphabetz.webalphabetz.model.Depoimentos;
 import com.alphabetz.webalphabetz.model.OuvidoriaManifestacao;
@@ -30,6 +31,7 @@ import com.alphabetz.webalphabetz.service.BlogService;
 import com.alphabetz.webalphabetz.service.CareerApplicationService;
 import com.alphabetz.webalphabetz.service.DashboardService;
 import com.alphabetz.webalphabetz.service.DepoimentosService;
+import com.alphabetz.webalphabetz.service.EquipeService;
 import com.alphabetz.webalphabetz.service.FundoTopoService;
 import com.alphabetz.webalphabetz.service.MatriculaDocumentoService;
 import com.alphabetz.webalphabetz.service.OuvidoriaService;
@@ -50,13 +52,14 @@ public class AdminPagesController {
     private final TurmasImagensService turmasImagensService;
     private final FundoTopoService fundoTopoService;
     private final MatriculaDocumentoService matriculaDocumentoService;
+    private final EquipeService equipeService;
 
     public AdminPagesController(SlidesService slidesService, BlogService blogService,
             BlogCategoryService blogCategoryService, AdminService adminService,
             DashboardService dashboardService, CareerApplicationService careerApplicationService,
             OuvidoriaService ouvidoriaService, DepoimentosService depoimentosService,
             TurmasImagensService turmasImagensService, FundoTopoService fundoTopoService,
-            MatriculaDocumentoService matriculaDocumentoService) {
+            MatriculaDocumentoService matriculaDocumentoService, EquipeService equipeService) {
         this.slidesService = slidesService;
         this.blogService = blogService;
         this.blogCategoryService = blogCategoryService;
@@ -68,6 +71,7 @@ public class AdminPagesController {
         this.turmasImagensService = turmasImagensService;
         this.fundoTopoService = fundoTopoService;
         this.matriculaDocumentoService = matriculaDocumentoService;
+        this.equipeService = equipeService;
     }
 
     @GetMapping("/login")
@@ -302,6 +306,53 @@ public class AdminPagesController {
             redirectAttributes.addFlashAttribute("errorMessage", errorMessage(exception));
         }
         return "redirect:/admin/turmas";
+    }
+
+    @GetMapping("/admin/equipe")
+    public String team(Model model) {
+        model.addAttribute("team", equipeService.getAll());
+        model.addAttribute("roles", CargoEquipe.values());
+        return "admin/equipe";
+    }
+
+    @PostMapping("/admin/equipe")
+    public String createTeamMember(@RequestParam String nome,
+            @RequestParam CargoEquipe cargo,
+            @RequestParam(name = "imagem", required = false) MultipartFile imagem,
+            RedirectAttributes redirectAttributes) {
+        try {
+            equipeService.create(nome, cargo, imagem);
+            redirectAttributes.addFlashAttribute("successMessage", "Profissional cadastrado com sucesso.");
+        } catch (RuntimeException exception) {
+            redirectAttributes.addFlashAttribute("errorMessage", errorMessage(exception));
+        }
+        return "redirect:/admin/equipe";
+    }
+
+    @PostMapping("/admin/equipe/{id}")
+    public String updateTeamMember(@PathVariable UUID id,
+            @RequestParam String nome,
+            @RequestParam CargoEquipe cargo,
+            @RequestParam(name = "imagem", required = false) MultipartFile imagem,
+            RedirectAttributes redirectAttributes) {
+        try {
+            equipeService.update(id, nome, cargo, imagem);
+            redirectAttributes.addFlashAttribute("successMessage", "Profissional atualizado com sucesso.");
+        } catch (RuntimeException exception) {
+            redirectAttributes.addFlashAttribute("errorMessage", errorMessage(exception));
+        }
+        return "redirect:/admin/equipe";
+    }
+
+    @PostMapping("/admin/equipe/{id}/excluir")
+    public String deleteTeamMember(@PathVariable UUID id, RedirectAttributes redirectAttributes) {
+        try {
+            equipeService.delete(id);
+            redirectAttributes.addFlashAttribute("successMessage", "Profissional excluído com sucesso.");
+        } catch (RuntimeException exception) {
+            redirectAttributes.addFlashAttribute("errorMessage", errorMessage(exception));
+        }
+        return "redirect:/admin/equipe";
     }
 
     @GetMapping("/admin/abas")

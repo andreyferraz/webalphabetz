@@ -25,6 +25,7 @@ import com.alphabetz.webalphabetz.model.Slides;
 import com.alphabetz.webalphabetz.model.TurmasImagens;
 import com.alphabetz.webalphabetz.service.BlogService;
 import com.alphabetz.webalphabetz.service.DepoimentosService;
+import com.alphabetz.webalphabetz.service.EquipeService;
 import com.alphabetz.webalphabetz.service.FundoTopoService;
 import com.alphabetz.webalphabetz.service.MatriculaDocumentoService;
 import com.alphabetz.webalphabetz.service.SlidesService;
@@ -41,16 +42,19 @@ public class PublicPagesController {
     private final TurmasImagensService turmasImagensService;
     private final FundoTopoService fundoTopoService;
     private final MatriculaDocumentoService matriculaDocumentoService;
+    private final EquipeService equipeService;
 
     public PublicPagesController(SlidesService slidesService, BlogService blogService,
             DepoimentosService depoimentosService, TurmasImagensService turmasImagensService,
-            FundoTopoService fundoTopoService, MatriculaDocumentoService matriculaDocumentoService) {
+            FundoTopoService fundoTopoService, MatriculaDocumentoService matriculaDocumentoService,
+            EquipeService equipeService) {
         this.slidesService = slidesService;
         this.blogService = blogService;
         this.depoimentosService = depoimentosService;
         this.turmasImagensService = turmasImagensService;
         this.fundoTopoService = fundoTopoService;
         this.matriculaDocumentoService = matriculaDocumentoService;
+        this.equipeService = equipeService;
     }
 
     @GetMapping("/")
@@ -65,6 +69,13 @@ public class PublicPagesController {
     public String escola(Model model) {
         addHeroBackground(model, "A Escola", "Escola");
         return "escola";
+    }
+
+    @GetMapping("/equipe")
+    public String equipe(Model model) {
+        addHeroBackground(model, "Equipe");
+        model.addAttribute("equipePorCargo", equipeService.getGroupedByCargo());
+        return "equipe";
     }
 
     @GetMapping("/matricula")

@@ -4356,3 +4356,203 @@ body[data-page="index.html"] .bubble:nth-of-type(6) {
     border-radius: 26px;
   }
 }
+
+/* Equipe */
+.page-hero-team {
+  background:
+    linear-gradient(90deg, rgba(1, 39, 62, .95) 0%, rgba(1, 39, 62, .8) 48%, rgba(1, 39, 62, .44) 100%),
+    var(--hero-background-image, url("../assets/slide/interage3.jpg")) center 45% / cover no-repeat;
+}
+
+.page-hero-team .kicker,
+.page-hero-team h1,
+.page-hero-team p {
+  color: #fff;
+}
+
+.team-hero-visual {
+  min-height: 390px;
+  display: grid;
+  place-items: center;
+}
+
+.team-hero-card {
+  width: min(100%, 340px);
+  padding: 36px;
+  border: 1px solid rgba(255, 255, 255, .28);
+  border-radius: 38px;
+  color: #fff;
+  background: rgba(255, 255, 255, .14);
+  box-shadow: 0 28px 70px rgba(1, 39, 62, .28);
+  backdrop-filter: blur(16px);
+  transform: rotate(2deg);
+}
+
+.team-hero-card > span {
+  width: 62px;
+  height: 62px;
+  display: grid;
+  place-items: center;
+  margin-bottom: 24px;
+  border-radius: 20px;
+  color: var(--navy);
+  font-size: 1.4rem;
+  background: var(--yellow);
+}
+
+.team-hero-card strong,
+.team-hero-card small {
+  display: block;
+}
+
+.team-hero-card strong {
+  font: 800 1.45rem/1.3 "Sora", Verdana, sans-serif;
+}
+
+.team-hero-card small {
+  margin-top: 12px;
+  color: rgba(255, 255, 255, .8);
+  font-size: .82rem;
+  line-height: 1.65;
+}
+
+.team-section {
+  background:
+    radial-gradient(circle at 8% 12%, rgba(122, 198, 186, .13), transparent 24%),
+    linear-gradient(180deg, #fff, #f8fbfd);
+}
+
+.team-hierarchy {
+  display: grid;
+  gap: 58px;
+  margin-top: 46px;
+}
+
+.team-role-group h3 {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 24px;
+  color: var(--navy);
+  font: 800 clamp(1.25rem, 2vw, 1.65rem)/1.3 "Sora", Verdana, sans-serif;
+}
+
+.team-role-group h3::before {
+  width: 11px;
+  height: 34px;
+  flex: 0 0 auto;
+  border-radius: 999px;
+  content: "";
+  background: var(--mint);
+}
+
+.team-role-group:nth-child(4n + 2) h3::before { background: var(--yellow); }
+.team-role-group:nth-child(4n + 3) h3::before { background: var(--red); }
+.team-role-group:nth-child(4n + 4) h3::before { background: var(--blue); }
+
+.team-members-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(215px, 265px));
+  gap: 22px;
+}
+
+.team-member-card {
+  overflow: hidden;
+  border: 1px solid rgba(1, 39, 62, .08);
+  border-radius: 30px;
+  background: #fff;
+  box-shadow: var(--soft-shadow);
+  transition: transform .24s ease, box-shadow .24s ease;
+}
+
+.team-member-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow);
+}
+
+.team-member-photo {
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  background: #eaf0f4;
+}
+
+.team-member-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform .35s ease;
+}
+
+.team-member-card:hover .team-member-photo img {
+  transform: scale(1.035);
+}
+
+.team-member-copy {
+  display: grid;
+  gap: 7px;
+  padding: 22px;
+}
+
+.team-member-copy strong {
+  color: var(--navy);
+  font: 800 .98rem/1.35 "Sora", Verdana, sans-serif;
+}
+
+.team-member-copy span {
+  color: var(--muted);
+  font-size: .75rem;
+  font-weight: 700;
+  line-height: 1.45;
+}
+
+.team-empty-state {
+  margin-top: 42px;
+  padding: 64px 28px;
+  border: 1px dashed rgba(1, 39, 62, .2);
+  border-radius: 32px;
+  text-align: center;
+  background: rgba(255, 255, 255, .75);
+}
+
+.team-empty-state i {
+  margin-bottom: 18px;
+  color: var(--blue);
+  font-size: 2rem;
+}
+
+.team-empty-state p {
+  margin-top: 10px;
+}
+
+@media (max-width: 980px) {
+  .page-hero-team {
+    background:
+      linear-gradient(90deg, rgba(1, 39, 62, .95) 0%, rgba(1, 39, 62, .84) 62%, rgba(1, 39, 62, .62) 100%),
+      var(--hero-background-image, url("../assets/slide/interage3.jpg")) center / cover no-repeat;
+  }
+}
+
+@media (max-width: 680px) {
+  .page-hero-team {
+    background:
+      linear-gradient(180deg, rgba(1, 39, 62, .94) 0%, rgba(1, 39, 62, .82) 100%),
+      var(--hero-background-image, url("../assets/slide/interage3.jpg")) center / cover no-repeat;
+  }
+
+  .team-hero-visual {
+    min-height: 250px;
+  }
+
+  .team-hero-card {
+    padding: 28px;
+    border-radius: 30px;
+  }
+
+  .team-hierarchy {
+    gap: 44px;
+  }
+
+  .team-members-grid {
+    grid-template-columns: 1fr;
+  }
+}
