@@ -31,25 +31,25 @@
             <input type="search" placeholder="Buscar por página..." data-filter-input="backgrounds" />
         </label>
         <div class="toolbar-summary toolbar-summary-end">
-            <span><strong data-visible-count th:text="${#lists.size(heroPageOptions)}">0</strong> páginas</span>
+            <span><strong data-visible-count th:text="${#lists.size(heroPages)}">0</strong> páginas</span>
         </div>
     </section>
 
     <section class="testimonials-admin-list" data-filter-list="backgrounds"
         aria-label="Fundos das páginas">
         <article class="testimonial-admin-card" data-filter-item
-            th:each="pageOption, pageStatus : ${heroPageOptions}"
-            th:with="background=${backgroundsByPage[pageOption]}"
-            th:attr="data-filter-text=${pageOption}">
+            th:each="page, pageStatus : ${heroPages}"
+            th:with="background=${page.background}"
+            th:attr="data-filter-text=${page.pageName}">
             <img class="testimonial-admin-avatar" th:if="${background != null}"
                 th:src="@{/uploads/{filename}(filename=${background.imagemUrl})}"
-                th:alt="|Fundo do topo da página ${pageOption}|" />
+                th:alt="|Fundo do topo da página ${page.label}|" />
             <div class="testimonial-admin-avatar tabs-background-placeholder" th:unless="${background != null}">
                 <i class="fa-regular fa-image" aria-hidden="true"></i>
                 <span>Sem imagem</span>
             </div>
             <div class="testimonial-admin-copy">
-                <strong th:text="${pageOption == 'inicio' ? 'Página inicial' : pageOption}">Nome da página</strong>
+                <strong th:text="${page.label}">Nome da página</strong>
                 <div class="content-meta">
                     <span th:if="${background != null}"><i class="fa-solid fa-image" aria-hidden="true"></i> Fundo configurado</span>
                     <span th:unless="${background != null}"><i class="fa-regular fa-circle" aria-hidden="true"></i> Aguardando imagem</span>
@@ -130,8 +130,8 @@
         </section>
     </div>
 
-    <th:block th:each="pageOption, pageStatus : ${heroPageOptions}"
-        th:if="${backgroundsByPage[pageOption] == null}">
+    <th:block th:each="page, pageStatus : ${heroPages}"
+        th:if="${page.background == null}">
         <div class="admin-modal" th:attr="data-modal=|background-create-${pageStatus.index}|" hidden
             aria-hidden="true">
             <div class="modal-backdrop" data-modal-close></div>
@@ -141,7 +141,7 @@
                     <div>
                         <span class="eyebrow eyebrow-mint">Novo fundo</span>
                         <h2 th:id="|background-create-title-${pageStatus.index}|"
-                            th:text="|Adicionar imagem — ${pageOption == 'inicio' ? 'Página inicial' : pageOption}|">
+                            th:text="|Adicionar imagem — ${page.label}|">
                             Adicionar imagem
                         </h2>
                     </div>
@@ -152,7 +152,7 @@
 
                 <form class="admin-form" th:action="@{/admin/abas}" method="post"
                     enctype="multipart/form-data">
-                    <input name="nomePagina" type="hidden" th:value="${pageOption}" />
+                    <input name="nomePagina" type="hidden" th:value="${page.pageName}" />
                     <div class="form-field">
                         <span class="form-label">Imagem de fundo <span>*</span></span>
                         <label class="upload-zone upload-zone-compact"
