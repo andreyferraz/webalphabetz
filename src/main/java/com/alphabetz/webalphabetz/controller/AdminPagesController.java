@@ -484,13 +484,17 @@ public class AdminPagesController {
             @RequestParam(name = "valorAnuidade", required = false) MultipartFile valorAnuidade,
             @RequestParam(name = "contratoEducacional", required = false) MultipartFile contratoEducacional,
             @RequestParam(name = "horarioPersonalizado", required = false) MultipartFile horarioPersonalizado,
+            @RequestParam(name = "materialEscolarBaby", required = false) MultipartFile materialEscolarBaby,
+            @RequestParam(name = "materialEscolarTurmas", required = false) MultipartFile materialEscolarTurmas,
             RedirectAttributes redirectAttributes) {
 
         try {
             matriculaDocumentoService.atualizarDocumentos(
                     valorAnuidade,
                     contratoEducacional,
-                    horarioPersonalizado);
+                    horarioPersonalizado,
+                    materialEscolarBaby,
+                    materialEscolarTurmas);
             redirectAttributes.addFlashAttribute("successMessage", "Documentos de matrícula atualizados com sucesso.");
         } catch (RuntimeException exception) {
             redirectAttributes.addFlashAttribute("errorMessage", errorMessage(exception));

@@ -101,6 +101,60 @@
                     <input id="enrollment-schedule" name="horarioPersonalizado" type="file" accept="application/pdf,.pdf" />
                 </label>
             </article>
+
+            <article class="admin-card enrollment-admin-card">
+                <header>
+                    <span class="enrollment-admin-icon"><i class="fa-solid fa-baby" aria-hidden="true"></i></span>
+                    <div>
+                        <span class="eyebrow eyebrow-coral">Material escolar</span>
+                        <h2>Material Escolar Berçário | Baby</h2>
+                    </div>
+                </header>
+                <div class="enrollment-current-file" th:if="${documentos['material-escolar-baby'] != null}">
+                    <i class="fa-regular fa-file-pdf" aria-hidden="true"></i>
+                    <div>
+                        <strong th:text="${documentos['material-escolar-baby'].nomeArquivo}">arquivo.pdf</strong>
+                        <span th:text="|${#numbers.formatDecimal(documentos['material-escolar-baby'].tamanho / 1024.0, 1, 1)} KB|">0 KB</span>
+                    </div>
+                    <a th:href="@{/matricula/documentos/{tipo}(tipo='material-escolar-baby')}" target="_blank" aria-label="Baixar PDF atual do material escolar do Berçário e Baby">
+                        <i class="fa-solid fa-download" aria-hidden="true"></i>
+                    </a>
+                </div>
+                <div class="enrollment-current-file enrollment-current-file-empty"
+                    th:unless="${documentos['material-escolar-baby'] != null}">Nenhum PDF enviado.</div>
+                <label class="upload-zone upload-zone-compact" for="enrollment-school-material-baby">
+                    <span class="upload-icon"><i class="fa-solid fa-cloud-arrow-up" aria-hidden="true"></i></span>
+                    <span><strong>Selecionar PDF</strong><small>Até 10 MB</small></span>
+                    <input id="enrollment-school-material-baby" name="materialEscolarBaby" type="file" accept="application/pdf,.pdf" />
+                </label>
+            </article>
+
+            <article class="admin-card enrollment-admin-card">
+                <header>
+                    <span class="enrollment-admin-icon"><i class="fa-solid fa-shapes" aria-hidden="true"></i></span>
+                    <div>
+                        <span class="eyebrow eyebrow-mint">Material escolar</span>
+                        <h2>Material Escolar - Start, Move, Jump e Fly</h2>
+                    </div>
+                </header>
+                <div class="enrollment-current-file" th:if="${documentos['material-escolar-turmas'] != null}">
+                    <i class="fa-regular fa-file-pdf" aria-hidden="true"></i>
+                    <div>
+                        <strong th:text="${documentos['material-escolar-turmas'].nomeArquivo}">arquivo.pdf</strong>
+                        <span th:text="|${#numbers.formatDecimal(documentos['material-escolar-turmas'].tamanho / 1024.0, 1, 1)} KB|">0 KB</span>
+                    </div>
+                    <a th:href="@{/matricula/documentos/{tipo}(tipo='material-escolar-turmas')}" target="_blank" aria-label="Baixar PDF atual do material escolar das turmas Start, Move, Jump e Fly">
+                        <i class="fa-solid fa-download" aria-hidden="true"></i>
+                    </a>
+                </div>
+                <div class="enrollment-current-file enrollment-current-file-empty"
+                    th:unless="${documentos['material-escolar-turmas'] != null}">Nenhum PDF enviado.</div>
+                <label class="upload-zone upload-zone-compact" for="enrollment-school-material-classes">
+                    <span class="upload-icon"><i class="fa-solid fa-cloud-arrow-up" aria-hidden="true"></i></span>
+                    <span><strong>Selecionar PDF</strong><small>Até 10 MB</small></span>
+                    <input id="enrollment-school-material-classes" name="materialEscolarTurmas" type="file" accept="application/pdf,.pdf" />
+                </label>
+            </article>
         </section>
 
         <div class="enrollment-admin-actions">

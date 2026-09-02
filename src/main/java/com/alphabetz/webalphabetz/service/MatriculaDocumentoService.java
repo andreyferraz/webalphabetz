@@ -22,12 +22,16 @@ public class MatriculaDocumentoService {
     public static final String VALOR_ANUIDADE = "valor-anuidade";
     public static final String CONTRATO_EDUCACIONAL = "contrato-educacional";
     public static final String HORARIO_PERSONALIZADO = "horario-personalizado";
+    public static final String MATERIAL_ESCOLAR_BABY = "material-escolar-baby";
+    public static final String MATERIAL_ESCOLAR_TURMAS = "material-escolar-turmas";
 
     private static final long MAX_FILE_SIZE = 10 * 1024 * 1024;
     private static final Set<String> TIPOS_PERMITIDOS = Set.of(
             VALOR_ANUIDADE,
             CONTRATO_EDUCACIONAL,
-            HORARIO_PERSONALIZADO);
+            HORARIO_PERSONALIZADO,
+            MATERIAL_ESCOLAR_BABY,
+            MATERIAL_ESCOLAR_TURMAS);
 
     private final MatriculaDocumentoRepository repository;
 
@@ -51,11 +55,15 @@ public class MatriculaDocumentoService {
     public void atualizarDocumentos(
             MultipartFile valorAnuidade,
             MultipartFile contratoEducacional,
-            MultipartFile horarioPersonalizado) {
+            MultipartFile horarioPersonalizado,
+            MultipartFile materialEscolarBaby,
+            MultipartFile materialEscolarTurmas) {
 
         boolean possuiArquivo = possuiArquivo(valorAnuidade)
                 || possuiArquivo(contratoEducacional)
-                || possuiArquivo(horarioPersonalizado);
+                || possuiArquivo(horarioPersonalizado)
+                || possuiArquivo(materialEscolarBaby)
+                || possuiArquivo(materialEscolarTurmas);
 
         if (!possuiArquivo) {
             throw new IllegalArgumentException("Selecione ao menos um PDF para atualizar.");
@@ -64,6 +72,8 @@ public class MatriculaDocumentoService {
         salvarSeEnviado(VALOR_ANUIDADE, valorAnuidade);
         salvarSeEnviado(CONTRATO_EDUCACIONAL, contratoEducacional);
         salvarSeEnviado(HORARIO_PERSONALIZADO, horarioPersonalizado);
+        salvarSeEnviado(MATERIAL_ESCOLAR_BABY, materialEscolarBaby);
+        salvarSeEnviado(MATERIAL_ESCOLAR_TURMAS, materialEscolarTurmas);
     }
 
     private void salvarSeEnviado(String tipo, MultipartFile arquivo) {

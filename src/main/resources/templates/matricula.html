@@ -97,6 +97,36 @@
                     <span class="enrollment-document-pending"
                         th:unless="${documentos['horario-personalizado'] != null}">Documento em atualização</span>
                 </article>
+
+                <article class="enrollment-document-card reveal">
+                    <span class="enrollment-document-icon"><i class="fa-solid fa-baby" aria-hidden="true"></i></span>
+                    <div>
+                        <h3>Material Escolar Berçário | Baby</h3>
+                        <p>Consulte a lista de materiais escolares do Berçário e Baby.</p>
+                    </div>
+                    <a class="btn btn-outline"
+                        th:if="${documentos['material-escolar-baby'] != null}"
+                        th:href="@{/matricula/documentos/{tipo}(tipo='material-escolar-baby')}">
+                        <i class="fa-solid fa-download" aria-hidden="true"></i> Baixar PDF
+                    </a>
+                    <span class="enrollment-document-pending"
+                        th:unless="${documentos['material-escolar-baby'] != null}">Documento em atualização</span>
+                </article>
+
+                <article class="enrollment-document-card reveal">
+                    <span class="enrollment-document-icon"><i class="fa-solid fa-shapes" aria-hidden="true"></i></span>
+                    <div>
+                        <h3>Material Escolar - Start, Move, Jump e Fly</h3>
+                        <p>Consulte a lista de materiais escolares das turmas Start, Move, Jump e Fly.</p>
+                    </div>
+                    <a class="btn btn-outline"
+                        th:if="${documentos['material-escolar-turmas'] != null}"
+                        th:href="@{/matricula/documentos/{tipo}(tipo='material-escolar-turmas')}">
+                        <i class="fa-solid fa-download" aria-hidden="true"></i> Baixar PDF
+                    </a>
+                    <span class="enrollment-document-pending"
+                        th:unless="${documentos['material-escolar-turmas'] != null}">Documento em atualização</span>
+                </article>
             </div>
         </div>
     </section>
