@@ -4799,9 +4799,15 @@ body.has-open-modal {
 
 .team-hierarchy {
   display: grid;
-  gap: 58px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  align-items: start;
+  gap: 58px 22px;
   margin-top: 46px;
 }
+
+.team-role-group-size-2 { grid-column: span 2; }
+.team-role-group-size-3 { grid-column: span 3; }
+.team-role-group-size-4 { grid-column: span 4; }
 
 .team-role-group h3 {
   display: flex;
@@ -4829,10 +4835,6 @@ body.has-open-modal {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(215px, 265px));
   gap: 22px;
-}
-
-.team-role-group-board .team-members-grid {
-  grid-template-columns: minmax(215px, 265px);
 }
 
 .team-member-card {
@@ -4909,6 +4911,15 @@ body.has-open-modal {
       linear-gradient(90deg, rgba(1, 39, 62, .95) 0%, rgba(1, 39, 62, .84) 62%, rgba(1, 39, 62, .62) 100%),
       var(--hero-background-image, url("../assets/slide/interage3.jpg")) center / cover no-repeat;
   }
+
+  .team-hierarchy {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .team-role-group-size-3,
+  .team-role-group-size-4 {
+    grid-column: 1 / -1;
+  }
 }
 
 @media (max-width: 680px) {
@@ -4928,7 +4939,15 @@ body.has-open-modal {
   }
 
   .team-hierarchy {
+    grid-template-columns: 1fr;
     gap: 44px;
+  }
+
+  .team-role-group,
+  .team-role-group-size-2,
+  .team-role-group-size-3,
+  .team-role-group-size-4 {
+    grid-column: 1 / -1;
   }
 
   .team-members-grid {
