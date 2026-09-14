@@ -31,8 +31,9 @@
             </div>
 
             <div class="team-hierarchy" th:if="${!equipePorCargo.isEmpty()}">
-                <section class="team-role-group reveal" th:each="group : ${equipePorCargo}">
-                    <h3 th:text="${group.key.descricao}">Cargo</h3>
+                <section class="team-role-group reveal" th:each="group : ${equipePorCargo}"
+                    th:classappend="${group.key == 'Conselho de Administração' ? 'team-role-group-board' : ''}">
+                    <h3 th:text="${group.key}">Cargo</h3>
                     <div class="team-members-grid">
                         <article class="team-member-card" th:each="member : ${group.value}">
                             <div class="team-member-photo">

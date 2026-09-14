@@ -102,12 +102,19 @@ public class EquipeService {
                 .toList();
     }
 
-    public Map<CargoEquipe, List<MembroEquipe>> getGroupedByCargo() {
-        Map<CargoEquipe, List<MembroEquipe>> equipePorCargo = new LinkedHashMap<>();
+    public Map<String, List<MembroEquipe>> getGroupedByCargo() {
+        Map<String, List<MembroEquipe>> equipePorCargo = new LinkedHashMap<>();
         getAll().forEach(membro -> equipePorCargo
-                .computeIfAbsent(membro.getCargo(), ignored -> new ArrayList<>())
+                .computeIfAbsent(getTituloGrupo(membro.getCargo()), ignored -> new ArrayList<>())
                 .add(membro));
         return equipePorCargo;
+    }
+
+    private String getTituloGrupo(CargoEquipe cargo) {
+        if (cargo == CargoEquipe.PRESIDENTE_CONSELHO || cargo == CargoEquipe.DIRETOR_EXECUTIVO_CEO) {
+            return "Conselho de Administração";
+        }
+        return cargo.getDescricao();
     }
 
     private void validar(String nome, CargoEquipe cargo) {
