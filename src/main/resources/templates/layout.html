@@ -111,7 +111,11 @@
                 </div>
             </div>
             <div class="footer-bottom">
-                <span>© 2026 Alphabetz. Todos os direitos reservados.</span>
+                <div class="footer-legal">
+                    <span>© 2026 Alphabetz. Todos os direitos reservados.</span>
+                    <a class="footer-privacy-link" th:href="@{/assets/politica-de-privacidade-alphabetz-2026.pdf}"
+                        data-privacy-open>Política de Privacidade</a>
+                </div>
                 <div class="footer-bottom-actions">
                     <a class="footer-admin-link" th:href="@{/login}">
                         <i class="fa-solid fa-lock" aria-hidden="true"></i>
@@ -123,6 +127,45 @@
             </div>
         </div>
     </footer>
+
+    <div class="privacy-modal" data-privacy-modal hidden aria-hidden="true">
+        <div class="privacy-modal-backdrop" data-privacy-close></div>
+        <section class="privacy-modal-dialog" role="dialog" aria-modal="true"
+            aria-labelledby="privacy-modal-title">
+            <header class="privacy-modal-header">
+                <div>
+                    <span class="privacy-modal-kicker">Alphabetz</span>
+                    <h2 id="privacy-modal-title">Política de Privacidade</h2>
+                </div>
+                <button class="privacy-modal-close" type="button" data-privacy-close
+                    aria-label="Fechar Política de Privacidade">×</button>
+            </header>
+            <iframe class="privacy-modal-document"
+                th:src="@{/assets/politica-de-privacidade-alphabetz-2026.pdf}"
+                title="Política de Privacidade da Escola Alphabetz"></iframe>
+            <div class="privacy-modal-footer">
+                <a class="btn btn-secondary" th:href="@{/assets/politica-de-privacidade-alphabetz-2026.pdf}"
+                    target="_blank" rel="noopener">Abrir PDF em nova aba</a>
+            </div>
+        </section>
+    </div>
+
+    <aside class="cookie-banner" data-cookie-banner hidden aria-label="Preferências de cookies">
+        <div class="cookie-banner-content">
+            <div>
+                <h2>Este site utiliza cookies</h2>
+                <p>Utilizamos cookies para melhorar sua experiência. Consulte nossa
+                    <a th:href="@{/assets/politica-de-privacidade-alphabetz-2026.pdf}"
+                        data-privacy-open>Política de Privacidade</a>.</p>
+            </div>
+            <div class="cookie-banner-actions">
+                <button class="cookie-button cookie-button-secondary" type="button"
+                    data-cookie-reject>Recusar</button>
+                <button class="cookie-button cookie-button-primary" type="button"
+                    data-cookie-accept>Aceitar</button>
+            </div>
+        </div>
+    </aside>
 
     <div class="lightbox" data-lightbox hidden aria-hidden="true">
         <div class="lightbox-backdrop" data-lightbox-close></div>

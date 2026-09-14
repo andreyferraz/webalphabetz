@@ -565,4 +565,71 @@
     }
   });
 
+  const privacyModal = $('[data-privacy-modal]');
+  const privacyOpenButtons = $$('[data-privacy-open]');
+  const privacyCloseButtons = $$('[data-privacy-close]');
+  let privacyTrigger = null;
+
+  const openPrivacyModal = event => {
+    if (!privacyModal) return;
+    event?.preventDefault();
+    privacyTrigger = event?.currentTarget || document.activeElement;
+    privacyModal.hidden = false;
+    privacyModal.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('has-open-modal');
+    $('[data-privacy-close]', privacyModal)?.focus();
+  };
+
+  const closePrivacyModal = () => {
+    if (!privacyModal) return;
+    privacyModal.hidden = true;
+    privacyModal.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('has-open-modal');
+    privacyTrigger?.focus();
+  };
+
+  privacyOpenButtons.forEach(button => button.addEventListener('click', openPrivacyModal));
+  privacyCloseButtons.forEach(button => button.addEventListener('click', closePrivacyModal));
+
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape' && privacyModal && !privacyModal.hidden) {
+      closePrivacyModal();
+    }
+  });
+
+  const cookieBanner = $('[data-cookie-banner]');
+  const cookieAcceptButton = $('[data-cookie-accept]');
+  const cookieRejectButton = $('[data-cookie-reject]');
+  const cookieConsentKey = 'alphabetz-cookie-consent';
+
+  const readCookieConsent = () => {
+    try {
+      return window.localStorage.getItem(cookieConsentKey);
+    } catch (error) {
+      return null;
+    }
+  };
+
+  const saveCookieConsent = consent => {
+    try {
+      window.localStorage.setItem(cookieConsentKey, consent);
+    } catch (error) {
+      // O banner ainda funciona quando o armazenamento do navegador está indisponível.
+    }
+
+    document.documentElement.dataset.cookieConsent = consent;
+    if (cookieBanner) cookieBanner.hidden = true;
+    window.dispatchEvent(new CustomEvent('alphabetz:cookie-consent', { detail: { consent } }));
+  };
+
+  const savedCookieConsent = readCookieConsent();
+  if (savedCookieConsent === 'accepted' || savedCookieConsent === 'rejected') {
+    document.documentElement.dataset.cookieConsent = savedCookieConsent;
+  } else if (cookieBanner) {
+    cookieBanner.hidden = false;
+  }
+
+  cookieAcceptButton?.addEventListener('click', () => saveCookieConsent('accepted'));
+  cookieRejectButton?.addEventListener('click', () => saveCookieConsent('rejected'));
+
 })();
