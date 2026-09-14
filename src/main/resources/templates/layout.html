@@ -140,9 +140,7 @@
                 <button class="privacy-modal-close" type="button" data-privacy-close
                     aria-label="Fechar Política de Privacidade">×</button>
             </header>
-            <iframe class="privacy-modal-document"
-                th:src="@{/assets/politica-de-privacidade-alphabetz-2026.pdf}"
-                title="Política de Privacidade da Escola Alphabetz"></iframe>
+            <div class="privacy-modal-content" th:insert="~{fragments/privacy-policy :: content}"></div>
             <div class="privacy-modal-footer">
                 <a class="btn btn-secondary" th:href="@{/assets/politica-de-privacidade-alphabetz-2026.pdf}"
                     target="_blank" rel="noopener">Abrir PDF em nova aba</a>
