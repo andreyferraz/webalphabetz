@@ -228,4 +228,9 @@ public class PublicPagesController {
         return "redirect:/ouvidoria";
     }
 
+    @GetMapping({"/portal-da-familia", "/familia"})
+    public String portalDaFamiliaRedirect() {
+        return "redirect:https://centralapz.com.br/familia";
+    }
+
 }

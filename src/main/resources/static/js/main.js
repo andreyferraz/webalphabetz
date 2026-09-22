@@ -38,17 +38,22 @@
     const href = link.getAttribute('href');
     if (!href || href.startsWith('#') || href.startsWith('javascript:')) return;
 
-    const linkPath = normalizePath(new URL(href, window.location.origin).pathname);
-    if (linkPath === currentPath) {
-      link.classList.add('is-active');
-      link.setAttribute('aria-current', 'page');
+    try {
+      const url = new URL(href, window.location.origin);
+      if (url.origin !== window.location.origin) return;
 
-      const parentDropdown = link.closest('.nav-item-dropdown');
-      const parentLink = parentDropdown?.querySelector('.nav-link-parent');
-      if (parentLink && parentLink !== link) {
-        parentLink.classList.add('is-active');
+      const linkPath = normalizePath(url.pathname);
+      if (linkPath === currentPath) {
+        link.classList.add('is-active');
+        link.setAttribute('aria-current', 'page');
+
+        const parentDropdown = link.closest('.nav-item-dropdown');
+        const parentLink = parentDropdown?.querySelector('.nav-link-parent');
+        if (parentLink && parentLink !== link) {
+          parentLink.classList.add('is-active');
+        }
       }
-    }
+    } catch (_) {}
   });
 
   navToggle?.addEventListener('click', () => {
