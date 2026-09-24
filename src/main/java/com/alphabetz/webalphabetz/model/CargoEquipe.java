@@ -3,7 +3,7 @@ package com.alphabetz.webalphabetz.model;
 public enum CargoEquipe {
 
     PRESIDENTE_CONSELHO("Presidente do Conselho"),
-    DIRETOR_EXECUTIVO_CEO("Diretor Executivo / CEO"),
+    DIRETOR_EXECUTIVO("Diretor Executivo"),
     DIRETORA_ENSINO("Diretora de Ensino"),
     COORDENADORA_PEDAGOGICA("Coordenadora Pedagógica"),
     ASSISTENTE_ADMINISTRATIVO("Assistente Administrativo"),

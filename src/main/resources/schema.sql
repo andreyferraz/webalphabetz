@@ -157,3 +157,8 @@ SELECT lower(
 ), trim(categoria)
 FROM blog
 WHERE categoria IS NOT NULL AND trim(categoria) <> '';
+
+UPDATE equipe_membros
+SET cargo = 'DIRETOR_EXECUTIVO'
+WHERE cargo = 'DIRETOR_EXECUTIVO_CEO';
+

@@ -111,7 +111,7 @@ public class EquipeService {
     }
 
     private String getTituloGrupo(CargoEquipe cargo) {
-        if (cargo == CargoEquipe.PRESIDENTE_CONSELHO || cargo == CargoEquipe.DIRETOR_EXECUTIVO_CEO) {
+        if (cargo == CargoEquipe.PRESIDENTE_CONSELHO || cargo == CargoEquipe.DIRETOR_EXECUTIVO) {
             return "Conselho de Administração";
         }
         return cargo.getDescricao();
