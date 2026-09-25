@@ -9,10 +9,16 @@
             <h1>Equipe</h1>
             <p>Gerencie os profissionais, seus cargos e suas fotos.</p>
         </div>
-        <button class="admin-button admin-button-primary" type="button" data-modal-open="team-create">
-            <i class="fa-solid fa-plus" aria-hidden="true"></i>
-            Novo profissional
-        </button>
+        <div class="page-intro-actions">
+            <button class="admin-button admin-button-outline" type="button" data-modal-open="team-role-manage">
+                <i class="fa-solid fa-id-badge" aria-hidden="true"></i>
+                Gerenciar cargos
+            </button>
+            <button class="admin-button admin-button-primary" type="button" data-modal-open="team-create">
+                <i class="fa-solid fa-plus" aria-hidden="true"></i>
+                Novo profissional
+            </button>
+        </div>
     </section>
 
     <div class="form-message form-message-success" th:if="${successMessage}">
@@ -38,7 +44,7 @@
     <section class="testimonials-admin-list" data-filter-list="team"
         aria-label="Profissionais cadastrados" th:if="${!#lists.isEmpty(team)}">
         <article class="testimonial-admin-card" data-filter-item th:each="member : ${team}"
-            th:attr="data-filter-text=|${member.nome} ${member.cargo.descricao}|">
+            th:attr="data-filter-text=|${member.nome} ${member.cargo}|">
             <img class="testimonial-admin-avatar"
                 th:src="@{/uploads/{filename}(filename=${member.imagemUrl})}"
                 th:alt="|Foto de ${member.nome}|" />
@@ -46,7 +52,7 @@
                 <strong th:text="${member.nome}">Nome do profissional</strong>
                 <div class="content-meta">
                     <span><i class="fa-solid fa-id-badge" aria-hidden="true"></i>
-                        <span th:text="${member.cargo.descricao}">Cargo</span>
+                        <span th:text="${member.cargo}">Cargo</span>
                     </span>
                 </div>
             </div>
@@ -100,8 +106,8 @@
                     <label for="team-create-role">Cargo <span>*</span></label>
                     <select id="team-create-role" name="cargo" required>
                         <option value="" selected disabled>Selecione um cargo</option>
-                        <option th:each="role : ${roles}" th:value="${role}"
-                            th:text="${role.descricao}">Cargo</option>
+                        <option th:each="role : ${roles}" th:value="${role.nome}"
+                            th:text="${role.nome}">Cargo</option>
                     </select>
                 </div>
 
@@ -155,8 +161,8 @@
                     <div class="form-field">
                         <label th:for="|team-role-${member.id}|">Cargo <span>*</span></label>
                         <select th:id="|team-role-${member.id}|" name="cargo" required>
-                            <option th:each="role : ${roles}" th:value="${role}"
-                                th:text="${role.descricao}" th:selected="${role == member.cargo}">Cargo</option>
+                            <option th:each="role : ${roles}" th:value="${role.nome}"
+                                th:text="${role.nome}" th:selected="${role.nome == member.cargo}">Cargo</option>
                         </select>
                     </div>
 
@@ -212,6 +218,70 @@
             </section>
         </div>
     </th:block>
+
+    <div class="admin-modal" data-modal="team-role-manage" hidden aria-hidden="true">
+        <div class="modal-backdrop" data-modal-close></div>
+        <section class="modal-dialog" role="dialog" aria-modal="true"
+            aria-labelledby="team-role-manage-title">
+            <header class="modal-heading">
+                <div>
+                    <span class="eyebrow eyebrow-mint">Organização da equipe</span>
+                    <h2 id="team-role-manage-title">Gerenciar cargos</h2>
+                </div>
+                <button class="modal-close" type="button" data-modal-close aria-label="Fechar">
+                    <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+                </button>
+            </header>
+
+            <form class="admin-form" th:action="@{/admin/equipe/cargos}" method="post">
+                <div class="form-field">
+                    <label for="team-role-name">Nome do cargo <span>*</span></label>
+                    <input id="team-role-name" name="nome" type="text" maxlength="80"
+                        placeholder="Ex.: Coordenador de Projetos" required />
+                </div>
+                <div class="modal-actions">
+                    <button class="admin-button admin-button-muted" type="button" data-modal-close>Cancelar</button>
+                    <button class="admin-button admin-button-primary" type="submit">
+                        <i class="fa-regular fa-floppy-disk" aria-hidden="true"></i> Salvar cargo
+                    </button>
+                </div>
+            </form>
+
+            <div class="category-management">
+                <div class="category-management-heading">
+                    <span class="eyebrow">Cargos cadastrados</span>
+                    <strong th:text="${#lists.size(roles)}">0</strong>
+                </div>
+
+                <div class="category-management-empty" th:if="${#lists.isEmpty(roles)}">
+                    Nenhum cargo cadastrado.
+                </div>
+
+                <div class="category-management-list" th:if="${!#lists.isEmpty(roles)}">
+                    <div class="category-management-row" th:each="role : ${roles}">
+                        <form class="category-edit-form"
+                            th:action="@{/admin/equipe/cargos/{id}(id=${role.id})}" method="post">
+                            <label class="sr-only" th:for="|role-name-${role.id}|"
+                                th:text="|Editar cargo ${role.nome}|">Editar cargo</label>
+                            <input th:id="|role-name-${role.id}|" name="nome" type="text"
+                                maxlength="80" th:value="${role.nome}" required />
+                            <button class="icon-button" type="submit" title="Salvar alteração"
+                                th:attr="aria-label=|Salvar alteração de ${role.nome}|">
+                                <i class="fa-regular fa-floppy-disk" aria-hidden="true"></i>
+                            </button>
+                        </form>
+                        <form th:action="@{/admin/equipe/cargos/{id}/excluir(id=${role.id})}"
+                            method="post">
+                            <button class="icon-button icon-button-danger" type="submit" title="Remover cargo"
+                                th:attr="aria-label=|Remover cargo ${role.nome}|">
+                                <i class="fa-regular fa-trash-can" aria-hidden="true"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
 </div>
 
 </html>

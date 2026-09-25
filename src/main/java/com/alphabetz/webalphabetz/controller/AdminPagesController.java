@@ -30,6 +30,7 @@ import com.alphabetz.webalphabetz.model.Slides;
 import com.alphabetz.webalphabetz.service.AdminService;
 import com.alphabetz.webalphabetz.service.BlogCategoryService;
 import com.alphabetz.webalphabetz.service.BlogService;
+import com.alphabetz.webalphabetz.service.CargoEquipeService;
 import com.alphabetz.webalphabetz.service.CareerApplicationService;
 import com.alphabetz.webalphabetz.service.DashboardService;
 import com.alphabetz.webalphabetz.service.DepoimentosService;
@@ -68,6 +69,7 @@ public class AdminPagesController {
     private final FundoTopoService fundoTopoService;
     private final MatriculaDocumentoService matriculaDocumentoService;
     private final EquipeService equipeService;
+    private final CargoEquipeService cargoEquipeService;
     private final DocumentoInstitucionalService documentoInstitucionalService;
 
     public AdminPagesController(SlidesService slidesService, BlogService blogService,
@@ -76,6 +78,7 @@ public class AdminPagesController {
             OuvidoriaService ouvidoriaService, DepoimentosService depoimentosService,
             TurmasImagensService turmasImagensService, FundoTopoService fundoTopoService,
             MatriculaDocumentoService matriculaDocumentoService, EquipeService equipeService,
+            CargoEquipeService cargoEquipeService,
             DocumentoInstitucionalService documentoInstitucionalService) {
         this.slidesService = slidesService;
         this.blogService = blogService;
@@ -89,6 +92,7 @@ public class AdminPagesController {
         this.fundoTopoService = fundoTopoService;
         this.matriculaDocumentoService = matriculaDocumentoService;
         this.equipeService = equipeService;
+        this.cargoEquipeService = cargoEquipeService;
         this.documentoInstitucionalService = documentoInstitucionalService;
     }
 
@@ -329,13 +333,47 @@ public class AdminPagesController {
     @GetMapping("/admin/equipe")
     public String team(Model model) {
         model.addAttribute("team", equipeService.getAll());
-        model.addAttribute("roles", CargoEquipe.values());
+        model.addAttribute("roles", cargoEquipeService.getAllCargos());
         return "admin/equipe";
+    }
+
+    @PostMapping("/admin/equipe/cargos")
+    public String createCargo(@RequestParam String nome, RedirectAttributes redirectAttributes) {
+        try {
+            cargoEquipeService.createCargo(nome);
+            redirectAttributes.addFlashAttribute("successMessage", "Cargo cadastrado com sucesso.");
+        } catch (RuntimeException exception) {
+            redirectAttributes.addFlashAttribute("errorMessage", errorMessage(exception));
+        }
+        return "redirect:/admin/equipe";
+    }
+
+    @PostMapping("/admin/equipe/cargos/{id}")
+    public String updateCargo(@PathVariable UUID id, @RequestParam String nome,
+            RedirectAttributes redirectAttributes) {
+        try {
+            cargoEquipeService.updateCargo(id, nome);
+            redirectAttributes.addFlashAttribute("successMessage", "Cargo atualizado com sucesso.");
+        } catch (RuntimeException exception) {
+            redirectAttributes.addFlashAttribute("errorMessage", errorMessage(exception));
+        }
+        return "redirect:/admin/equipe";
+    }
+
+    @PostMapping("/admin/equipe/cargos/{id}/excluir")
+    public String deleteCargo(@PathVariable UUID id, RedirectAttributes redirectAttributes) {
+        try {
+            cargoEquipeService.deleteCargo(id);
+            redirectAttributes.addFlashAttribute("successMessage", "Cargo removido com sucesso.");
+        } catch (RuntimeException exception) {
+            redirectAttributes.addFlashAttribute("errorMessage", errorMessage(exception));
+        }
+        return "redirect:/admin/equipe";
     }
 
     @PostMapping("/admin/equipe")
     public String createTeamMember(@RequestParam String nome,
-            @RequestParam CargoEquipe cargo,
+            @RequestParam String cargo,
             @RequestParam(name = "imagem", required = false) MultipartFile imagem,
             RedirectAttributes redirectAttributes) {
         try {
@@ -350,7 +388,7 @@ public class AdminPagesController {
     @PostMapping("/admin/equipe/{id}")
     public String updateTeamMember(@PathVariable UUID id,
             @RequestParam String nome,
-            @RequestParam CargoEquipe cargo,
+            @RequestParam String cargo,
             @RequestParam(name = "imagem", required = false) MultipartFile imagem,
             RedirectAttributes redirectAttributes) {
         try {

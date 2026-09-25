@@ -26,7 +26,7 @@ public class MembroEquipe implements Persistable<UUID> {
     private String nome;
 
     @Column("cargo")
-    private CargoEquipe cargo;
+    private String cargo;
 
     @Column("imagem_url")
     private String imagemUrl;

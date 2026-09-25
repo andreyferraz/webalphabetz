@@ -158,7 +158,51 @@ SELECT lower(
 FROM blog
 WHERE categoria IS NOT NULL AND trim(categoria) <> '';
 
-UPDATE equipe_membros
-SET cargo = 'DIRETOR_EXECUTIVO'
-WHERE cargo = 'DIRETOR_EXECUTIVO_CEO';
+CREATE TABLE IF NOT EXISTS equipe_cargos (
+	id TEXT PRIMARY KEY,
+	nome TEXT NOT NULL COLLATE NOCASE UNIQUE,
+	ordem INTEGER NOT NULL DEFAULT 0
+);
+
+CREATE INDEX IF NOT EXISTS idx_equipe_cargos_ordem_nome
+	ON equipe_cargos(ordem, nome COLLATE NOCASE);
+
+INSERT OR IGNORE INTO equipe_cargos (id, nome, ordem)
+SELECT id, nome, ordem
+FROM (
+	SELECT '00000000-0000-0000-0000-000000000101' AS id, 'Presidente do Conselho' AS nome, 1 AS ordem
+	UNION ALL SELECT '00000000-0000-0000-0000-000000000102', 'Diretor Executivo', 2
+	UNION ALL SELECT '00000000-0000-0000-0000-000000000103', 'Diretora de Ensino', 3
+	UNION ALL SELECT '00000000-0000-0000-0000-000000000104', 'Coordenadora Pedagógica', 4
+	UNION ALL SELECT '00000000-0000-0000-0000-000000000105', 'Assistente Administrativo', 5
+	UNION ALL SELECT '00000000-0000-0000-0000-000000000106', 'Professora Regente', 6
+	UNION ALL SELECT '00000000-0000-0000-0000-000000000107', 'Professora de Inglês', 7
+	UNION ALL SELECT '00000000-0000-0000-0000-000000000108', 'Auxiliar de Sala', 8
+	UNION ALL SELECT '00000000-0000-0000-0000-000000000109', 'Berçarista', 9
+	UNION ALL SELECT '00000000-0000-0000-0000-000000000110', 'Atelierista', 10
+	UNION ALL SELECT '00000000-0000-0000-0000-000000000111', 'Porteiro', 11
+	UNION ALL SELECT '00000000-0000-0000-0000-000000000112', 'Auxiliar de Serviços Gerais', 12
+	UNION ALL SELECT '00000000-0000-0000-0000-000000000113', 'Auxiliar de Cozinha', 13
+)
+WHERE NOT EXISTS (
+	SELECT 1 FROM app_settings WHERE chave = 'equipe_cargos_initialized'
+);
+
+INSERT OR IGNORE INTO app_settings (chave, valor)
+VALUES ('equipe_cargos_initialized', 'true');
+
+UPDATE equipe_membros SET cargo = 'Presidente do Conselho' WHERE cargo = 'PRESIDENTE_CONSELHO';
+UPDATE equipe_membros SET cargo = 'Diretor Executivo' WHERE cargo IN ('DIRETOR_EXECUTIVO', 'DIRETOR_EXECUTIVO_CEO');
+UPDATE equipe_membros SET cargo = 'Diretora de Ensino' WHERE cargo = 'DIRETORA_ENSINO';
+UPDATE equipe_membros SET cargo = 'Coordenadora Pedagógica' WHERE cargo = 'COORDENADORA_PEDAGOGICA';
+UPDATE equipe_membros SET cargo = 'Assistente Administrativo' WHERE cargo = 'ASSISTENTE_ADMINISTRATIVO';
+UPDATE equipe_membros SET cargo = 'Professora Regente' WHERE cargo = 'PROFESSORA_REGENTE';
+UPDATE equipe_membros SET cargo = 'Professora de Inglês' WHERE cargo = 'PROFESSORA_INGLES';
+UPDATE equipe_membros SET cargo = 'Auxiliar de Sala' WHERE cargo = 'AUXILIAR_SALA';
+UPDATE equipe_membros SET cargo = 'Berçarista' WHERE cargo = 'BERCARISTA';
+UPDATE equipe_membros SET cargo = 'Atelierista' WHERE cargo = 'ATELIERISTA';
+UPDATE equipe_membros SET cargo = 'Porteiro' WHERE cargo = 'PORTEIRO';
+UPDATE equipe_membros SET cargo = 'Auxiliar de Serviços Gerais' WHERE cargo = 'AUXILIAR_SERVICOS_GERAIS';
+UPDATE equipe_membros SET cargo = 'Auxiliar de Cozinha' WHERE cargo = 'AUXILIAR_COZINHA';
+
 

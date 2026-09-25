@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 import org.springframework.stereotype.Service;
@@ -21,21 +22,22 @@ import com.alphabetz.webalphabetz.utils.ValidationUtils;
 @Service
 public class EquipeService {
 
-    private static final Comparator<MembroEquipe> ORDEM_HIERARQUICA = Comparator
-            .comparingInt((MembroEquipe membro) -> membro.getCargo().ordinal())
-            .thenComparing(MembroEquipe::getNome, String.CASE_INSENSITIVE_ORDER);
-
     private final MembroEquipeRepository membroEquipeRepository;
     private final FileUploadService fileUploadService;
+    private final CargoEquipeService cargoEquipeService;
 
-    public EquipeService(MembroEquipeRepository membroEquipeRepository, FileUploadService fileUploadService) {
+    public EquipeService(MembroEquipeRepository membroEquipeRepository,
+            FileUploadService fileUploadService,
+            CargoEquipeService cargoEquipeService) {
         this.membroEquipeRepository = membroEquipeRepository;
         this.fileUploadService = fileUploadService;
+        this.cargoEquipeService = cargoEquipeService;
     }
 
     @Transactional
-    public MembroEquipe create(String nome, CargoEquipe cargo, MultipartFile imagem) {
+    public MembroEquipe create(String nome, String cargo, MultipartFile imagem) {
         validar(nome, cargo);
+        String cargoValidado = cargoEquipeService.requireExistingCargo(cargo);
         if (imagem == null || imagem.isEmpty()) {
             throw new IllegalArgumentException("A foto é obrigatória.");
         }
@@ -45,7 +47,7 @@ public class EquipeService {
             MembroEquipe membro = new MembroEquipe();
             membro.setId(UUID.randomUUID());
             membro.setNome(nome.trim());
-            membro.setCargo(cargo);
+            membro.setCargo(cargoValidado);
             membro.setImagemUrl(imagemUrl);
             membro.setNew(true);
             return membroEquipeRepository.save(membro);
@@ -56,11 +58,12 @@ public class EquipeService {
     }
 
     @Transactional
-    public MembroEquipe update(UUID id, String nome, CargoEquipe cargo, MultipartFile imagem) {
+    public MembroEquipe update(UUID id, String nome, String cargo, MultipartFile imagem) {
         validar(nome, cargo);
+        String cargoValidado = cargoEquipeService.requireExistingCargo(cargo);
         MembroEquipe membro = getById(id);
         membro.setNome(nome.trim());
-        membro.setCargo(cargo);
+        membro.setCargo(cargoValidado);
 
         if (imagem == null || imagem.isEmpty()) {
             return membroEquipeRepository.save(membro);
@@ -97,8 +100,19 @@ public class EquipeService {
     }
 
     public List<MembroEquipe> getAll() {
+        Map<String, Integer> ordemPorCargo = cargoEquipeService.getAllCargos().stream()
+                .collect(Collectors.toMap(
+                        c -> c.getNome().toLowerCase(),
+                        c -> c.getOrdem() != null ? c.getOrdem() : Integer.MAX_VALUE,
+                        (existing, replacement) -> existing
+                ));
+
         return StreamSupport.stream(membroEquipeRepository.findAll().spliterator(), false)
-                .sorted(ORDEM_HIERARQUICA)
+                .sorted(Comparator
+                        .comparingInt((MembroEquipe membro) -> ordemPorCargo.getOrDefault(
+                                membro.getCargo() != null ? membro.getCargo().toLowerCase() : "",
+                                Integer.MAX_VALUE))
+                        .thenComparing(MembroEquipe::getNome, String.CASE_INSENSITIVE_ORDER))
                 .toList();
     }
 
@@ -110,17 +124,15 @@ public class EquipeService {
         return equipePorCargo;
     }
 
-    private String getTituloGrupo(CargoEquipe cargo) {
-        if (cargo == CargoEquipe.PRESIDENTE_CONSELHO || cargo == CargoEquipe.DIRETOR_EXECUTIVO) {
+    private String getTituloGrupo(String cargo) {
+        if (cargo != null && ("Presidente do Conselho".equalsIgnoreCase(cargo) || "Diretor Executivo".equalsIgnoreCase(cargo))) {
             return "Conselho de Administração";
         }
-        return cargo.getDescricao();
+        return cargo != null ? cargo : "";
     }
 
-    private void validar(String nome, CargoEquipe cargo) {
+    private void validar(String nome, String cargo) {
         ValidationUtils.validarCampoStringObrigatorio(nome, "nome");
-        if (cargo == null) {
-            throw new IllegalArgumentException("O cargo é obrigatório.");
-        }
+        ValidationUtils.validarCampoStringObrigatorio(cargo, "cargo");
     }
 }

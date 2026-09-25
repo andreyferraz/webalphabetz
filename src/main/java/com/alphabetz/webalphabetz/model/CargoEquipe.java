@@ -1,28 +1,47 @@
 package com.alphabetz.webalphabetz.model;
 
-public enum CargoEquipe {
+import java.util.UUID;
 
-    PRESIDENTE_CONSELHO("Presidente do Conselho"),
-    DIRETOR_EXECUTIVO("Diretor Executivo"),
-    DIRETORA_ENSINO("Diretora de Ensino"),
-    COORDENADORA_PEDAGOGICA("Coordenadora Pedagógica"),
-    ASSISTENTE_ADMINISTRATIVO("Assistente Administrativo"),
-    PROFESSORA_REGENTE("Professora Regente"),
-    PROFESSORA_INGLES("Professora de Inglês"),
-    AUXILIAR_SALA("Auxiliar de Sala"),
-    BERCARISTA("Berçarista"),
-    ATELIERISTA("Atelierista"),
-    PORTEIRO("Porteiro"),
-    AUXILIAR_SERVICOS_GERAIS("Auxiliar de Serviços Gerais"),
-    AUXILIAR_COZINHA("Auxiliar de Cozinha");
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
+import org.springframework.data.domain.Persistable;
+import org.springframework.data.relational.core.mapping.Column;
+import org.springframework.data.relational.core.mapping.Table;
 
-    private final String descricao;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-    CargoEquipe(String descricao) {
-        this.descricao = descricao;
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Table("equipe_cargos")
+public class CargoEquipe implements Persistable<UUID> {
+
+    @Id
+    @Column("id")
+    private UUID id;
+
+    @Column("nome")
+    private String nome;
+
+    @Column("ordem")
+    private Integer ordem;
+
+    @Transient
+    private boolean isNew;
+
+    @Override
+    public UUID getId() {
+        return id;
+    }
+
+    @Override
+    public boolean isNew() {
+        return isNew;
     }
 
     public String getDescricao() {
-        return descricao;
+        return nome;
     }
 }
