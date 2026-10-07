@@ -1,8 +1,12 @@
 package com.alphabetz.webalphabetz.service;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -29,6 +33,88 @@ public class CargoEquipeService {
 
     public List<CargoEquipe> getAllCargos() {
         return cargoEquipeRepository.findAllByOrderByOrdemAscNomeAsc();
+    }
+
+    @Transactional
+    public void reorderCargos(List<UUID> orderedIds) {
+        if (orderedIds == null || orderedIds.isEmpty()) {
+            throw new IllegalArgumentException("A lista de cargos não pode ser vazia.");
+        }
+
+        List<CargoEquipe> allCargos = getAllCargos();
+        Map<UUID, CargoEquipe> cargoMap = allCargos.stream()
+                .collect(Collectors.toMap(CargoEquipe::getId, c -> c));
+
+        List<CargoEquipe> reordered = new ArrayList<>();
+        int currentOrder = 1;
+
+        for (UUID id : orderedIds) {
+            CargoEquipe cargo = cargoMap.remove(id);
+            if (cargo != null) {
+                cargo.setOrdem(currentOrder++);
+                cargo.setNew(false);
+                reordered.add(cargo);
+            }
+        }
+
+        for (CargoEquipe remaining : cargoMap.values()) {
+            remaining.setOrdem(currentOrder++);
+            remaining.setNew(false);
+            reordered.add(remaining);
+        }
+
+        cargoEquipeRepository.saveAll(reordered);
+    }
+
+    @Transactional
+    public void moveCargo(UUID id, String direction) {
+        if (id == null) {
+            throw new IllegalArgumentException("ID do cargo não pode ser nulo.");
+        }
+        if (direction == null || (!direction.equalsIgnoreCase("cima")
+                && !direction.equalsIgnoreCase("up")
+                && !direction.equalsIgnoreCase("baixo")
+                && !direction.equalsIgnoreCase("down"))) {
+            throw new IllegalArgumentException("Direção inválida. Use 'cima' ou 'baixo'.");
+        }
+
+        List<CargoEquipe> allCargos = new ArrayList<>(getAllCargos());
+        int currentIndex = -1;
+        for (int i = 0; i < allCargos.size(); i++) {
+            if (allCargos.get(i).getId().equals(id)) {
+                currentIndex = i;
+                break;
+            }
+        }
+
+        if (currentIndex == -1) {
+            throw new IllegalArgumentException("Cargo não encontrado.");
+        }
+
+        boolean isUp = direction.equalsIgnoreCase("cima") || direction.equalsIgnoreCase("up");
+        if (isUp && currentIndex > 0) {
+            Collections.swap(allCargos, currentIndex, currentIndex - 1);
+        } else if (!isUp && currentIndex < allCargos.size() - 1) {
+            Collections.swap(allCargos, currentIndex, currentIndex + 1);
+        }
+
+        for (int i = 0; i < allCargos.size(); i++) {
+            CargoEquipe c = allCargos.get(i);
+            c.setOrdem(i + 1);
+            c.setNew(false);
+        }
+
+        cargoEquipeRepository.saveAll(allCargos);
+    }
+
+    @Transactional
+    public void moveCargoUp(UUID id) {
+        moveCargo(id, "cima");
+    }
+
+    @Transactional
+    public void moveCargoDown(UUID id) {
+        moveCargo(id, "baixo");
     }
 
     @Transactional

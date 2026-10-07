@@ -233,6 +233,15 @@
                 </button>
             </header>
 
+            <div class="form-message form-message-success" th:if="${successMessage}">
+                <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
+                <span th:text="${successMessage}">Operação realizada com sucesso.</span>
+            </div>
+            <div class="form-message form-message-error" th:if="${errorMessage}">
+                <i class="fa-solid fa-circle-exclamation" aria-hidden="true"></i>
+                <span th:text="${errorMessage}">Não foi possível concluir a operação.</span>
+            </div>
+
             <form class="admin-form" th:action="@{/admin/equipe/cargos}" method="post">
                 <div class="form-field">
                     <label for="team-role-name">Nome do cargo <span>*</span></label>
@@ -249,7 +258,10 @@
 
             <div class="category-management">
                 <div class="category-management-heading">
-                    <span class="eyebrow">Cargos cadastrados</span>
+                    <div>
+                        <span class="eyebrow">Cargos cadastrados</span>
+                        <p class="category-management-tip">Arraste ou use as setas para reorganizar a ordem de exibição dos grupos de cargos na aba de equipe.</p>
+                    </div>
                     <strong th:text="${#lists.size(roles)}">0</strong>
                 </div>
 
@@ -257,8 +269,35 @@
                     Nenhum cargo cadastrado.
                 </div>
 
-                <div class="category-management-list" th:if="${!#lists.isEmpty(roles)}">
-                    <div class="category-management-row" th:each="role : ${roles}">
+                <div class="category-management-list role-sortable-list" data-role-list th:if="${!#lists.isEmpty(roles)}">
+                    <div class="category-management-row role-order-row" th:each="role, roleStat : ${roles}"
+                        th:attr="data-role-id=${role.id}" draggable="true">
+                        <div class="role-reorder-controls">
+                            <span class="category-drag-handle" title="Arraste para reorganizar" aria-label="Arraste para reorganizar">
+                                <i class="fa-solid fa-grip-vertical" aria-hidden="true"></i>
+                            </span>
+                            <span class="category-order-badge" data-role-order-badge th:text="${roleStat.count}">1</span>
+                            <div class="role-arrow-buttons">
+                                <form th:action="@{/admin/equipe/cargos/{id}/mover(id=${role.id})}" method="post"
+                                    class="role-move-form" data-role-move="cima">
+                                    <input type="hidden" name="direcao" value="cima" />
+                                    <button class="icon-button icon-button-sm" type="submit" title="Mover para cima"
+                                        th:disabled="${roleStat.first}"
+                                        th:attr="aria-label=|Mover cargo ${role.nome} para cima|">
+                                        <i class="fa-solid fa-arrow-up" aria-hidden="true"></i>
+                                    </button>
+                                </form>
+                                <form th:action="@{/admin/equipe/cargos/{id}/mover(id=${role.id})}" method="post"
+                                    class="role-move-form" data-role-move="baixo">
+                                    <input type="hidden" name="direcao" value="baixo" />
+                                    <button class="icon-button icon-button-sm" type="submit" title="Mover para baixo"
+                                        th:disabled="${roleStat.last}"
+                                        th:attr="aria-label=|Mover cargo ${role.nome} para baixo|">
+                                        <i class="fa-solid fa-arrow-down" aria-hidden="true"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
                         <form class="category-edit-form"
                             th:action="@{/admin/equipe/cargos/{id}(id=${role.id})}" method="post">
                             <label class="sr-only" th:for="|role-name-${role.id}|"

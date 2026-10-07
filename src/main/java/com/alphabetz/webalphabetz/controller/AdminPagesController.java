@@ -2,7 +2,10 @@ package com.alphabetz.webalphabetz.controller;
 
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.ContentDisposition;
@@ -15,6 +18,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -345,7 +349,7 @@ public class AdminPagesController {
         } catch (RuntimeException exception) {
             redirectAttributes.addFlashAttribute("errorMessage", errorMessage(exception));
         }
-        return "redirect:/admin/equipe";
+        return "redirect:/admin/equipe?modal=team-role-manage";
     }
 
     @PostMapping("/admin/equipe/cargos/{id}")
@@ -357,7 +361,7 @@ public class AdminPagesController {
         } catch (RuntimeException exception) {
             redirectAttributes.addFlashAttribute("errorMessage", errorMessage(exception));
         }
-        return "redirect:/admin/equipe";
+        return "redirect:/admin/equipe?modal=team-role-manage";
     }
 
     @PostMapping("/admin/equipe/cargos/{id}/excluir")
@@ -368,7 +372,52 @@ public class AdminPagesController {
         } catch (RuntimeException exception) {
             redirectAttributes.addFlashAttribute("errorMessage", errorMessage(exception));
         }
-        return "redirect:/admin/equipe";
+        return "redirect:/admin/equipe?modal=team-role-manage";
+    }
+
+    @PostMapping("/admin/equipe/cargos/{id}/mover")
+    public Object moveCargo(@PathVariable UUID id,
+            @RequestParam String direcao,
+            HttpServletRequest request,
+            RedirectAttributes redirectAttributes) {
+        try {
+            cargoEquipeService.moveCargo(id, direcao);
+            if (isAjaxRequest(request)) {
+                return ResponseEntity.ok(Map.of("success", true, "message", "Ordem do cargo alterada com sucesso."));
+            }
+            redirectAttributes.addFlashAttribute("successMessage", "Ordem do cargo alterada com sucesso.");
+        } catch (RuntimeException exception) {
+            if (isAjaxRequest(request)) {
+                return ResponseEntity.badRequest().body(Map.of("success", false, "message", errorMessage(exception)));
+            }
+            redirectAttributes.addFlashAttribute("errorMessage", errorMessage(exception));
+        }
+        return "redirect:/admin/equipe?modal=team-role-manage";
+    }
+
+    @PostMapping("/admin/equipe/cargos/reordenar")
+    public Object reorderCargos(
+            @RequestBody(required = false) List<UUID> bodyIds,
+            @RequestParam(name = "ids", required = false) List<UUID> paramIds,
+            HttpServletRequest request,
+            RedirectAttributes redirectAttributes) {
+        List<UUID> ids = bodyIds != null && !bodyIds.isEmpty() ? bodyIds : paramIds;
+        try {
+            if (ids == null || ids.isEmpty()) {
+                throw new IllegalArgumentException("Nenhum cargo informado para reordenação.");
+            }
+            cargoEquipeService.reorderCargos(ids);
+            if (isAjaxRequest(request)) {
+                return ResponseEntity.ok(Map.of("success", true, "message", "Ordem dos cargos atualizada com sucesso."));
+            }
+            redirectAttributes.addFlashAttribute("successMessage", "Ordem dos cargos atualizada com sucesso.");
+        } catch (RuntimeException exception) {
+            if (isAjaxRequest(request)) {
+                return ResponseEntity.badRequest().body(Map.of("success", false, "message", errorMessage(exception)));
+            }
+            redirectAttributes.addFlashAttribute("errorMessage", errorMessage(exception));
+        }
+        return "redirect:/admin/equipe?modal=team-role-manage";
     }
 
     @PostMapping("/admin/equipe")
@@ -670,5 +719,17 @@ public class AdminPagesController {
                 .contentLength(size)
                 .header(HttpHeaders.CONTENT_DISPOSITION, disposition.toString())
                 .body(new ByteArrayResource(content));
+    }
+
+    private boolean isAjaxRequest(HttpServletRequest request) {
+        if (request == null) {
+            return false;
+        }
+        String requestedWith = request.getHeader("X-Requested-With");
+        String accept = request.getHeader("Accept");
+        String contentType = request.getHeader("Content-Type");
+        return "XMLHttpRequest".equalsIgnoreCase(requestedWith)
+                || (accept != null && accept.contains(MediaType.APPLICATION_JSON_VALUE))
+                || (contentType != null && contentType.contains(MediaType.APPLICATION_JSON_VALUE));
     }
 }

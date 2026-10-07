@@ -88,6 +88,16 @@
     trigger.addEventListener('click', () => openModal($(`[data-modal="${trigger.dataset.modalOpen}"]`), trigger));
   });
 
+  const modalParam = new URLSearchParams(window.location.search).get('modal');
+  if (modalParam) {
+    const modalToOpen = $(`[data-modal="${modalParam}"]`);
+    if (modalToOpen) {
+      openModal(modalToOpen);
+      const cleanUrl = window.location.pathname;
+      window.history.replaceState({}, '', cleanUrl);
+    }
+  }
+
   $$('[data-modal-close]').forEach(button => {
     button.addEventListener('click', () => closeModal(button.closest('[data-modal]')));
   });
@@ -315,4 +325,136 @@
       $$('[data-image-preview]', form).forEach(preview => { preview.innerHTML = ''; });
     });
   });
+
+  // Reorganização dinâmica dos cargos da equipe
+  const roleList = $('[data-role-list]');
+  if (roleList) {
+    const updateRoleBadgesAndButtons = () => {
+      const rows = $$('.role-order-row', roleList);
+      rows.forEach((row, index) => {
+        const badge = $('[data-role-order-badge]', row);
+        if (badge) badge.textContent = String(index + 1);
+        const upBtn = $('[data-role-move="cima"] button', row);
+        const downBtn = $('[data-role-move="baixo"] button', row);
+        if (upBtn) upBtn.disabled = index === 0;
+        if (downBtn) downBtn.disabled = index === rows.length - 1;
+      });
+    };
+
+    const getCsrfHeaders = () => {
+      const token = $('meta[name="_csrf"]')?.getAttribute('content')
+        || $('input[name="_csrf"]')?.value;
+      const header = $('meta[name="_csrf_header"]')?.getAttribute('content')
+        || 'X-CSRF-TOKEN';
+      const headers = {
+        'Content-Type': 'application/json',
+        'X-Requested-With': 'XMLHttpRequest'
+      };
+      if (token) headers[header] = token;
+      return headers;
+    };
+
+    const persistRoleOrder = async () => {
+      const rows = $$('.role-order-row', roleList);
+      const ids = rows.map(r => r.dataset.roleId).filter(Boolean);
+      try {
+        const response = await fetch('/admin/equipe/cargos/reordenar', {
+          method: 'POST',
+          headers: getCsrfHeaders(),
+          body: JSON.stringify(ids)
+        });
+        if (response.ok) {
+          showToast('Ordem atualizada', 'A ordem dos grupos de cargos foi salva com sucesso.');
+        } else {
+          showToast('Erro ao reorganizar', 'Não foi possível salvar a nova ordem dos cargos.');
+        }
+      } catch (err) {
+        showToast('Erro ao reorganizar', 'Falha na conexão ao atualizar a ordem.');
+      }
+    };
+
+    roleList.addEventListener('submit', async event => {
+      const moveForm = event.target.closest('.role-move-form');
+      if (!moveForm) return;
+
+      event.preventDefault();
+      const row = moveForm.closest('.role-order-row');
+      const direction = moveForm.dataset.roleMove;
+      if (direction === 'cima') {
+        const prevRow = row.previousElementSibling;
+        if (prevRow && prevRow.classList.contains('role-order-row')) {
+          roleList.insertBefore(row, prevRow);
+          updateRoleBadgesAndButtons();
+          await persistRoleOrder();
+        }
+      } else if (direction === 'baixo') {
+        const nextRow = row.nextElementSibling;
+        if (nextRow && nextRow.classList.contains('role-order-row')) {
+          roleList.insertBefore(nextRow, row);
+          updateRoleBadgesAndButtons();
+          await persistRoleOrder();
+        }
+      }
+    });
+
+    let draggedRow = null;
+
+    roleList.addEventListener('dragstart', event => {
+      const row = event.target.closest('.role-order-row');
+      if (!row) return;
+      if (['INPUT', 'BUTTON', 'A', 'I'].includes(event.target.tagName) && !event.target.closest('.category-drag-handle')) {
+        event.preventDefault();
+        return;
+      }
+      draggedRow = row;
+      row.classList.add('is-dragging');
+      event.dataTransfer.effectAllowed = 'move';
+      event.dataTransfer.setData('text/plain', row.dataset.roleId || '');
+    });
+
+    roleList.addEventListener('dragend', () => {
+      if (draggedRow) {
+        draggedRow.classList.remove('is-dragging');
+        draggedRow = null;
+      }
+      $$('.role-order-row', roleList).forEach(r => r.classList.remove('drag-over-top', 'drag-over-bottom'));
+    });
+
+    roleList.addEventListener('dragover', event => {
+      event.preventDefault();
+      const targetRow = event.target.closest('.role-order-row');
+      if (!targetRow || targetRow === draggedRow) return;
+
+      const rect = targetRow.getBoundingClientRect();
+      const mid = rect.top + rect.height / 2;
+      const isTop = event.clientY < mid;
+
+      $$('.role-order-row', roleList).forEach(r => {
+        if (r !== targetRow) r.classList.remove('drag-over-top', 'drag-over-bottom');
+      });
+
+      targetRow.classList.toggle('drag-over-top', isTop);
+      targetRow.classList.toggle('drag-over-bottom', !isTop);
+    });
+
+    roleList.addEventListener('drop', async event => {
+      event.preventDefault();
+      const targetRow = event.target.closest('.role-order-row');
+      if (!targetRow || !draggedRow || targetRow === draggedRow) return;
+
+      const rect = targetRow.getBoundingClientRect();
+      const mid = rect.top + rect.height / 2;
+      const isTop = event.clientY < mid;
+
+      if (isTop) {
+        roleList.insertBefore(draggedRow, targetRow);
+      } else {
+        roleList.insertBefore(draggedRow, targetRow.nextSibling);
+      }
+
+      $$('.role-order-row', roleList).forEach(r => r.classList.remove('drag-over-top', 'drag-over-bottom'));
+      updateRoleBadgesAndButtons();
+      await persistRoleOrder();
+    });
+  }
 })();

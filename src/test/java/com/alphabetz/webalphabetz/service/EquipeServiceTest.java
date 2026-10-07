@@ -65,22 +65,71 @@ class EquipeServiceTest {
         assertThat(ordenados).containsExactly(m3, m2, m1);
     }
 
+    @Test
+    @DisplayName("Deve refletir a reorganização dinâmica da ordem dos cargos nos grupos da equipe")
+    void deveRefletirNovaOrdemDosCargosNosGrupos() {
+        StubMembroEquipeRepository repository = new StubMembroEquipeRepository();
+        StubCargoEquipeRepository cargoRepository = new StubCargoEquipeRepository();
+        UUID id1 = UUID.randomUUID();
+        UUID id2 = UUID.randomUUID();
+        UUID id3 = UUID.randomUUID();
+
+        // Inicialmente: Presidente (1), Professora (2), Berçarista (3)
+        cargoRepository.cargos.add(new CargoEquipe(id1, "Presidente do Conselho", 1, false));
+        cargoRepository.cargos.add(new CargoEquipe(id2, "Professora Regente", 2, false));
+        cargoRepository.cargos.add(new CargoEquipe(id3, "Berçarista", 3, false));
+        CargoEquipeService cargoEquipeService = new CargoEquipeService(cargoRepository, null);
+
+        MembroEquipe m1 = new MembroEquipe(UUID.randomUUID(), "Ana", "Presidente do Conselho", "foto1.webp", false);
+        MembroEquipe m2 = new MembroEquipe(UUID.randomUUID(), "Beatriz", "Professora Regente", "foto2.webp", false);
+        MembroEquipe m3 = new MembroEquipe(UUID.randomUUID(), "Carla", "Berçarista", "foto3.webp", false);
+        repository.membros.addAll(List.of(m1, m2, m3));
+
+        EquipeService equipeService = new EquipeService(repository, null, cargoEquipeService);
+
+        // Ordem inicial dos grupos
+        Map<String, List<MembroEquipe>> gruposIniciais = equipeService.getGroupedByCargo();
+        assertThat(gruposIniciais.keySet()).containsExactly(
+                "Conselho de Administração", "Professora Regente", "Berçarista");
+
+        // Admin reorganiza: Berçarista primeiro, Professora depois, Presidente por último
+        cargoEquipeService.reorderCargos(List.of(id3, id2, id1));
+
+        // Grupos reorganizados dinamicamente!
+        Map<String, List<MembroEquipe>> gruposAtualizados = equipeService.getGroupedByCargo();
+        assertThat(gruposAtualizados.keySet()).containsExactly(
+                "Berçarista", "Professora Regente", "Conselho de Administração");
+    }
+
     private static class StubCargoEquipeRepository implements CargoEquipeRepository {
         final List<CargoEquipe> cargos = new ArrayList<>();
 
         @Override
         public List<CargoEquipe> findAllByOrderByOrdemAscNomeAsc() {
-            return new ArrayList<>(cargos);
+            return cargos.stream()
+                    .sorted((c1, c2) -> {
+                        int ord1 = c1.getOrdem() != null ? c1.getOrdem() : 0;
+                        int ord2 = c2.getOrdem() != null ? c2.getOrdem() : 0;
+                        if (ord1 != ord2) {
+                            return Integer.compare(ord1, ord2);
+                        }
+                        return c1.getNome().compareToIgnoreCase(c2.getNome());
+                    })
+                    .toList();
         }
 
         @Override
         public <S extends CargoEquipe> S save(S entity) {
+            cargos.removeIf(c -> c.getId().equals(entity.getId()));
             cargos.add(entity);
             return entity;
         }
 
         @Override
         public <S extends CargoEquipe> Iterable<S> saveAll(Iterable<S> entities) {
+            for (S entity : entities) {
+                save(entity);
+            }
             return entities;
         }
 

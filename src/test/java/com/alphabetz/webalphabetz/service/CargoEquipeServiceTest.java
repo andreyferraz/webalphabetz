@@ -60,12 +60,94 @@ class CargoEquipeServiceTest {
                 .hasMessageContaining("Selecione um cargo cadastrado");
     }
 
+    @Test
+    @DisplayName("Deve reordenar cargos com base na lista de IDs")
+    void deveReordenarCargosComSucesso() {
+        StubCargoEquipeRepository repository = new StubCargoEquipeRepository();
+        UUID id1 = UUID.randomUUID();
+        UUID id2 = UUID.randomUUID();
+        UUID id3 = UUID.randomUUID();
+        repository.cargos.add(new CargoEquipe(id1, "Presidente", 1, false));
+        repository.cargos.add(new CargoEquipe(id2, "Diretor", 2, false));
+        repository.cargos.add(new CargoEquipe(id3, "Professor", 3, false));
+
+        CargoEquipeService service = new CargoEquipeService(repository, null);
+        service.reorderCargos(List.of(id3, id1, id2));
+
+        List<CargoEquipe> ordenados = service.getAllCargos();
+        assertThat(ordenados).extracting(CargoEquipe::getNome)
+                .containsExactly("Professor", "Presidente", "Diretor");
+        assertThat(ordenados.get(0).getOrdem()).isEqualTo(1);
+        assertThat(ordenados.get(1).getOrdem()).isEqualTo(2);
+        assertThat(ordenados.get(2).getOrdem()).isEqualTo(3);
+    }
+
+    @Test
+    @DisplayName("Deve mover cargo para cima")
+    void deveMoverCargoParaCima() {
+        StubCargoEquipeRepository repository = new StubCargoEquipeRepository();
+        UUID id1 = UUID.randomUUID();
+        UUID id2 = UUID.randomUUID();
+        repository.cargos.add(new CargoEquipe(id1, "Presidente", 1, false));
+        repository.cargos.add(new CargoEquipe(id2, "Diretor", 2, false));
+
+        CargoEquipeService service = new CargoEquipeService(repository, null);
+        service.moveCargo(id2, "cima");
+
+        List<CargoEquipe> ordenados = service.getAllCargos();
+        assertThat(ordenados).extracting(CargoEquipe::getNome)
+                .containsExactly("Diretor", "Presidente");
+    }
+
+    @Test
+    @DisplayName("Deve mover cargo para baixo")
+    void deveMoverCargoParaBaixo() {
+        StubCargoEquipeRepository repository = new StubCargoEquipeRepository();
+        UUID id1 = UUID.randomUUID();
+        UUID id2 = UUID.randomUUID();
+        repository.cargos.add(new CargoEquipe(id1, "Presidente", 1, false));
+        repository.cargos.add(new CargoEquipe(id2, "Diretor", 2, false));
+
+        CargoEquipeService service = new CargoEquipeService(repository, null);
+        service.moveCargo(id1, "baixo");
+
+        List<CargoEquipe> ordenados = service.getAllCargos();
+        assertThat(ordenados).extracting(CargoEquipe::getNome)
+                .containsExactly("Diretor", "Presidente");
+    }
+
+    @Test
+    @DisplayName("Deve manter ordem ao tentar mover primeiro cargo para cima")
+    void deveManterOrdemAoMoverPrimeiroParaCima() {
+        StubCargoEquipeRepository repository = new StubCargoEquipeRepository();
+        UUID id1 = UUID.randomUUID();
+        UUID id2 = UUID.randomUUID();
+        repository.cargos.add(new CargoEquipe(id1, "Presidente", 1, false));
+        repository.cargos.add(new CargoEquipe(id2, "Diretor", 2, false));
+
+        CargoEquipeService service = new CargoEquipeService(repository, null);
+        service.moveCargo(id1, "cima");
+
+        List<CargoEquipe> ordenados = service.getAllCargos();
+        assertThat(ordenados).extracting(CargoEquipe::getNome)
+                .containsExactly("Presidente", "Diretor");
+    }
+
     private static class StubCargoEquipeRepository implements CargoEquipeRepository {
         final List<CargoEquipe> cargos = new ArrayList<>();
 
         @Override
         public List<CargoEquipe> findAllByOrderByOrdemAscNomeAsc() {
-            return new ArrayList<>(cargos);
+            return cargos.stream()
+                    .sorted((c1, c2) -> {
+                        int ord1 = c1.getOrdem() != null ? c1.getOrdem() : 0;
+                        int ord2 = c2.getOrdem() != null ? c2.getOrdem() : 0;
+                        if (ord1 != ord2) {
+                            return Integer.compare(ord1, ord2);
+                        }
+                        return c1.getNome().compareToIgnoreCase(c2.getNome());
+                    })
+                    .toList();
         }
 
         @Override
@@ -77,6 +159,9 @@ class CargoEquipeServiceTest {
 
         @Override
         public <S extends CargoEquipe> Iterable<S> saveAll(Iterable<S> entities) {
+            for (S entity : entities) {
+                save(entity);
+            }
             return entities;
         }
 
